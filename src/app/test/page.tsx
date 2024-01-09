@@ -7,7 +7,6 @@ const Test = () => {
 
     const fetchdata = async () => {
         const res = await axios.get("/api/test");
-        console.log(res.data);
 
         return res.data;
 

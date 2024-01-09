@@ -24,6 +24,21 @@ enum Role {
   USER
 }
 
+enum TripType {
+  NONE
+  PRIVATE
+  GROUP
+}
+
+enum TripCategory {
+  NONE
+  SCHOOL
+  COUPLE
+  FAMILY
+  OFFICE
+  FRIENDS
+}
+
 model user {
   id        Int       @id @default(autoincrement())
   avatar    String?
@@ -38,4 +53,27 @@ model user {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+  trips     trips[]
+}
+
+model trips {
+  id                   Int       @id @default(autoincrement())
+  name                 String?
+  start                DateTime
+  end                  DateTime
+  image                String?
+  price                Int
+  number_of_days       Int
+  trip_type            TripType  @default(NONE)
+  category             TripCategory  @default(NONE)
+  description          String?
+  location             String?
+  location_description String?
+  number_of_people     Int
+  status               Status    @default(ACTIVE)
+  createdAt            DateTime  @default(now())
+  create               user      @relation(fields: [createdBy], references: [id])
+  createdBy            Int
+  updatedAt            DateTime  @updatedAt
+  deletedAt            DateTime?
 }
