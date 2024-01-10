@@ -77,12 +77,16 @@ const CreateTrips = (props: TripProps) => {
                         "content-type": "multipart/form-data",
                     },
                 };
-                
+
                 const res = await axios.post("/api/upload/tripuploadimage", formData, config);
-                res.data.status ? toast.success(res.data.message) : toast.error(res.data.message);
+                if (res.data.status) {
+                    toast.success(res.data.message);
+                    return router.replace(`/dashboard/viewtrip/${data.data.id}}`);
+                } else {
+                    toast.error(res.data.message);
+                }
 
                 toast.success(data.data.message);
-                return router.replace(`/dashboard/viewtrip/${data.data.id}}`);
             } else {
                 toast.error(data.data.message);
             }

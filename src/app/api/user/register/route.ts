@@ -1,6 +1,6 @@
 import { ApiResponseType } from "@/models/responnse";
 import { NextRequest, NextResponse } from "next/server";
-import { user } from "@prisma/client";
+import { Role, user } from "@prisma/client";
 import { errorToString } from "@/utils/methods";
 import { safeParse } from "valibot";
 import { RegisterSchema } from "@/schemas/register";
@@ -29,6 +29,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 data: {
                     email: result.output.email,
                     password: password,
+                    role: result.output.role as unknown as Role
                 }
             });
             if (user) {

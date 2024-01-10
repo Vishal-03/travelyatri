@@ -5,17 +5,20 @@ import { user } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { safeParse } from "valibot";
 import { database } from "../../../../prisma/database";
+import url from "url";
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
     try {
 
-        const body = await request.json();
 
-        const result = safeParse(ByIdSchema, body);
+        const queryParams = url.parse(request.url, true).query;
+        console.log(queryParams.id);
+
+
+
+        const result = safeParse(ByIdSchema, { ...queryParams });
 
         if (result.success) {
-
-
             const user: user | null = await database.user.findFirst({
                 where: {
                     id: result.output.id,

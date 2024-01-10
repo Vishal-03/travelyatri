@@ -3,6 +3,7 @@ import CompleteCard from "@/components/dashboard/completecard";
 import { cookies } from "next/headers";
 import { database } from "../../../prisma/database";
 import { Fa6SolidMountainSun, MaterialSymbolsDashboard } from "@/components/icons";
+import AgencyDashboard from "@/components/dashboard/agencydashboard";
 
 const Dashboard = async () => {
 
@@ -55,6 +56,16 @@ const Dashboard = async () => {
                     </div>
                 </div>
             </div>
+
+            <div className="p-6">
+                {
+                    user?.role == "USER" ?
+                        <AgencyDashboard /> :
+                        <AgencyDashboard />
+                }
+
+            </div>
+
         </>
     );
 }
