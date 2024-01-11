@@ -29,7 +29,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     trip_type: result.output.trip_type as unknown as TripType,
                     category: result.output.category as unknown as TripCategory,
                     createdBy: result.output.createdBy,
-                    status: "INACTIVE"
+                    status: "ACTIVE"
                 },
             });
             if (trips) {
@@ -41,7 +41,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             }
 
         } else {
-            console.log(result);
 
             let errorMessage = "";
             if (result.issues[0].input) {

@@ -1,8 +1,8 @@
-import { Input, maxValue, number, object } from "valibot";
+import { Input, maxValue, minValue, number, object } from "valibot";
 
 const ByIdSchema = object({
     id: number([
-        maxValue(1, 'Please enter the id.'),
+        minValue(1, 'Please enter the id.'),
     ]),
 });
 

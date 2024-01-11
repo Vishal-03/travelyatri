@@ -19,7 +19,6 @@ const UserDashboard = () => {
                         "/test/img4.jpg",
                     ].map((item: string, index: number) => {
                         return (
-                            <>
                                 <div className="h-80 rounded-md relative" key={index}>
 
                                     <Image
@@ -33,7 +32,7 @@ const UserDashboard = () => {
                                         <h1 className="text-white text-sm text-center font-semibold">Explore</h1>
                                     </div>
                                 </div>
-                            </>);
+                            );
                     })
                 }
             </div>
@@ -50,7 +49,6 @@ const UserDashboard = () => {
                         "/test/img8.jpg",
                     ].map((item: string, index: number) => {
                         return (
-                            <>
                                 <div className="h-80 rounded-md relative" key={index}>
 
                                     <Image
@@ -64,7 +62,7 @@ const UserDashboard = () => {
                                         <h1 className="text-white text-sm text-center font-semibold">Explore</h1>
                                     </div>
                                 </div>
-                            </>);
+                            );
                     })
                 }
             </div>
@@ -81,7 +79,6 @@ const UserDashboard = () => {
                         "/test/img3.jpg",
                     ].map((item: string, index: number) => {
                         return (
-                            <>
                                 <div className="h-80 rounded-md relative" key={index}>
 
                                     <Image
@@ -95,7 +92,7 @@ const UserDashboard = () => {
                                         <h1 className="text-white text-sm text-center font-semibold">Explore</h1>
                                     </div>
                                 </div>
-                            </>);
+                            );
                     })
                 }
             </div>

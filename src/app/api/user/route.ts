@@ -6,17 +6,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { safeParse } from "valibot";
 import { database } from "../../../../prisma/database";
 import url from "url";
+import { cp } from "fs";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
     try {
+        const data = await request.json();
 
-
-        const queryParams = url.parse(request.url, true).query;
-        console.log(queryParams.id);
-
-
-
-        const result = safeParse(ByIdSchema, { ...queryParams });
+        const result = safeParse(ByIdSchema, data);
 
         if (result.success) {
             const user: user | null = await database.user.findFirst({
@@ -32,7 +28,6 @@ export async function GET(request: NextRequest) {
                 const response: ApiResponseType<null> = { status: false, data: null, message: "Invalid email or password.Try Again", apiurl: request.url, };
                 return NextResponse.json(response);
             }
-
         } else {
             let errorMessage = "";
             if (result.issues[0].input) {

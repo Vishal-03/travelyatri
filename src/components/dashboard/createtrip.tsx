@@ -14,8 +14,6 @@ interface TripProps {
 const CreateTrips = (props: TripProps) => {
     const router = useRouter();
 
-    const [image, setImage] = useState<File>();
-    const cImage = useRef<HTMLInputElement>(null);
 
     const name = useRef<HTMLInputElement>(null);
     const description = useRef<HTMLTextAreaElement>(null);
@@ -65,28 +63,8 @@ const CreateTrips = (props: TripProps) => {
         },
         onSuccess: async (data, variables, context) => {
             if (data.data.status) {
-                if (!image) return toast.error("Please select an image file.", { theme: "light" });
-
-                const formData = new FormData();
-
-                formData.append("file", image);
-                formData.append("id", data.data.id);
-
-                const config = {
-                    headers: {
-                        "content-type": "multipart/form-data",
-                    },
-                };
-
-                const res = await axios.post("/api/upload/tripuploadimage", formData, config);
-                if (res.data.status) {
-                    toast.success(res.data.message);
-                    return router.replace(`/dashboard/viewtrip/${data.data.id}}`);
-                } else {
-                    toast.error(res.data.message);
-                }
-
                 toast.success(data.data.message);
+                return router.replace(`/dashboard/viewtrip/${data.data.id}}`);
             } else {
                 toast.error(data.data.message);
             }
@@ -94,7 +72,7 @@ const CreateTrips = (props: TripProps) => {
     })
 
     const submit = async () => {
-        if (!image) return toast.error("Please select an image file.", { theme: "light" });
+
         const result = safeParse(TripSchema, {
             name: name.current!.value,
             description: description.current!.value,
@@ -126,50 +104,12 @@ const CreateTrips = (props: TripProps) => {
         }
     };
 
-    const handleLogoChange = (value: React.ChangeEvent<HTMLInputElement>) => {
-        let file_size = parseInt(
-            (value!.target.files![0].size / 1024 / 1024).toString()
-        );
-        if (file_size < 4) {
-            if (value!.target.files![0].type.startsWith("image/")) {
-                setImage((val) => value!.target.files![0]);
-            } else {
-                toast.error("Please select an image file.", { theme: "light" });
-            }
-        } else {
-            toast.error("Image file size must be less then 4 mb", { theme: "light" });
-        }
-    };
 
     return (
         <>
             <div className="w-5/6 bg-white rounded-md shadow-lg my-6 p-6 mx-auto">
                 <h1 className="text-center text-black text-2xl font-semibold">Create Trip</h1>
-                <div className="w-full grid place-items-center">
-                    {image != null ? (
-                        <div className="my-4">
-                            <Image
-                                src={URL.createObjectURL(image!)}
-                                alt="logo"
-                                className="w-80 rounded-md"
-                            />
-                        </div>
-                    ) : null}
-                    <button
-                        onClick={() => cImage.current?.click()}
-                        className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-green-500"
-                    >
-                        {image == null ? "Add image" : "Change image"}
-                    </button>
-                    <div className="hidden">
-                        <input
-                            type="file"
-                            ref={cImage}
-                            accept="image/*"
-                            onChange={handleLogoChange}
-                        />
-                    </div>
-                </div>
+
                 <div className="flex w-full items-center py-2 mt-6">
                     <div className="flex-1">
                         <h1 className="text-lg font-medium">Trip Name</h1>

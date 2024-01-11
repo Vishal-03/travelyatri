@@ -20,7 +20,8 @@ export default function Home() {
             {/* Welcome */}
             <div className=" flex items-center justify-center h-screen bg-gradient-to-t from-rose-600 to-rose-400">
               <div className="text-center">
-                <h1 className="text-4xl font-bold text-white mb-6">Welcome to TravelYatri</h1>
+                <h1 className="text-4xl font-bold text-white3 mx-auto text-white">Welcome to TravelYatri</h1>
+                <p className="text-lg font-normal text-white mt-4 md:w-4/6 mx-auto">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi molestiae nesciunt corporis illo, obcaecati hic vitae ut dolorem vero at, fugit itaque tempore, iste facilis velit ea recusandae! Repellendus eligendi expedita quae consequuntur quam error facilis unde fugiat veritatis, incidunt deleniti </p>
               </div>
             </div>
 
