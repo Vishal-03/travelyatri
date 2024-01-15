@@ -4,13 +4,14 @@ import { Role, user } from "@prisma/client";
 import { errorToString } from "@/utils/methods";
 import { safeParse } from "valibot";
 import { RegisterSchema } from "@/schemas/register";
-import { cookies } from 'next/headers'
-import md5 from "md5";
-import { database } from "../../../../../prisma/database";
+import prisma from "../../../../../prisma/database";
+import { hash } from "bcrypt";
+
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
 
     try {
+
         const body = await request.json();
 
         const result = safeParse(RegisterSchema, body);
@@ -18,14 +19,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         if (result.success) {
 
 
-            const alreadyexist = await database.user.findUnique({ where: { email: result.output.email } });
+            const alreadyexist = await prisma.user.findUnique({ where: { email: result.output.email } });
             if (alreadyexist) {
                 const response: ApiResponseType<null> = { status: false, data: null, message: "Email already exist. Try a difrent email.", apiurl: request.url, };
                 return NextResponse.json(response);
             }
-            const password = md5(result.output.password);
 
-            const user: user = await database.user.create({
+            // const password = md5(result.output.password);
+            const password = await hash(result.output.password, 10);
+
+            const user: user = await prisma.user.create({
                 data: {
                     email: result.output.email,
                     password: password,
@@ -33,7 +36,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 }
             });
             if (user) {
-                cookies().set({ name: "user", value: JSON.stringify({ id: user.id, role: user.role }) });
                 const response: ApiResponseType<user> = { status: true, data: user, message: "User register successfully", apiurl: request.url, };
                 return NextResponse.json(response);
             } else {

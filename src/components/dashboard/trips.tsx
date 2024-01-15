@@ -3,12 +3,12 @@ import { useState } from "react";
 import { Fa6SolidMagnifyingGlass } from "../icons";
 import { Button, Card, CardFooter, CardHeader, Image } from "@nextui-org/react";
 import { trips } from "@prisma/client";
+import Link from "next/link";
 
 interface TripsSectionProps {
-    trips: trips[]
+    trips: any;
 }
 const TripsSection = (props: TripsSectionProps) => {
-    console.log(props.trips)
     const [isrunning, setisrunning] = useState(true);
     return (
         <>
@@ -20,37 +20,36 @@ const TripsSection = (props: TripsSectionProps) => {
                 </button>
             </div>
 
-            <div className="grid grid-cols-4 gap-6 mt-6">
-                {
-                    [
-                        "/test/img1.jpg",
-                        "/test/img2.jpg",
-                        "/test/img3.jpg",
-                        "/test/img4.jpg",
-                        "/test/img5.jpg",
-                        "/test/img6.jpg",
-                        "/test/img7.jpg",
-                        "/test/img8.jpg",
-                        "/test/img9.jpg",
-                    ].map((item: string, index: number) => {
-                        return (
-                            <div className="h-80 rounded-md relative" key={index}>
+            {props.trips == null || props.trips.length == 0 ? <>
+                <h1>no trips found</h1>
+            </> : <>
 
-                                <Image
-                                    removeWrapper
-                                    alt="Card background"
-                                    className="z-0 w-full h-full object-cover relative rounded-md"
-                                    src={item}
-                                />
-                                <div className="rounded-md absolute bottom-0 left-0 w-full pb-2 bg-gradient-to-b from-transparent to-slate-900">
-                                    <h1 className="text-white text-lg text-center font-semibold">Title of the card</h1>
-                                    <h1 className="text-white text-sm text-center font-semibold">Explore</h1>
-                                </div>
-                            </div>
-                        );
-                    })
-                }
-            </div>
+                <div className="grid grid-cols-4 gap-6 mt-6">
+                    {
+                        props.trips.map((item: any, index: number) => {
+                            return (
+                                <Link href={`/dashboard/trips/${item!.id}`} key={index}>
+                                    <div className="h-80 rounded-md relative">
+
+                                        <Image
+                                            removeWrapper
+                                            alt="Card background"
+                                            className="z-0 w-full h-full object-cover relative rounded-md"
+                                            src={"/test/img1.jpg"}
+                                        />
+                                        <div className="rounded-md absolute bottom-0 left-0 w-full pb-2 bg-gradient-to-b from-transparent to-slate-900">
+                                            <h1 className="text-white text-lg text-center font-semibold">{item!.name}</h1>
+                                            <h1 className="text-white text-sm text-center font-semibold">{item!.description}</h1>
+                                        </div>
+                                    </div>
+                                </Link>
+                            );
+                        })
+                    }
+                </div>
+            </>}
+
+
         </>
     );
 }

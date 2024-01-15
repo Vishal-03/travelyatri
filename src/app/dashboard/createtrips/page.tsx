@@ -1,13 +1,20 @@
 "use server"
 
 import CreateTrips from "@/components/dashboard/createtrip";
+import { getServerSession } from "next-auth";
 import { cookies } from "next/headers";
+import prisma from "../../../../prisma/database";
+import { user } from "@prisma/client";
 
-const CreateTripsPage = () => {
-    const usercookies = cookies().get("user")?.value;
-    const user = JSON.parse(usercookies!);
+const CreateTripsPage = async () => {
+    const session = await getServerSession();
+    const userdata: user | null = await prisma.user.findFirst({
+        where: {
+            email: session?.user.email
+        }
+    });
     return (
-        <CreateTrips id={user.id} />
+        <CreateTrips id={userdata!.id} />
     );
 }
 export default CreateTripsPage;

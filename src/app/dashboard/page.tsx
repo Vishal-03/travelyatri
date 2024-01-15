@@ -1,30 +1,19 @@
-
 import CompleteCard from "@/components/dashboard/completecard";
 import { cookies } from "next/headers";
-import { database } from "../../../prisma/database";
 import { Fa6SolidMountainSun, MaterialSymbolsDashboard } from "@/components/icons";
 import AgencyDashboard from "@/components/dashboard/agencydashboard";
+import { signOut } from "next-auth/react";
+import prisma from "../../../prisma/database";
+import { getServerSession } from "next-auth";
+import { user } from "@prisma/client";
 
 const Dashboard = async () => {
-
-    const usercookies = cookies().get("user")?.value;
-    const userdata = JSON.parse(usercookies!);
-
-
-    const user = await database.user.findUnique({
+    const session = await getServerSession();
+    const userdata: user | null = await prisma.user.findFirst({
         where: {
-            id: userdata.id
+            email: session?.user.email
         }
-    })
-
-
-    const isComplete = (): boolean => {
-        if (user?.avatar && user?.name && user?.email && user?.contact && user?.address) {
-            return true;
-        }
-        return false;
-    }
-
+    });
     return (
         <>
             <div className="w-full relative p-6">
@@ -32,7 +21,7 @@ const Dashboard = async () => {
                     <MaterialSymbolsDashboard className="text-black text-3xl" />
                     <h1 className="text-black text-2xl font-medium">DASHBOARD</h1>
                 </div>
-                {!isComplete() ? <CompleteCard /> : null}
+                {/* {!isComplete() ? <CompleteCard /> : null} */}
                 <div className="flex mt-6 justify-between gap-6">
                     <div className="flex-1 bg-gradient-to-bl from-rose-300 to-rose-500 rounded-md shadow-lg p-4">
                         <Fa6SolidMountainSun className="text-3xl text-white" />
@@ -57,9 +46,10 @@ const Dashboard = async () => {
                 </div>
             </div>
 
+
             <div className="p-6">
                 {
-                    user?.role == "USER" ?
+                    userdata?.role == "USER" ?
                         <AgencyDashboard /> :
                         <AgencyDashboard />
                 }

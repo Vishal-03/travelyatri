@@ -2,15 +2,25 @@
 "use client"
 import { RegisterForm, RegisterSchema } from "@/schemas/register";
 import Link from "next/link";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { Image } from "@nextui-org/react";
+import { signIn, useSession } from "next-auth/react";
 
 const Register = () => {
     const router = useRouter();
+    const session = useSession();
+
+    useEffect(() => {
+        if (session.status == "authenticated") {
+            router.replace("/dashboard")
+        }
+    }, [session, router]);
+
 
     const mutation = useMutation({
         mutationFn: (regsiter: RegisterForm) => {
@@ -19,10 +29,14 @@ const Register = () => {
         onError: (error, variables, context) => {
             toast.error(error.message);
         },
-        onSuccess: (data, variables, context) => {
+        onSuccess: async (data, variables, context) => {
             if (data.data.status) {
-                toast.success(data.data.message);
-                return router.replace("/dashboard");
+                const credentials = await signIn("credentials", { email: data.data.data.email, password: registerForm.password, redirect: false });
+                if (credentials?.error) {
+                    return toast.error("Invalid credentials");
+                } else {
+                    router.replace("/dashboard");
+                }
             } else {
                 toast.error(data.data.message);
             }
@@ -99,6 +113,15 @@ const Register = () => {
                         </div>
                     </div>
                     <button onClick={registerUser} disabled={mutation.isPending} className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">{mutation.isPending ? "Loading..." : "Register"}</button>
+                    {!userType ? <>
+                        <div className="flex items-center gap-4 my-2">
+                            <div className="grow h-[1px] bg-black"> </div>
+                            <div>or</div>
+                            <div className="grow h-[1px] bg-black"></div>
+                        </div>
+                        <button onClick={() => signIn("google", { callbackUrl: "/dashboard" })} className="bg-blue-500 border-2 border-blue-500 w-full rounded-lg  flex items-center gap-4"> <Image src="/images/search.png" alt="google" className="w-8 h-8 bg-white p-1 rounded-lg" /> <p className="bg-blue-500 grow h-full text-white">Login With Google</p></button>
+                    </> : <></>}
+
                     <p className="text-gray-600 text-xs text-center mt-4">
                         By clicking Register, you agree to accept Apex Financial's
                         <Link href="/term_and_condition" className="text-blue-500 hover:underline">Terms and Conditions</Link>.

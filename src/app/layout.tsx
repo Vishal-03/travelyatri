@@ -4,7 +4,9 @@ import './globals.css'
 import Provider from '@/utils/Provider'
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
+
+import AuthProvider from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,7 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </Provider>
         <ToastContainer />
       </body>

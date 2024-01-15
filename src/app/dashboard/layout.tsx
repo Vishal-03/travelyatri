@@ -1,15 +1,14 @@
 import SideBar from "@/components/dashboard/sidebar";
 import { cookies } from "next/headers";
-import { database } from "../../../prisma/database";
 import { user } from "@prisma/client";
-
+import { getServerSession } from "next-auth";
+import prisma from "../../../prisma/database";
 
 const Layout = async ({ children }: any) => {
-    const usercookies = cookies().get("user")?.value;
-    const userid = JSON.parse(usercookies!);
-    const userdata: user | null = await database.user.findFirst({
+    const session = await getServerSession();
+    const userdata: user | null = await prisma.user.findFirst({
         where: {
-            id: userid.id
+            email: session?.user.email
         }
     });
 
@@ -19,7 +18,7 @@ const Layout = async ({ children }: any) => {
                 <div className="ml-60 min-h-screen w-full bg-[#eeeeee]">
                     {children}
                 </div>
-                <SideBar id={userid.id} user={userdata} />
+                <SideBar id={userdata!.id} user={userdata} />
             </main>
         </>
     );

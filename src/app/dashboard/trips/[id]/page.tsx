@@ -1,12 +1,12 @@
 "use server"
 
 import { NextRequest, NextResponse } from "next/server";
-import { database } from "../../../../../prisma/database";
 import { trips } from "@prisma/client";
 import ViewTrips from "@/components/dashboard/viewtrip";
+import prisma from "../../../../../prisma/database";
 
 const Trips = async ({ params }: { params: any }) => {
-    const trips: trips | null = await database.trips.findFirst({
+    const trips: trips | null = await prisma.trips.findFirst({
         where: {
             id: parseInt(params.id)
         }

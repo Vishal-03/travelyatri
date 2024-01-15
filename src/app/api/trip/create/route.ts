@@ -4,8 +4,7 @@ import { TripCategory, TripType, trips } from "@prisma/client";
 import { errorToString } from "@/utils/methods";
 import { safeParse } from "valibot";
 import { TripSchema } from "@/schemas/createtrip";
-import { database } from "../../../../../prisma/database";
-
+import prisma from "../../../../../prisma/database";
 export async function POST(request: NextRequest): Promise<NextResponse> {
 
     try {
@@ -15,7 +14,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         if (result.success) {
             const start_date = new Date(result.output.start_date).toISOString();
             const end_date = new Date(result.output.end_date).toISOString();
-            const trips: trips = await database.trips.create({
+            const trips: trips = await prisma.trips.create({
                 data: {
                     name: result.output.name,
                     description: result.output.description,
@@ -32,6 +31,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     status: "ACTIVE"
                 },
             });
+            console.log(trips);
             if (trips) {
                 const response: ApiResponseType<trips> = { status: true, data: trips, message: "New trip created successfully", apiurl: request.url, };
                 return NextResponse.json(response);

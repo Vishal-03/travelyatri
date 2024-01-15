@@ -1,29 +1,17 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { withAuth } from "next-auth/middleware";
 
-export function middleware(request: NextRequest) {
-    const user: undefined | string = request.cookies.get("user")?.value;
-
-    if (request.nextUrl.pathname.startsWith('/login')) {
-        if (user) {
-            return NextResponse.redirect(new URL('/dashboard', request.url))
-        }
-    }
-
-    if (request.nextUrl.pathname.startsWith('/register')) {
-        if (user) {
-            return NextResponse.redirect(new URL('/dashboard', request.url))
-        }
-    }
-
-
-    if (request.nextUrl.pathname.startsWith('/dashboard')) {
-        if (!user) {
-            return NextResponse.redirect(new URL('/login', request.url))
-        }
-    }
-
-    // if (request.nextUrl.pathname.startsWith('/dashboard')) {
-    //     return NextResponse.rewrite(new URL('/dashboard/user', request.url))
-    // }
-}
+export default withAuth({
+    callbacks: {
+        authorized: ({ req, token }) => {
+            if (token && new Date() > new Date((token as any).exp))
+                return true;
+            return false;
+        },
+    },
+    pages: {
+        signIn: "/login",
+    },
+});
+export const config = {
+    matcher: ["/dashboard/:path*"],
+};

@@ -116,7 +116,7 @@ const ViewTrips = (props: TripProps) => {
                         <div className=" bg-[#eeeeee] px-4 py-1 rounded-md text-lg font-normal">{props.trip?.category}</div>
                     </div>
                 </div>
-                <button onClick={() => route.back()} className="bg-rose-500 py-1 px-4 rounded-md text-white text-lg mt-6 font-semibold">CLOSE</button>
+                <button onClick={() => route.replace("/dashboard")} className="bg-rose-500 py-1 px-4 rounded-md text-white text-lg mt-6 font-semibold">CLOSE</button>
             </div>
         </>
     );

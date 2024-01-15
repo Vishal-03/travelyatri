@@ -4,9 +4,9 @@ import { errorToString } from "@/utils/methods";
 import { user } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { safeParse } from "valibot";
-import { database } from "../../../../prisma/database";
 import url from "url";
 import { cp } from "fs";
+import prisma from "../../../../prisma/database";
 
 export async function POST(request: NextRequest) {
     try {
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         const result = safeParse(ByIdSchema, data);
 
         if (result.success) {
-            const user: user | null = await database.user.findFirst({
+            const user: user | null = await prisma.user.findFirst({
                 where: {
                     id: result.output.id,
                 }

@@ -6,8 +6,7 @@ import { safeParse } from "valibot";
 import { cookies } from 'next/headers'
 import { LoginSchema } from "@/schemas/login";
 import md5 from "md5";
-import { database } from "../../../../../prisma/database";
-
+import prisma from "../../../../../prisma/database";
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
         const body = await request.json();
@@ -17,7 +16,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         if (result.success) {
             const password = md5(result.output.password);
 
-            const user: user | null = await database.user.findFirst({
+            const user: user | null = await prisma.user.findFirst({
                 where: {
                     email: result.output.email,
                     password: password,

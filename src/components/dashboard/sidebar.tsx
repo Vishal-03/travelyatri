@@ -3,6 +3,7 @@ import { Fa6SolidCircleQuestion, Fa6SolidDoorOpen, Fa6SolidMagnifyingGlass, Fa6S
 import { user } from "@prisma/client";
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -48,7 +49,7 @@ const SideBar = (props: SideBarProps) => {
                 {props.user?.role == "AGENCY" && <Link href={"/dashboard/query"} className={`flex py-1 px-4 gap-4 items-center ${pathname == "/dashboard/query" ? "rounded-l-full text-rose-500 bg-white ml-4" : "rounded-md text-white mx-4"}`}><Fa6SolidCircleQuestion /> <p>Query</p></Link>}
                 <div className="grow"></div>
                 <Link href={"/dashboard/profile"} className={`flex py-1 px-4 gap-4 items-center ${pathname == "/dashboard/profile" ? "rounded-l-full text-rose-500 bg-white ml-4" : "rounded-md text-white mx-4"}`}><Fa6SolidUser /> <p>Profile</p></Link >
-                <button onClick={() => mutation.mutate()} className="mx-4 text-white flex hover:bg-rose-600 py-1 px-4 gap-4 rounded-md items-center"><Fa6SolidDoorOpen /> <p>Logout</p></button >
+                <button onClick={() => signOut({ callbackUrl: "/login" })} className="mx-4 text-white flex hover:bg-rose-600 py-1 px-4 gap-4 rounded-md items-center"><Fa6SolidDoorOpen /> <p>Logout</p></button >
             </div>
         </>
     );

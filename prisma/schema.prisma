@@ -27,7 +27,7 @@ enum Role {
 enum TripType {
   NONE
   PRIVATE
-  GROUP
+  PUBLIC
 }
 
 enum TripCategory {
@@ -44,7 +44,7 @@ model user {
   avatar    String?
   name      String?
   email     String?   @unique
-  password  String
+  password  String?
   contact   String?
   pic_url   String?
   role      Role      @default(NONE)

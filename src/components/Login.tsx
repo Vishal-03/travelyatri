@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client"
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
 import axios from "axios";
@@ -8,9 +8,19 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { LoginSchema } from "@/schemas/login";
 import Link from "next/link";
+import { Image } from "@nextui-org/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const Login = () => {
+
+    const session = useSession();
     const router = useRouter();
+
+    useEffect(() => {
+        if (session.status == "authenticated") {
+            router.replace("/dashboard")
+        }
+    }, [session, router]);
 
     const mutation = useMutation({
         mutationFn: (regsiter: LoginForm) => {
@@ -40,12 +50,18 @@ const Login = () => {
         password: "",
     });
 
-    async function loginUser() {
+    const loginUser = async () => {
 
         const result = safeParse(LoginSchema, loginForm);
 
         if (result.success) {
-            mutation.mutate(result.output);
+            const credentials = await signIn("credentials", { email: result.output.email, password: result.output.password, redirect: false });
+            if (credentials?.error) {
+                return toast.error("Invalid credentials");
+            } else {
+                router.replace("/dashboard");
+            }
+            // mutation.mutate(result.output);
         } else {
             let errorMessage = "";
             if (result.issues[0].input) {
@@ -61,8 +77,6 @@ const Login = () => {
         const { name, value } = e.target;
         setLoginForm({ ...loginForm, [name]: value });
     }
-
-
 
     return (
         <div className="bg-gray-100 flex items-center justify-center h-screen">
@@ -84,11 +98,25 @@ const Login = () => {
                             <input type="password" name="password" id="password" className="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="********" onChange={handleChange} value={loginForm.password} />
                         </div>
                     </div>
-                    <button onClick={loginUser} disabled={mutation.isPending} className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">{mutation.isPending ? "Loading..." : "Login"}</button>
+
+                    <button onClick={loginUser} className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Login</button>
+                    <div className="flex items-center gap-4 my-2">
+                        <div className="grow h-[1px] bg-black"> </div>
+                        <div>or</div>
+                        <div className="grow h-[1px] bg-black"></div>
+                    </div>
+                    {/* {(session && session.user) ?
+                        <>
+                            <h1>{session.user.name}</h1>
+                            <button onClick={() => signOut()} className="bg-blue-500 border-2 border-blue-500 w-full rounded-sm  flex items-center gap-4"> <Image src="/images/search.png" alt="google" className="w-8 h-8 bg-white m}
+                    -1 p-1 rounded-sm" /> <p className="bg-blue-500 grow h-full text-white">Sign out</p></button>
+                        </>
+                        :  */}
+                    <button onClick={() => signIn("google", { callbackUrl: "/dashboard" })} className="bg-blue-500 border-2 border-blue-500 w-full rounded-lg  flex items-center gap-4"> <Image src="/images/search.png" alt="google" className="w-8 h-8 bg-white p-1 rounded-lg" /> <p className="bg-blue-500 grow h-full text-white">Login With Google</p></button>
                 </div>
-                <h1 className="text-center text-sm mt-6">Dont have an account? <Link href={"/register"} className="cursor-pointer text-blue-500">Register</Link> </h1>
+                <h1 className="text-center text-sm mt-6 "> <p></p> Dont have an account? <Link href={"/register"} className="cursor-pointer text-blue-500">Register</Link> </h1>
             </div>
-        </div>
+        </div >
 
     )
 }
