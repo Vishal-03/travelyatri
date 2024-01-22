@@ -8,7 +8,7 @@ export default function Home() {
   return (
 
     <>
-      <main className={`bg-[${backgroundColor}] min-h-screen `}>
+      <main className={`bg-[${backgroundColor}] min-h-screen bg-gradient-to-t from-rose-600 to-rose-400`}>
         <div className=''>
 
           <div className=" min-h-screen w-full">
@@ -18,7 +18,7 @@ export default function Home() {
               <Navbar />
             </div>
             {/* Welcome */}
-            <div className=" flex items-center justify-center h-screen bg-gradient-to-t from-rose-600 to-rose-400">
+            <div className=" flex items-center justify-center h-screen">
               <div className="text-center">
                 <h1 className="text-4xl font-bold text-white3 mx-auto text-white">Welcome to TravelYatri</h1>
                 <p className="text-lg font-normal text-white mt-4 md:w-4/6 mx-auto">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi molestiae nesciunt corporis illo, obcaecati hic vitae ut dolorem vero at, fugit itaque tempore, iste facilis velit ea recusandae! Repellendus eligendi expedita quae consequuntur quam error facilis unde fugiat veritatis, incidunt deleniti </p>
@@ -31,19 +31,15 @@ export default function Home() {
 
 
             <div className="flex flex-col min-h-screen w-full justify-center items-center gap-10">
-              <div>
-                <h1 className="text-rose-500 text-4xl font-extrabold mt-10 ">Our Top Trips</h1>
-              </div>
+              <h1 className="text-white text-4xl font-extrabold mt-10 ">Our Top Trips</h1>
 
-              <div>
-                <p className=" text-black font-serif ">We have a few specail permotion for our faithfull trip</p>
-              </div>
+              <p className=" text-white font-serif ">We have a few specail permotion for our faithfull trip</p>
 
               <div className="flex gap-20  flex-col lg:flex-row ">
 
                 <Link href='/Trips/items' className="bg-gray-200  w-80 flex flex-col gap-3 p-3 cursor-pointer rounded-lg hover:scale-105 transition-all duration-300 ease-in-out">
                   <div className="grow">
-                    <Image src="/images/banner1.jpg" alt="" className="w-full h-full rounded-lg  " />
+                    <Image src="/images/banner1.jpg" alt="" className="w-full rounded-lg h-60 object-cover object-center" />
 
                   </div>
                   <div>
@@ -59,7 +55,7 @@ export default function Home() {
 
                 <Link href='/Trips/items' className="  bg-gray-200 w-80 flex flex-col gap-3 p-3 cursor-pointer rounded-lg hover:scale-105 transition-all duration-300 ease-in-out">
                   <div className="grow ">
-                    <Image src="/images/banner2.jpg" alt="" className="w-full h-full rounded-lg  " />
+                    <Image src="/images/banner2.jpg" alt="" className="w-full rounded-lg h-60 object-cover object-center" />
                   </div>
                   <div>
                     <h1 className="text-rose-500 font-serif text-2xl">Beach</h1>
@@ -74,7 +70,7 @@ export default function Home() {
 
                 <Link href='/Trips/items' className="bg-gray-200 w-80 flex flex-col gap-3 p-3 cursor-pointer rounded-lg hover:scale-105 transition-all duration-300 ease-in-out">
                   <div className="grow ">
-                    <Image src="/images/banner3.jpg" alt="" className="w-full h-full rounded-lg  " />
+                    <Image src="/images/banner3.jpg" alt="" className="w-full rounded-lg h-60 object-cover object-center" />
                   </div>
                   <div>
                     <h1 className="text-rose-500 font-serif text-2xl">Mountain</h1>

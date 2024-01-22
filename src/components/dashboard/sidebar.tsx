@@ -37,7 +37,7 @@ const SideBar = (props: SideBarProps) => {
         <>
             <div className="w-60 h-screen fixed bg-rose-500 flex py-6 flex-col gap-2">
                 <div className="h-16 w-16 bg-blue-500 rounded-full grid place-items-center mx-auto mt-4">
-                    <p className="text-white text-3xl font-semibold">{props.user?.name ?? props.user?.email!.toString().substring(0, 1)}</p>
+                    <p className="text-white text-3xl font-semibold">{(props.user?.name == undefined || props.user.name == null || props.user.name == "") ? props.user?.email!.toString().substring(0, 1) : props.user.name.toString().substring(0, 1)}</p>
                 </div>
                 <h1 className="text-center text-sm text-white font-medium">{props.user?.role}</h1>
                 <h1 className="text-center text-lg text-white font-medium">{props.user?.email}</h1>

@@ -40,40 +40,60 @@ enum TripCategory {
 }
 
 model user {
-  id        Int       @id @default(autoincrement())
-  avatar    String?
-  name      String?
-  email     String?   @unique
-  password  String?
-  contact   String?
-  pic_url   String?
-  role      Role      @default(NONE)
-  address   String?
-  status    Status    @default(ACTIVE)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  trips     trips[]
+  id            Int       @id @default(autoincrement())
+  avatar        String?
+  name          String?
+  email         String    @unique
+  password      String?
+  contact       String?
+  secondcontact String?
+  pic_url       String?
+  agency        agency?   @relation(fields: [agencyId], references: [id])
+  agencyId      Int?
+  role          Role      @default(NONE)
+  address       String?   @db.MediumText
+  status        Status    @default(ACTIVE)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  trips         trips[]
 }
 
 model trips {
-  id                   Int       @id @default(autoincrement())
+  id                   Int          @id @default(autoincrement())
   name                 String?
   start                DateTime
   end                  DateTime
   image                String?
   price                Int
   number_of_days       Int
-  trip_type            TripType  @default(NONE)
-  category             TripCategory  @default(NONE)
-  description          String?
+  trip_type            TripType     @default(NONE)
+  category             TripCategory @default(NONE)
+  description          String?      @db.MediumText
   location             String?
-  location_description String?
+  location_description String?      @db.MediumText
   number_of_people     Int
-  status               Status    @default(ACTIVE)
-  createdAt            DateTime  @default(now())
-  create               user      @relation(fields: [createdBy], references: [id])
+  status               Status       @default(ACTIVE)
+  createdAt            DateTime     @default(now())
+  create               user         @relation(fields: [createdBy], references: [id])
   createdBy            Int
-  updatedAt            DateTime  @updatedAt
+  updatedAt            DateTime     @updatedAt
   deletedAt            DateTime?
+}
+
+model agency {
+  id          Int       @id @default(autoincrement())
+  name        String?
+  email       String    @unique
+  contact     String?
+  pic_url     String?
+  website     String?
+  address     String?   @db.MediumText
+  logo        String?
+  description String    @db.LongText
+  status      Status    @default(ACTIVE)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  user        user[]
 }

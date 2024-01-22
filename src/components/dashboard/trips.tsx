@@ -21,7 +21,7 @@ const TripsSection = (props: TripsSectionProps) => {
             </div>
 
             {props.trips == null || props.trips.length == 0 ? <>
-                <h1>no trips found</h1>
+                <h1 className="p-4 bg-white rounded-md mt-6 border-l-4 border-red-500 text-xl text-red-500">No trips found</h1>
             </> : <>
 
                 <div className="grid grid-cols-4 gap-6 mt-6">
@@ -30,7 +30,6 @@ const TripsSection = (props: TripsSectionProps) => {
                             return (
                                 <Link href={`/dashboard/trips/${item!.id}`} key={index}>
                                     <div className="h-80 rounded-md relative">
-
                                         <Image
                                             removeWrapper
                                             alt="Card background"

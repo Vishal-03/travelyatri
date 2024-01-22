@@ -1,10 +1,9 @@
 import CreateTripsCard from "@/components/dashboard/createtripscard";
 import TripsSection from "@/components/dashboard/trips";
 import { Fa6SolidMountainSun } from "@/components/icons";
-import { cookies } from "next/headers";
 import prisma from "../../../../prisma/database";
 import { getServerSession } from "next-auth";
-import { trips, user } from "@prisma/client";
+import { user } from "@prisma/client";
 
 const Trips = async () => {
     const session = await getServerSession();
@@ -19,7 +18,6 @@ const Trips = async () => {
             createdBy: userdata!.id
         }
     });
-
 
     return (
         <>

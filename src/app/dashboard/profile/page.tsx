@@ -1,5 +1,4 @@
 import { Card, CardBody, CardFooter, CardHeader, Image } from "@nextui-org/react";
-import { cookies } from "next/headers";
 import prisma from "../../../../prisma/database";
 import { getServerSession } from "next-auth";
 import { user } from "@prisma/client";
@@ -12,6 +11,7 @@ const Profile = async () => {
             email: session?.user.email
         }
     });
+
 
 
     return (
@@ -35,7 +35,11 @@ const Profile = async () => {
                             <h1 className="font-semibold">Adddress</h1>
                             <p className="text-sm">{userdata.address ?? "-"}</p>
                             <Link href={"/dashboard/profile/updateprofile"} className="flex-1 inline-block rounded-md bg-blue-500 text-white py-1 w-full mt-4 font-semibold text-center">Edit Profile</Link>
-                            <Link href={"/dashboard/profile/forgetpassword"} className="flex-1 inline-block rounded-md bg-red-500 text-white py-1 w-full mt-4 font-semibold text-center">Change Password</Link>
+                            {userdata!.password != null ?
+                                <>
+                                    <Link href={"/dashboard/profile/changepassword"} className="flex-1 inline-block rounded-md bg-red-500 text-white py-1 w-full mt-4 font-semibold text-center">Change Password</Link>
+                                </> : <></>}
+
                         </CardFooter>
                     </Card>
                     :

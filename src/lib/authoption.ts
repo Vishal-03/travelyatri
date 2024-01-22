@@ -54,17 +54,13 @@ export const authOptions: NextAuthOptions = {
         async signIn({ user, account, profile, credentials, email }) {
 
 
-            const userexist = await prisma.user.findFirst({ where: { email: user.email } });
+            const userexist = await prisma.user.findFirst({ where: { email: user.email! } });
             if (userexist) {
-
                 return true;
             } else {
-
-
-
                 const userfind: user = await prisma.user.create({
                     data: {
-                        email: user.email,
+                        email: user.email!,
                         role: "USER"
                     }
                 });

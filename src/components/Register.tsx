@@ -35,7 +35,11 @@ const Register = () => {
                 if (credentials?.error) {
                     return toast.error("Invalid credentials");
                 } else {
-                    router.replace("/dashboard");
+                    if (data.data.data.role == "AGENCY") {
+                        router.replace("/createagency");
+                    } else {
+                        router.replace("/dashboard");
+                    }
                 }
             } else {
                 toast.error(data.data.message);

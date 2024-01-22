@@ -9,8 +9,10 @@ const Trips = async ({ params }: { params: any }) => {
     const trips: trips | null = await prisma.trips.findFirst({
         where: {
             id: parseInt(params.id)
-        }
+        },
+        include: { create: { include: { agency: true } } }
     });
+    console.log(trips)
     return (
         <>
             <ViewTrips trip={trips} />
