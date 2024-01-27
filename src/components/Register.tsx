@@ -10,16 +10,24 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Image } from "@nextui-org/react";
 import { signIn, useSession } from "next-auth/react";
+import { MaterialSymbolsVisibilityOffRounded, MaterialSymbolsVisibilityRounded } from "./icons";
 
-const Register = () => {
+
+interface RegisterProps {
+    isUser: boolean;
+}
+const Register = (props: RegisterProps) => {
+
+    const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+    const [isShowRePassword, setIsShowRePassword] = useState<boolean>(false);
+
     const router = useRouter();
-    const session = useSession();
-
     useEffect(() => {
-        if (session.status == "authenticated") {
+        if (props.isUser) {
             router.replace("/dashboard")
         }
-    }, [session, router]);
+    }, []);
+
 
 
     const mutation = useMutation({
@@ -35,6 +43,7 @@ const Register = () => {
                 if (credentials?.error) {
                     return toast.error("Invalid credentials");
                 } else {
+                    console.log(data.data);
                     if (data.data.data.role == "AGENCY") {
                         router.replace("/createagency");
                     } else {
@@ -52,11 +61,13 @@ const Register = () => {
         password: string
         repassword: string
     }
+
     const [registerForm, setRegisterForm] = useState<registerForm>({
         email: "",
         password: "",
         repassword: "",
     });
+
     const [userType, setuserType] = useState<boolean>(false)
 
     async function registerUser() {
@@ -84,8 +95,6 @@ const Register = () => {
         setRegisterForm({ ...registerForm, [name]: value });
     }
 
-
-
     return (
         <div className="bg-gray-100 flex items-center justify-center h-screen">
 
@@ -106,16 +115,19 @@ const Register = () => {
                     </div>
                     <div className="mb-6">
                         <label htmlFor="password" className="block text-gray-700 text-sm font-semibold mb-2">Password *</label>
-                        <div>
-                            <input type="password" name="password" id="password" className="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="********" onChange={handleChange} value={registerForm.password} />
+                        <div className="flex items-center border rounded-lg text-gray-700 pr-4">
+                            <input type={isShowPassword ? "text" : "password"} name="password" id="password" className="form-input w-full px-4 py-2 focus:outline-none  " required placeholder="********" onChange={handleChange} value={registerForm.password} />
+                            {isShowPassword ? <MaterialSymbolsVisibilityOffRounded className="text-xl cursor-pointer" onClick={() => setIsShowPassword((val) => !val)} /> : <MaterialSymbolsVisibilityRounded className="text-xl cursor-pointer" onClick={() => setIsShowPassword((val) => !val)} />}
                         </div>
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="fullName" className="block text-gray-700 text-sm font-semibold mb-2">Re-passwored</label>
-                        <div>
-                            <input type="passwored" name="repassword" id="repassword" className="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="********" onChange={handleChange} value={registerForm.repassword} />
+                        <label htmlFor="fullName" className="block text-gray-700 text-sm font-semibold mb-2">Re-passwored *</label>
+                        <div className="flex items-center border rounded-lg text-gray-700 pr-4">
+                            <input type={isShowRePassword ? "text" : "password"} name="repassword" id="repassword" className="form-input w-full px-4 py-2 focus:outline-none  " required placeholder="********" onChange={handleChange} value={registerForm.repassword} />
+                            {isShowRePassword ? <MaterialSymbolsVisibilityOffRounded className="text-xl cursor-pointer" onClick={() => setIsShowRePassword((val) => !val)} /> : <MaterialSymbolsVisibilityRounded className="text-xl cursor-pointer" onClick={() => setIsShowRePassword((val) => !val)} />}
                         </div>
                     </div>
+
                     <button onClick={registerUser} disabled={mutation.isPending} className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">{mutation.isPending ? "Loading..." : "Register"}</button>
                     {!userType ? <>
                         <div className="flex items-center gap-4 my-2">

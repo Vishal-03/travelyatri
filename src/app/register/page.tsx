@@ -1,10 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 import Register from "@/components/Register";
+import { getServerSession } from "next-auth";
 
 
-const RegisterPage = () => {
+const RegisterPage = async () => {
+    const session = await getServerSession();
+    const isUser = session != null;
+    console.log(isUser);
     return (
-        <Register />
+        <Register isUser={isUser} />
     );
 }
 

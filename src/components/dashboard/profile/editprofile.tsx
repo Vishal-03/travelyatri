@@ -3,9 +3,9 @@ import { UserProfileUpdateForm, UserProfileUpdateSchema } from "@/schemas/userpr
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import { safeParse } from "valibot";
+import { email, safeParse } from "valibot";
 
 interface EditProfile {
     userdata: any;
@@ -61,6 +61,13 @@ const EditProfile = (props: EditProfile) => {
             toast.error(errorMessage);
         }
     }
+
+    useEffect(() => {
+        name!.current!.value = props.userdata.name;
+        contact!.current!.value = props.userdata.contact;
+        secondcontact!.current!.value = props.userdata.secondcontact;
+        address!.current!.value = props.userdata.address;
+    }, []);
 
 
     return (

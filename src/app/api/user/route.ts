@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
                 const response: ApiResponseType<user> = { status: true, data: user, message: "User data get  successfully", apiurl: request.url, };
                 return NextResponse.json(response);
             } else {
-                const response: ApiResponseType<null> = { status: false, data: null, message: "Invalid email or password.Try Again", apiurl: request.url, };
+                const response: ApiResponseType<null> = { status: false, data: null, message: "Invalid user id.Try Again", apiurl: request.url, };
                 return NextResponse.json(response);
             }
         } else {

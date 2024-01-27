@@ -10,7 +10,7 @@ const AgencyDashboard = () => {
                 <Fa6SolidMountainSun className="text-black text-3xl" />
                 <h1 className="text-black text-2xl font-medium">New Trips</h1>
             </div>
-            <div className="grid grid-cols-4 gap-6 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
                 {
                     [
                         "/test/img1.jpg",
@@ -40,7 +40,7 @@ const AgencyDashboard = () => {
                 <Fa6SolidMountainSun className="text-black text-3xl" />
                 <h1 className="text-black text-2xl font-medium">On Going Trips</h1>
             </div>
-            <div className="grid grid-cols-4 gap-6 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
                 {
                     [
                         "/test/img5.jpg",
@@ -70,7 +70,7 @@ const AgencyDashboard = () => {
                 <Fa6SolidMountainSun className="text-black text-3xl" />
                 <h1 className="text-black text-2xl font-medium">Completed Trips</h1>
             </div>
-            <div className="grid grid-cols-4 gap-6 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
                 {
                     [
                         "/test/img9.jpg",
@@ -100,7 +100,7 @@ const AgencyDashboard = () => {
                 <Fa6SolidMountainSun className="text-black text-3xl" />
                 <h1 className="text-black text-2xl font-medium">Completed Trips</h1>
             </div>
-            <div className="grid grid-cols-4 gap-6 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
                 {
                     [
                         "/test/img1.jpg",

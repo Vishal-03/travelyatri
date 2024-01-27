@@ -10,8 +10,11 @@ import { LoginSchema } from "@/schemas/login";
 import Link from "next/link";
 import { Image } from "@nextui-org/react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { MaterialSymbolsVisibilityOffRounded, MaterialSymbolsVisibilityRounded } from "./icons";
 
 const Login = () => {
+
+    const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
 
     const session = useSession();
     const router = useRouter();
@@ -93,9 +96,10 @@ const Login = () => {
                         </div>
                     </div>
                     <div className="mb-6">
-                        <label htmlFor="password" className="block text-gray-700 text-sm font-semibold mb-2">Password *</label>
-                        <div>
-                            <input type="password" name="password" id="password" className="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="********" onChange={handleChange} value={loginForm.password} />
+                        <label htmlFor="password" className="block text-gray-700 text-sm font-semibold mb-2 ">Password *</label>
+                        <div className="flex items-center border rounded-lg text-gray-700 pr-4">
+                            <input type={isShowPassword ? "text" : "password"} name="password" id="password" className="form-input w-full px-4 py-2 focus:outline-none  " required placeholder="********" onChange={handleChange} value={loginForm.password} />
+                            {isShowPassword ? <MaterialSymbolsVisibilityOffRounded className="text-xl cursor-pointer" onClick={() => setIsShowPassword((val) => !val)} /> : <MaterialSymbolsVisibilityRounded className="text-xl cursor-pointer" onClick={() => setIsShowPassword((val) => !val)} />}
                         </div>
                     </div>
 

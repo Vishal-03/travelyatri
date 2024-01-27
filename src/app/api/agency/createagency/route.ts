@@ -15,8 +15,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
             const userdata = await prisma.user.findFirst({ where: { id: result.output.userId } });
             if (userdata) {
+
                 const newAgency = await prisma.agency.create({
-                    data: result.output
+                    data: {
+                        name: result.output.name,
+                        website: result.output.website,
+                        email: result.output.email,
+                        contact: result.output.contact,
+                        description: result.output.address
+                    }
                 });
                 if (newAgency) {
                     const updateduser = await prisma.user.update({
@@ -51,6 +58,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             return NextResponse.json(response);
         }
     } catch (e) {
+        console.log(e);
         const response: ApiResponseType<null> = { status: false, data: null, message: errorToString(e), apiurl: request.url };
         return NextResponse.json(response);
     }
