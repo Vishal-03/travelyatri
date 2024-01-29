@@ -1,8 +1,10 @@
 "use client"
 import { ByIdForm, ByIdSchema } from "@/schemas/byid";
-import { Image } from "@nextui-org/react";
+import { Image, user } from "@nextui-org/react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
 
@@ -13,9 +15,10 @@ interface UserCardProps {
     avatar: string;
     status: string;
 }
-const UserCard = (props: UserCardProps) => {
-    console.log(props);
 
+const UserCard = (props: UserCardProps) => {
+
+    const route = useRouter();
     const mutation = useMutation({
         mutationFn: (userid: ByIdForm) => {
             return axios.post('/api/user/adminstatusupdate', userid)
@@ -29,6 +32,7 @@ const UserCard = (props: UserCardProps) => {
             } else {
                 toast.error(data.data.message);
             }
+            route.refresh();
         },
     });
 
@@ -54,7 +58,8 @@ const UserCard = (props: UserCardProps) => {
 
     return (
         <>
-            <div className=" bg-white p-4 min-w-80">
+            <div className=" bg-white p-4 min-w-80 rounded-md">
+                <h1 className="text-right text-sm">{props.status}</h1>
                 <div className="flex gap-4 items-center">
                     <div className="w-14 h-14 rounded-full bg-[#fff] shadow-lg">
                         <Image src={"/user.png"} alt="error" className="w-full h-full" />

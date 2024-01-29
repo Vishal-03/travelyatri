@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
             if (user) {
                 const updated_user = await prisma.user.update({
                     where: { id: user.id },
-                    data: { status: user.status == "ADMINACTIVE" ? "INACTIVE" : "ADMINACTIVE" }
+                    data: { status: user.status == "ADMINACTIVE" ? "ACTIVE" : "ADMINACTIVE" }
                 });
 
                 if (updated_user) {

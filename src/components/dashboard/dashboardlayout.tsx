@@ -1,7 +1,8 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Fa6BrandsWhatsapp, IconamoonAppsBold, IconamoonCloseDuotone } from "../icons";
 import SideBar from "./sidebar";
+import { useRouter } from "next/navigation";
 
 interface DashboardLaoyutProps {
     children: any;
@@ -11,6 +12,15 @@ interface DashboardLaoyutProps {
 
 const DashboardLaoyut = (props: DashboardLaoyutProps) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const route = useRouter();
+    useEffect(() => {
+        if (props.userdata.status == "INACTIVE") {
+            route.push("/emailactive");;
+        }
+        if (props.userdata.status != "ADMINACTIVE") {
+            route.push("/notadminactive");;
+        }
+    }, []);
 
     return (
         <>
