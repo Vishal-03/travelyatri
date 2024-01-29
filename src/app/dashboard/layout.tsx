@@ -13,7 +13,6 @@ const Layout = async ({ children }: any) => {
             email: session?.user.email
         }
     });
-    console.log(userdata);
 
     return (
         <>

@@ -12,7 +12,6 @@ const AgencyPage = async () => {
         },
         include: { agency: true }
     });
-    console.log(userdata);
     return (
         <>
             <AgencyInfo agency={userdata!.agency} />

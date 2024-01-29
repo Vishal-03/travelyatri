@@ -12,7 +12,6 @@ const Trips = async ({ params }: { params: any }) => {
         },
         include: { create: { include: { agency: true } } }
     });
-    console.log(trips)
     return (
         <>
             <ViewTrips trip={trips} />

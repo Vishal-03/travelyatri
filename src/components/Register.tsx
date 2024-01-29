@@ -43,7 +43,6 @@ const Register = (props: RegisterProps) => {
                 if (credentials?.error) {
                     return toast.error("Invalid credentials");
                 } else {
-                    console.log(data.data);
                     if (data.data.data.role == "AGENCY") {
                         router.replace("/createagency");
                     } else {
@@ -54,7 +53,7 @@ const Register = (props: RegisterProps) => {
                 toast.error(data.data.message);
             }
         },
-    })
+    });
 
     interface registerForm {
         email: string;

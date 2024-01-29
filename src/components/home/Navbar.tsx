@@ -6,7 +6,7 @@ const Navbar = () => {
         <div>
 
             <nav className="rounded-md py-2 px-6 flex">
-                <h2 className="text-black font-semibold text-2xl w-60">Travel Yatris</h2>
+                <h2 className="text-black font-semibold text-2xl w-60">Travel Yatri</h2>
                 <div className="sm:flex grow justify-center gap-4 items-center text-black text-md font-medium hidden ">
                     <Link href={"/"}>Home</Link>
                     <Link href={"/trips"}>Trips</Link>

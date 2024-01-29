@@ -62,7 +62,6 @@ const CreateTrips = (props: TripProps) => {
             toast.error(error.message);
         },
         onSuccess: async (data, variables, context) => {
-            console.log(data);
             if (data.data.status) {
                 toast.success(data.data.message);
                 return router.replace(`/dashboard/trips/${data.data.data.id}`);

@@ -3,7 +3,6 @@ interface AgencyInfoProps {
     agency: any;
 }
 const AgencyInfo = (props: AgencyInfoProps) => {
-    console.log(props.agency)
     return (
         <>
             <h1>Name: {props.agency.name}</h1>

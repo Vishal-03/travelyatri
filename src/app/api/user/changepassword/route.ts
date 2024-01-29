@@ -16,7 +16,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         if (result.success) {
 
-            console.log(result.output);
 
             const user: user | null = await prisma.user.findFirst({
                 where: {

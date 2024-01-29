@@ -31,7 +31,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     status: "ACTIVE"
                 },
             });
-            console.log(trips);
             if (trips) {
                 const response: ApiResponseType<trips> = { status: true, data: trips, message: "New trip created successfully", apiurl: request.url, };
                 return NextResponse.json(response);

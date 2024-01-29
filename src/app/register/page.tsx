@@ -6,7 +6,6 @@ import { getServerSession } from "next-auth";
 const RegisterPage = async () => {
     const session = await getServerSession();
     const isUser = session != null;
-    console.log(isUser);
     return (
         <Register isUser={isUser} />
     );

@@ -1,9 +1,11 @@
+"use server"
 import CreateTripsCard from "@/components/dashboard/createtripscard";
 import TripsSection from "@/components/dashboard/trips";
 import { Fa6SolidMountainSun } from "@/components/icons";
 import prisma from "../../../../prisma/database";
 import { getServerSession } from "next-auth";
 import { user } from "@prisma/client";
+import UserTripsSection from "@/components/dashboard/trips/usertripsection";
 
 const Trips = async () => {
     const session = await getServerSession();
@@ -26,8 +28,8 @@ const Trips = async () => {
                     <Fa6SolidMountainSun className="text-black text-3xl" />
                     <h1 className="text-black text-2xl font-medium">Trips</h1>
                 </div>
-                <CreateTripsCard />
-                <TripsSection trips={trips} />
+                {userdata?.role == "AGENCY" ? <CreateTripsCard /> : <></>}
+                {userdata?.role == "AGENCY" ? <TripsSection trips={trips} /> : <UserTripsSection trips={trips}></UserTripsSection>}
             </div>
         </>
     );

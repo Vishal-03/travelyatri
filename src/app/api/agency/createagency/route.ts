@@ -58,7 +58,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             return NextResponse.json(response);
         }
     } catch (e) {
-        console.log(e);
         const response: ApiResponseType<null> = { status: false, data: null, message: errorToString(e), apiurl: request.url };
         return NextResponse.json(response);
     }
