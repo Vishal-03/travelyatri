@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { Fa6BrandsWhatsapp, IconamoonAppsBold, IconamoonCloseDuotone } from "../icons";
 import SideBar from "./sidebar";
 import { useRouter } from "next/navigation";
+import { user } from "@prisma/client";
 
 interface DashboardLaoyutProps {
     children: any;
-    userdata: any;
-
+    userdata: user;
 }
 
 const DashboardLaoyut = (props: DashboardLaoyutProps) => {
@@ -17,7 +17,7 @@ const DashboardLaoyut = (props: DashboardLaoyutProps) => {
         if (props.userdata.status == "INACTIVE") {
             route.push("/emailactive");;
         }
-        if (props.userdata.status != "ADMINACTIVE") {
+        if (props.userdata.role == "AGENCY" && props.userdata.status != "ADMINACTIVE") {
             route.push("/notadminactive");;
         }
     }, []);

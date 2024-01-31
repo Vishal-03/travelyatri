@@ -1,5 +1,6 @@
 "use client"
 import { Fa6SolidCircleQuestion, Fa6SolidDoorOpen, Fa6SolidMagnifyingGlass, Fa6SolidMountainSun, Fa6SolidUser, MaterialSymbolsContactEmergency, MaterialSymbolsDashboard } from "@/components/icons";
+import { Image } from "@nextui-org/react";
 import { user } from "@prisma/client";
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -10,7 +11,7 @@ import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
 interface SideBarProps {
     id: number;
-    user: user | null;
+    user: user;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     isOpen: boolean;
 }
@@ -20,9 +21,10 @@ const SideBar = (props: SideBarProps) => {
     return (
         <>
             <div className={`${props.isOpen ? "translate-x-0" : "-translate-x-60"} md:translate-x-0  w-60 h-screen fixed bg-gradient-to-t from-rose-400 to-rose-500 flex py-6 flex-col gap-2`}>
-                <div className="h-16 w-16 bg-blue-500 rounded-full grid place-items-center mx-auto mt-4">
+                {props.user.avatar != null ? <div className="grid place-items-center w-full"><Image alt="erro" src={props.user.avatar} className="h-16 w-16 rounded-full object-cover object-center mx-auto inline-block" /></div> : <div className="h-16 w-16 bg-blue-500 rounded-full grid place-items-center mx-auto mt-4">
                     <p className="text-white text-3xl font-semibold">{(props.user?.name == undefined || props.user.name == null || props.user.name == "") ? props.user?.email!.toString().substring(0, 1) : props.user.name.toString().substring(0, 1)}</p>
-                </div>
+                </div>}
+
 
                 <h1 className="text-center text-sm text-white font-medium">{props.user?.role}</h1>
                 <h1 className="text-center text-lg text-white font-medium">{props.user?.email}</h1>

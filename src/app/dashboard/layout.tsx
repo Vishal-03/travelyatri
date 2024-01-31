@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 import { user } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import prisma from "../../../prisma/database";
-import { Fa6BrandsWhatsapp } from "@/components/icons";
 import DashboardLaoyut from "@/components/dashboard/dashboardlayout";
 
 const Layout = async ({ children }: any) => {
@@ -17,7 +16,7 @@ const Layout = async ({ children }: any) => {
     return (
         <>
             <main className="w-full flex">
-                <DashboardLaoyut userdata={userdata}>{children}</DashboardLaoyut>
+                <DashboardLaoyut userdata={userdata as user}>{children}</DashboardLaoyut>
             </main>
         </>
     );

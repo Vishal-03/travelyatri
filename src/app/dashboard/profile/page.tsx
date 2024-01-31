@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import { user } from "@prisma/client";
 import Link from "next/link";
 import CompleteCard from "@/components/dashboard/completecard";
+import { profileCompleted } from "@/actions/user/profilecompleted";
+import { toast } from "react-toastify";
 
 const Profile = async () => {
     const session = await getServerSession();
@@ -13,19 +15,15 @@ const Profile = async () => {
         }
     });
 
-    const isCompleted = (): boolean => {
-        if (userdata?.name != null && userdata?.contact != null && userdata?.email != null && userdata?.address != null) {
-            return true;
-        }
-        return false;
-    }
+    const userProfile = await profileCompleted({ userid: userdata?.id as number });
+
 
     return (
         <>
             <div className="relative w-full h-full grid place-items-center">
                 {userdata ?
 
-                    isCompleted() ?
+                    userProfile.data?.user ?
                         <Card className="bg-white p-4 rounded-md w-80">
                             <CardHeader className="pb-0 pt-2 flex-col items-start">
                                 <p className="text-tiny uppercase font-bold">{userdata.name ?? "-"}</p>
@@ -33,11 +31,18 @@ const Profile = async () => {
                                 <h4 className="font-bold text-large">{userdata.contact ?? "-"}</h4>
                             </CardHeader>
                             <CardBody className="overflow-visible py-2">
-                                <Image
-                                    alt="Card background"
-                                    className="object-cover rounded-xl h-72 w-80"
-                                    src="/images/user.png"
-                                />
+                                {userdata!.avatar != null ?
+                                    <Image
+                                        alt="Card background"
+                                        className="object-cover rounded-xl h-72 w-80"
+                                        src={userdata.avatar ?? "/images/user.png"}
+                                    /> :
+                                    <Image
+                                        alt="Card background"
+                                        className="object-cover rounded-xl h-72 w-80"
+                                        src="/images/user.png"
+                                    />}
+
                             </CardBody>
                             <CardFooter className="bg-[#eeeeff] p-4 rounded-md flex-col items-start mt-2">
                                 <h1 className="font-semibold">Adddress</h1>

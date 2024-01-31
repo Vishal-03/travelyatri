@@ -1,9 +1,11 @@
 "use client"
+import { getUser } from '@/actions/user/getuser'
 import Navbar from '@/components/home/Navbar'
 import { backgroundColor } from '@/utils/colors'
 import { Image } from '@nextui-org/react'
 import Link from 'next/link'
 import { title } from 'process'
+import { useEffect } from 'react'
 
 
 interface Feature {
@@ -20,6 +22,14 @@ interface PriceCard {
   image: string;
 }
 export default function Home() {
+
+  const init = async () => {
+    const user = await getUser({ userid: 1 });
+    console.log(user);
+  }
+  useEffect(() => {
+    init();
+  }, []);
 
   const price: PriceCard[] = [
     {

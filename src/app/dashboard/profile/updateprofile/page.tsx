@@ -1,3 +1,4 @@
+"use server"
 import EditProfile from "@/components/dashboard/profile/editprofile";
 import { user } from "@prisma/client";
 import { getServerSession } from "next-auth";
@@ -13,7 +14,7 @@ const Profile = async () => {
     });
     return (
         <>
-            <EditProfile userdata={userdata} />
+            <EditProfile userdata={userdata as user} />
         </>
     );
 }

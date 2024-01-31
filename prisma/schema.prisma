@@ -48,7 +48,6 @@ model user {
   password      String?
   contact       String?
   secondcontact String?
-  pic_url       String?
   agency        agency?   @relation(fields: [agencyId], references: [id])
   agencyId      Int?
   role          Role      @default(NONE)
@@ -87,10 +86,10 @@ model agency {
   name        String?
   email       String    @unique
   contact     String?
-  pic_url     String?
   website     String?
   address     String?   @db.MediumText
   logo        String?
+  banner      String?
   description String    @db.LongText
   status      Status    @default(ACTIVE)
   createdAt   DateTime  @default(now())

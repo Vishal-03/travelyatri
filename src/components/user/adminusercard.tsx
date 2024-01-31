@@ -1,10 +1,8 @@
 "use client"
+import { UpdateStatus } from "@/actions/user/updateStatus";
 import { ByIdForm, ByIdSchema } from "@/schemas/byid";
 import { Image, user } from "@nextui-org/react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { revalidatePath, revalidateTag } from "next/cache";
-import { useRouter } from "next/navigation";
+import { Status } from "@prisma/client";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
 
@@ -13,37 +11,21 @@ interface UserCardProps {
     name: string;
     email: string;
     avatar: string;
-    status: string;
+    status: Status;
 }
 
 const UserCard = (props: UserCardProps) => {
-
-    const route = useRouter();
-    const mutation = useMutation({
-        mutationFn: (userid: ByIdForm) => {
-            return axios.post('/api/user/adminstatusupdate', userid)
-        },
-        onError: (error, variables, context) => {
-            toast.error(error.message);
-        },
-        onSuccess: async (data, variables, context) => {
-            if (data.data.status) {
-                toast.success(data.data.message);
-            } else {
-                toast.error(data.data.message);
-            }
-            route.refresh();
-        },
-    });
-
-    async function registerUser() {
-
+    const registerUser = async () => {
         const result = safeParse(ByIdSchema, {
             id: props.id
         });
-
         if (result.success) {
-            mutation.mutate(result.output);
+            const updatedUser = await UpdateStatus({ userid: result.output.id, status: props.status == "ADMINACTIVE" ? "ACTIVE" : "ADMINACTIVE" })
+            if (updatedUser.status) {
+                toast.success(updatedUser.message);
+            } else {
+                toast.error(updatedUser.message);
+            }
         } else {
             let errorMessage = "";
             if (result.issues[0].input) {
