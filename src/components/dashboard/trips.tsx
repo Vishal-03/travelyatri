@@ -34,7 +34,7 @@ const TripsSection = (props: TripsSectionProps) => {
                                             removeWrapper
                                             alt="Card background"
                                             className="z-0 w-full h-full object-cover relative rounded-md"
-                                            src={"/test/img1.jpg"}
+                                            src={item!.image}
                                         />
                                         <div className="rounded-md absolute bottom-0 left-0 w-full pb-2 bg-gradient-to-b from-transparent to-slate-900">
                                             <h1 className="text-white text-lg text-center font-semibold">{item!.name}</h1>

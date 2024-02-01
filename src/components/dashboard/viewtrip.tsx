@@ -1,13 +1,13 @@
 "use client"
 import { TripForm, TripSchema } from "@/schemas/createtrip";
+import { Image } from "@nextui-org/react";
 import { trips } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 interface TripProps {
-    trip: trips | null;
+    trip: trips;
 }
 const ViewTrips = (props: TripProps) => {
-    const route = useRouter();
     const start_date = new Date(props.trip?.start!);
     const start = `${start_date.getDate()}-${start_date.getMonth() + 1}-${start_date.getFullYear()}`;
     const end_date = new Date(props.trip?.end!);
@@ -25,8 +25,7 @@ const ViewTrips = (props: TripProps) => {
                             </div>
                             <p className="text-black font-serif">BY Akash Mishra</p>
                             <div className="flex gap-1  w-full mt-2">
-
-                                <div className=" bg-rose-500 w-96  h-96"></div>
+                                <Image alt="error" src={props.trip.image!} className="w-80 h-80 object-cover object-center" />
                             </div>
                         </div>
 
@@ -55,7 +54,7 @@ const ViewTrips = (props: TripProps) => {
                         </div>
                     </div>
 
-                    <h1 className="text-lg font-medium text-black mb-4 ">Trips Images</h1>
+                    {/* <h1 className="text-lg font-medium text-black mb-4 ">Trips Images</h1>
                     <div className="flex gap-5 w-full flex-wrap justify-evenly">
                         <div className="w-60 h-60 bg-rose-500"></div>
                         <div className="w-60 h-60 bg-rose-500"></div>
@@ -66,7 +65,7 @@ const ViewTrips = (props: TripProps) => {
                         <div className="w-60 h-60 bg-rose-500"></div>
                         <div className="w-60 h-60 bg-rose-500"></div>
                         <div className="w-60 h-60 bg-rose-500"></div>
-                    </div>
+                    </div> */}
                 </div>
 
             </div>

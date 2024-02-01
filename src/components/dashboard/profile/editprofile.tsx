@@ -61,6 +61,7 @@ const EditProfile = (props: EditProfile) => {
                 if (logo == null) return toast.error("Upload your avatar");
                 const imageBuffer = await logo.arrayBuffer();
                 const image: string = Buffer.from(imageBuffer).toString("base64");
+
                 const uploadimage: ApiResponseType<string | null> = await uploaduserAvatar({
                     name: logo.name,
                     id: props.userdata.id,

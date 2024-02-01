@@ -14,7 +14,7 @@ const Trips = async ({ params }: { params: any }) => {
     });
     return (
         <>
-            <ViewTrips trip={trips} />
+            <ViewTrips trip={trips as trips} />
         </>
     );
 }

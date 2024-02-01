@@ -1,10 +1,13 @@
 "use client"
+import { createTrip, uploadtripLogo } from "@/actions/trip/createtrip";
+import { ApiResponseType } from "@/models/responnse";
 import { TripForm, TripSchema } from "@/schemas/createtrip";
 import { Image } from "@nextui-org/react";
+import { TripCategory, TripType } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
 
@@ -54,22 +57,40 @@ const CreateTrips = (props: TripProps) => {
         number_of_people.current!.value = e.target.value.replace(/\D/g, "");
     }
 
-    const mutation = useMutation({
-        mutationFn: (tripdata: TripForm) => {
-            return axios.post('/api/trip/create', tripdata)
-        },
-        onError: (error, variables, context) => {
-            toast.error(error.message);
-        },
-        onSuccess: async (data, variables, context) => {
-            if (data.data.status) {
-                toast.success(data.data.message);
-                return router.replace(`/dashboard/trips/${data.data.data.id}`);
+    const [logo, setLogo] = useState<File | null>(null);
+    const cLogo = useRef<HTMLInputElement>(null);
+
+    const handleLogoChange = (value: React.ChangeEvent<HTMLInputElement>, setFun: (value: SetStateAction<File | null>) => void) => {
+        let file_size = parseInt(
+            (value!.target.files![0].size / 1024 / 1024).toString()
+        );
+        if (file_size < 4) {
+            if (value!.target.files![0].type.startsWith("image/")) {
+                setFun((val) => value!.target.files![0]);
             } else {
-                toast.error(data.data.message);
+                toast.error("Please select an image file.", { theme: "light" });
             }
-        },
-    })
+        } else {
+            toast.error("Image file size must be less then 4 mb", { theme: "light" });
+        }
+    };
+
+    // const mutation = useMutation({
+    //     mutationFn: (tripdata: TripForm) => {
+    //         return axios.post('/api/trip/create', tripdata)
+    //     },
+    //     onError: (error, variables, context) => {
+    //         toast.error(error.message);
+    //     },
+    //     onSuccess: async (data, variables, context) => {
+    //         if (data.data.status) {
+    //             toast.success(data.data.message);
+    //            
+    //         } else {
+    //             toast.error(data.data.message);
+    //         }
+    //     },
+    // })
 
     const submit = async () => {
 
@@ -89,10 +110,38 @@ const CreateTrips = (props: TripProps) => {
         });
 
         if (result.success) {
+            if (logo == null) return toast.error("Upload your trip logo first.");
 
+            const imageBuffer = await logo.arrayBuffer();
+            const image: string = Buffer.from(imageBuffer).toString("base64");
 
+            const uploadimage: ApiResponseType<string | null> = await uploadtripLogo({
+                name: logo.name,
+                arrayBuffer: image
+            });
 
-            mutation.mutate(result.output);
+            if (!uploadimage.status || uploadimage.data == null) return toast.error(uploadimage.message);
+
+            const createdtrip = await createTrip({
+                name: result.output.name,
+                start: result.output.start_date,
+                end: result.output.end_date,
+                image: uploadimage.data,
+                price: result.output.price,
+                number_of_days: result.output.number_of_days,
+                category: result.output.category as TripCategory,
+                trip_type: result.output.trip_type as TripType,
+                description: result.output.description,
+                location: result.output.location,
+                location_description: result.output.location_description,
+                number_of_people: result.output.number_of_people,
+                createdBy: result.output.createdBy,
+            });
+
+            if (!createdtrip.status) return toast.error(createdtrip.message);
+
+            toast.success(createdtrip.message);
+            return router.replace(`/dashboard/trips/${createdtrip.data?.id}`);
         } else {
             let errorMessage = "";
             if (result.issues[0].input) {
@@ -109,6 +158,31 @@ const CreateTrips = (props: TripProps) => {
         <>
             <div className="w-5/6 bg-white rounded-md shadow-lg my-6 p-6 mx-auto">
                 <h1 className="text-center text-black text-2xl font-semibold">Create Trip</h1>
+                {logo != null ? (
+                    <div>
+                        <Image
+                            src={URL.createObjectURL(logo!)}
+                            alt="logo"
+                            className="w-60 h-60 object-cover object-center rounded-md"
+                        />
+                    </div>
+                ) : null}
+
+                <button
+                    onClick={() => cLogo.current?.click()}
+                    className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-green-500"
+                >
+                    {logo == null ? "Add Logo" : "Change Logo"}
+                </button>
+                <div className="hidden">
+
+                    <input
+                        type="file"
+                        ref={cLogo}
+                        accept="image/*"
+                        onChange={(val) => handleLogoChange(val, setLogo)}
+                    />
+                </div>
 
                 <div className="flex w-full items-center py-2 mt-6">
                     <div className="flex-1">

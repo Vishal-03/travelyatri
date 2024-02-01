@@ -1,6 +1,5 @@
 "use server"
 
-import { user } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import prisma from "../../../../prisma/database";
 import AgencyInfo from "@/components/dashboard/agency/agencyinfo";

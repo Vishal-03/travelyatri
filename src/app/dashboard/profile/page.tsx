@@ -5,7 +5,6 @@ import { user } from "@prisma/client";
 import Link from "next/link";
 import CompleteCard from "@/components/dashboard/completecard";
 import { profileCompleted } from "@/actions/user/profilecompleted";
-import { toast } from "react-toastify";
 
 const Profile = async () => {
     const session = await getServerSession();
@@ -22,7 +21,6 @@ const Profile = async () => {
         <>
             <div className="relative w-full h-full grid place-items-center">
                 {userdata ?
-
                     userProfile.data?.user ?
                         <Card className="bg-white p-4 rounded-md w-80">
                             <CardHeader className="pb-0 pt-2 flex-col items-start">
@@ -56,11 +54,14 @@ const Profile = async () => {
                             </CardFooter>
                         </Card>
                         :
-                        <CompleteCard />
+                        <div className="w-4/6 mx-auto grid place-items-center h-full ">
+                            <CompleteCard />
+                        </div>
                     :
                     <div className="bg-white p-4 rounded-md w-80 border-l-4 border-red-500">
                         <h1 className="text-center text-xl font-semibold">User with this id doesn&apos;t exist</h1>
-                    </div>}
+                    </div>
+                }
 
             </div>
         </>
