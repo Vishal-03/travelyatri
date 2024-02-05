@@ -1,7 +1,7 @@
 "use server"
 import { ApiResponseType } from "@/models/responnse";
 import { errorToString } from "@/utils/methods";
-import { TripCategory, TripType, trips } from "@prisma/client";
+import { TripCategory, TripType, trips, user } from "@prisma/client";
 import prisma from "../../../prisma/database";
 import { mkdir, writeFile } from "fs/promises";
 
@@ -15,7 +15,6 @@ type createTripsPayload = {
     end: string,
     image: string,
     price: number,
-    number_of_days: number,
     category: TripCategory,
     trip_type: TripType,
     description: string,
@@ -27,6 +26,9 @@ type createTripsPayload = {
 
 export const createTrip = async (args: createTripsPayload): Promise<ApiResponseType<trips | null>> => {
     try {
+        const userfound = await prisma.user.findUnique({ where: { id: args.createdBy }, include: { agency: true } });
+        if (!userfound) return { status: false, data: null, message: "User not found", apiurl: "createTrip" };
+        
         const trip: trips = await prisma.trips.create({
             data: {
                 name: args.name,
@@ -34,14 +36,14 @@ export const createTrip = async (args: createTripsPayload): Promise<ApiResponseT
                 end: new Date(args.end),
                 image: args.image,
                 price: args.price,
-                number_of_days: args.number_of_days,
                 category: args.category,
                 trip_type: args.trip_type,
                 description: args.description,
                 location: args.location,
                 location_description: args.location_description,
                 number_of_people: args.number_of_people,
-                createdBy: args.createdBy,
+                createdBy: userfound.id,
+                agencyId: userfound!.agency!.id,
                 status: "ACTIVE"
             }
         });

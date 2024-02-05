@@ -1,6 +1,3 @@
-import CompleteCard from "@/components/dashboard/completecard";
-import { Fa6SolidMountainSun, MaterialSymbolsDashboard } from "@/components/icons";
-import AgencyDashboard from "@/components/dashboard/agencydashboard";
 import prisma from "../../../prisma/database";
 import { getServerSession } from "next-auth";
 import { user } from "@prisma/client";
@@ -14,7 +11,7 @@ const Dashboard = async () => {
         }
     });
     const isCompleted = (): boolean => {
-        if (userdata?.name != null && userdata?.contact != null && userdata?.email != null && userdata?.address != null) {
+        if (userdata?.name != null && userdata?.contact != null && userdata?.email != null && userdata?.address != null && userdata?.avatar != null) {
             return true;
         }
         return false;

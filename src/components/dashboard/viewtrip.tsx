@@ -5,9 +5,10 @@ import { trips } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 interface TripProps {
-    trip: trips;
+    trip: any;
 }
 const ViewTrips = (props: TripProps) => {
+    console.log(props.trip)
     const start_date = new Date(props.trip?.start!);
     const start = `${start_date.getDate()}-${start_date.getMonth() + 1}-${start_date.getFullYear()}`;
     const end_date = new Date(props.trip?.end!);
@@ -15,61 +16,55 @@ const ViewTrips = (props: TripProps) => {
     return (
         <>
             <div className="p-6">
-                <div className=" w-full bg-white shadow-xl rounded-3xl p-6">
-                    <div className="flex flex-row gap-6">
-                        <div>
-                            <div className="flex flex-col ">
-                                <div className="flex justify-between ">
-                                    <h1 className="text-black font-bold text-2xl">{props.trip?.name}</h1>
-                                </div>
-                            </div>
-                            <p className="text-black font-serif">BY Akash Mishra</p>
-                            <div className="flex gap-1  w-full mt-2">
-                                <Image alt="error" src={props.trip.image!} className="w-80 h-80 object-cover object-center" />
-                            </div>
+                <div className=" w-full bg-white shadow-xl rounded-xl p-4 flex gap-4">
+                    <Image alt="error" src={props.trip.image!} className="w-60 h-60 rounded-lg object-cover object-center" />
+                    <div className="grow flex flex-col">
+                        <h1 className="text-black font-semibold text-2xl">{props.trip?.name}</h1>
+                        <div className=" mt-2">
+                            <h1 className="text-lg font-semibold">Description</h1>
+                            <p>{props.trip?.description}</p>
                         </div>
-
-                        <div className="flex flex-col gap-3 w-1/2">
-
-                            <div className="flex flex-col gap-3">
-                                <h1 className="text-lg font-bold">Description</h1>
-                                <p>{props.trip?.description}</p>
-                            </div>
-
-                            <div className="flex  w-full flex-col justify-center gap-3  border-t-2 text-sm py-4">
-                                <h1 className="text-lg font-bold">Location Info</h1>
-                                <h1>Location: {props.trip?.location}</h1>
-                                <p>Location Description: {props.trip?.location_description}</p>
-                            </div>
-
-                            <div className="flex  w-full flex-col justify-center gap-3 border-b-2 border-t-2 text-sm py-4">
-                                <h1 className="text-lg font-bold">Timing Info</h1>
-                                <h1>Start time: {start}</h1>
-                                <h1>End time: {end}</h1>
-                                <h1>Duration: {props.trip?.number_of_days}</h1>
-                                <h1>Price: {props.trip?.price}</h1>
-                                <h1>Type: {props.trip?.category}</h1>
-                                <h1>Category: {props.trip?.trip_type}</h1>
+                        <div className="grow"></div>
+                        <div className="flex bg-blue-500 p-2 rounded-lg bg-opacity-20 gap-2">
+                            <Image alt="error" src={props.trip.create.agency.logo} className="w-14 h-14 rounded-lg object-cover object-center" />
+                            <div>
+                                <p className="text-black text-xl font-semibold">{props.trip.create.agency.name}</p>
+                                <p className="text-black">{props.trip.create.agency.contact}</p>
                             </div>
                         </div>
                     </div>
-
-                    {/* <h1 className="text-lg font-medium text-black mb-4 ">Trips Images</h1>
-                    <div className="flex gap-5 w-full flex-wrap justify-evenly">
-                        <div className="w-60 h-60 bg-rose-500"></div>
-                        <div className="w-60 h-60 bg-rose-500"></div>
-                        <div className="w-60 h-60 bg-rose-500"></div>
-                        <div className="w-60 h-60 bg-rose-500"></div>
-                        <div className="w-60 h-60 bg-rose-500"></div>
-                        <div className="w-60 h-60 bg-rose-500"></div>
-                        <div className="w-60 h-60 bg-rose-500"></div>
-                        <div className="w-60 h-60 bg-rose-500"></div>
-                        <div className="w-60 h-60 bg-rose-500"></div>
-                    </div> */}
                 </div>
+                <div className="w-full bg-white shadow-xl rounded-xl p-4 flex gap-4 mt-4 flex-wrap justify-between px-6">
+                    <div className="mx-4">
+                        <h1 className="text-center font-normal text-sm">Start Time</h1>
+                        <p className="text-center font-semibold text-lg">{start}</p>
+                    </div>
+                    <div className="mx-4">
+                        <h1 className="text-center font-normal text-sm">End Time</h1>
+                        <p className="text-center font-semibold text-lg">{end}</p>
+                    </div>
+                    <div className="mx-4">
+                        <h1 className="text-center font-normal text-sm">Price</h1>
+                        <p className="text-center font-semibold text-lg">{props.trip?.price}</p>
+                    </div>
+                    <div className="mx-4">
+                        <h1 className="text-center font-normal text-sm">Trip Type</h1>
+                        <p className="text-center font-semibold text-lg">{props.trip?.category}</p>
+                    </div>
+                    <div className="mx-4">
+                        <h1 className="text-center font-normal text-sm">Trip Type</h1>
+                        <p className="text-center font-semibold text-lg">{props.trip?.trip_type}</p>
+                    </div>
 
+                </div>
+                <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4">
+                    <h1 className="text-xl font-semibold">Location Info</h1>
+                    <p className="text-lg font-medium">{props.trip?.location}</p>
+                    <p className="text-gray-500">{props.trip?.location_description}</p>
+                </div>
             </div>
         </>
     );
 }
 export default ViewTrips;
+

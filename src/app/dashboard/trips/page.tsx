@@ -18,6 +18,9 @@ const Trips = async () => {
     const trips = await prisma.trips.findMany({
         where: {
             createdBy: userdata!.id
+        },
+        include: {
+            create: { include: { agency: true } }
         }
     });
 

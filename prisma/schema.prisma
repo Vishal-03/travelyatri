@@ -10,11 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Status {
+enum UserStatus {
   NONE
   ACTIVE
   INACTIVE
   ADMINACTIVE
+}
+
+enum Status {
+  NONE
+  ACTIVE
+  INACTIVE
 }
 
 enum Role {
@@ -52,7 +58,7 @@ model user {
   agencyId      Int?
   role          Role      @default(NONE)
   address       String?   @db.MediumText
-  status        Status    @default(ACTIVE)
+  status        UserStatus    @default(ACTIVE)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
@@ -66,7 +72,6 @@ model trips {
   end                  DateTime
   image                String?
   price                Int
-  number_of_days       Int
   trip_type            TripType     @default(NONE)
   category             TripCategory @default(NONE)
   description          String?      @db.MediumText
@@ -77,6 +82,8 @@ model trips {
   createdAt            DateTime     @default(now())
   create               user         @relation(fields: [createdBy], references: [id])
   createdBy            Int
+  agency               agency       @relation(fields: [agencyId], references: [id])
+  agencyId             Int
   updatedAt            DateTime     @updatedAt
   deletedAt            DateTime?
 }
@@ -96,4 +103,5 @@ model agency {
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
   user        user[]
+  trips       trips[]
 }

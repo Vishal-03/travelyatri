@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { user } from "@prisma/client";
 import { errorToString } from "@/utils/methods";
 import { safeParse } from "valibot";
-import { cookies } from 'next/headers'
-import { LoginSchema } from "@/schemas/login";
 import prisma from "../../../../../prisma/database";
 import { ChangePassowrdSchema } from "@/schemas/changepassword";
 import { compare, hash } from "bcrypt";

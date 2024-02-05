@@ -27,7 +27,7 @@ const DashboardPage = (props: DashboardPageProps) => {
                     <MaterialSymbolsDashboard className="text-black text-3xl" />
                     <h1 className="text-black text-2xl font-medium">DASHBOARD</h1>
                 </div>
-                {props.isProfileCompleted ? <CompleteCard /> : null}
+                {props.isProfileCompleted ? null : <CompleteCard />}
                 <div className="flex mt-6 justify-between gap-6 flex-wrap">
                     <div className="flex-1 bg-gradient-to-bl from-rose-300 to-rose-500 rounded-md shadow-lg p-4 min-w-48">
                         <Fa6SolidMountainSun className="text-3xl text-white" />

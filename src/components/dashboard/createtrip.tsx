@@ -26,7 +26,6 @@ const CreateTrips = (props: TripProps) => {
     const StartDate = useRef<HTMLInputElement>(null);
     const EndDate = useRef<HTMLInputElement>(null);
 
-    const numberOfDay = useRef<HTMLInputElement>(null);
     const price = useRef<HTMLInputElement>(null);
     const number_of_people = useRef<HTMLInputElement>(null);
 
@@ -44,10 +43,6 @@ const CreateTrips = (props: TripProps) => {
         if (EndDate.current?.value) {
             StartDate.current!.max = EndDate.current.value;
         }
-    }
-
-    const handleNumberOfDaysInput = (e: ChangeEvent<HTMLInputElement>) => {
-        numberOfDay.current!.value = e.target.value.replace(/\D/g, "");
     }
 
     const handlePriceInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,23 +70,6 @@ const CreateTrips = (props: TripProps) => {
         }
     };
 
-    // const mutation = useMutation({
-    //     mutationFn: (tripdata: TripForm) => {
-    //         return axios.post('/api/trip/create', tripdata)
-    //     },
-    //     onError: (error, variables, context) => {
-    //         toast.error(error.message);
-    //     },
-    //     onSuccess: async (data, variables, context) => {
-    //         if (data.data.status) {
-    //             toast.success(data.data.message);
-    //            
-    //         } else {
-    //             toast.error(data.data.message);
-    //         }
-    //     },
-    // })
-
     const submit = async () => {
 
         const result = safeParse(TripSchema, {
@@ -101,7 +79,6 @@ const CreateTrips = (props: TripProps) => {
             location_description: location_description.current!.value,
             start_date: StartDate.current!.value,
             end_date: EndDate.current!.value,
-            number_of_days: parseInt(numberOfDay.current!.value),
             price: parseInt(price.current!.value),
             number_of_people: parseInt(number_of_people.current!.value),
             trip_type: tripType.current!.value,
@@ -128,7 +105,6 @@ const CreateTrips = (props: TripProps) => {
                 end: result.output.end_date,
                 image: uploadimage.data,
                 price: result.output.price,
-                number_of_days: result.output.number_of_days,
                 category: result.output.category as TripCategory,
                 trip_type: result.output.trip_type as TripType,
                 description: result.output.description,
@@ -158,22 +134,25 @@ const CreateTrips = (props: TripProps) => {
         <>
             <div className="w-5/6 bg-white rounded-md shadow-lg my-6 p-6 mx-auto">
                 <h1 className="text-center text-black text-2xl font-semibold">Create Trip</h1>
-                {logo != null ? (
-                    <div>
-                        <Image
-                            src={URL.createObjectURL(logo!)}
-                            alt="logo"
-                            className="w-60 h-60 object-cover object-center rounded-md"
-                        />
-                    </div>
-                ) : null}
+                <div className="flex flex-col items-center justify-center">
 
-                <button
-                    onClick={() => cLogo.current?.click()}
-                    className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-green-500"
-                >
-                    {logo == null ? "Add Logo" : "Change Logo"}
-                </button>
+                    {logo != null ? (
+                        <div>
+                            <Image
+                                src={URL.createObjectURL(logo!)}
+                                alt="logo"
+                                className="w-60 h-60 object-cover object-center rounded-md"
+                            />
+                        </div>
+                    ) : null}
+
+                    <button
+                        onClick={() => cLogo.current?.click()}
+                        className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-green-500"
+                    >
+                        {logo == null ? "Add Logo" : "Change Logo"}
+                    </button>
+                </div>
                 <div className="hidden">
 
                     <input
@@ -247,16 +226,6 @@ const CreateTrips = (props: TripProps) => {
                     </div>
                     <div className="flex-1">
                         <input type="date" onChange={handleEntDateChange} ref={EndDate} className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
-                        />
-                    </div>
-                </div>
-                <div className="flex w-full items-center py-2">
-                    <div className="flex-1">
-                        <h1 className="text-lg font-medium">Number Of Days</h1>
-                    </div>
-                    <div className="flex-1">
-                        <input type="text" onChange={handleNumberOfDaysInput} ref={numberOfDay} className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
-                            placeholder="Enter number of user"
                         />
                     </div>
                 </div>

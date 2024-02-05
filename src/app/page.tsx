@@ -25,7 +25,6 @@ export default function Home() {
 
   const init = async () => {
     const user = await getUser({ userid: 1 });
-    console.log(user);
   }
   useEffect(() => {
     init();
@@ -97,8 +96,7 @@ export default function Home() {
               <div className="flex flex-col gap-4 mt-4">
                 <div className="text-balck">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti illo quos laudantium quidem alias minima inventore recusandae ratione voluptatibus. Quasi!</div>
                 <div>
-
-                  <Link href={"/login"} className="mt-6 px-6 py-1 rounded-md text-balck font-semibold shadow-md bg-white">Lets Discuss Travling</Link>
+                  <Link href={"/login"} className="mt-6 px-6 py-2 rounded-md font-normal text-blue-500 shadow-md bg-blue-500 bg-opacity-25">Lets Discuss Travling</Link>
                 </div>
               </div>
             </div>
@@ -198,9 +196,9 @@ const FeatureCard = (props: FeatureCardProps) => {
 const PriceCard = (props: PriceCard) => {
   return (
     <>
-      <div className="p-4 bg-gray-200 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white hover:shadow-2xl">
+      <div className="p-4 bg-gray-100 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white hover:shadow-2xl rounded-md">
         <div className=''>
-          <Image src={props.image} alt='error' className='w-72 h-48 object-cover object-center inline-block'></Image>
+          <Image src={props.image} alt='error' className='w-72 h-48 object-cover object-center inline-block rounded-md'></Image>
         </div>
         <div>
           <p className="font-semibold mt-2 text-lg">Best Trip Available</p>
@@ -210,7 +208,7 @@ const PriceCard = (props: PriceCard) => {
           <div className="flex mt-4 items-center">
             <h1 className="px-3 text-xl font-bold">$6000</h1>
             <div className="grow"></div>
-            <button className=" bg-blue-500 py-1 px-4 text-white">See More</button>
+            <button className=" bg-blue-500 py-1 px-4 text-white rounded-md">See More</button>
           </div>
         </div>
       </div>

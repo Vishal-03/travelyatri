@@ -133,7 +133,7 @@ const EditProfile = (props: EditProfile) => {
                     {logo == null && props.userdata.avatar != null ? <><Image
                         src={props.userdata.avatar}
                         alt="logo"
-                        className="w-80 h-80 object-cover object-center rounded-md"
+                        className="w-80 h-80 object-cover object-center rounded-md mx-4"
                     /></> : <></>}
 
                     {logo != null ? (
@@ -141,7 +141,7 @@ const EditProfile = (props: EditProfile) => {
                             <Image
                                 src={URL.createObjectURL(logo!)}
                                 alt="logo"
-                                className="w-80 h-80 object-cover object-center rounded-md"
+                                className="w-80 h-80 object-cover object-center rounded-md mx-4"
                             />
                         </div>
                     ) : null}

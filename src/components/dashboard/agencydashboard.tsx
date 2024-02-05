@@ -1,7 +1,7 @@
 "use client"
 
-import { Image } from "@nextui-org/react";
 import { Fa6SolidMountainSun } from "../icons";
+import TripCard from "../card/tripcard";
 
 const AgencyDashboard = () => {
     return (
@@ -19,19 +19,7 @@ const AgencyDashboard = () => {
                         "/test/img4.jpg",
                     ].map((item: string, index: number) => {
                         return (
-                            <div className="h-80 rounded-md relative" key={index}>
-
-                                <Image
-                                    removeWrapper
-                                    alt="Card background"
-                                    className="z-0 w-full h-full object-cover relative rounded-md"
-                                    src={item}
-                                />
-                                <div className="rounded-md absolute bottom-0 left-0 w-full pb-2 bg-gradient-to-b from-transparent to-slate-900">
-                                    <h1 className="text-white text-lg text-center font-semibold">Title of the card</h1>
-                                    <h1 className="text-white text-sm text-center font-semibold">Explore</h1>
-                                </div>
-                            </div>
+                            <TripCard key={index} title="Title of the card" agency="name of the agency" price="300" type="PUBLIC" image={item} link="/dashboard/trips/1"></TripCard>
                         );
                     })
                 }
@@ -49,19 +37,7 @@ const AgencyDashboard = () => {
                         "/test/img8.jpg",
                     ].map((item: string, index: number) => {
                         return (
-                            <div className="h-80 rounded-md relative" key={index}>
-
-                                <Image
-                                    removeWrapper
-                                    alt="Card background"
-                                    className="z-0 w-full h-full object-cover relative rounded-md"
-                                    src={item}
-                                />
-                                <div className="rounded-md absolute bottom-0 left-0 w-full pb-2 bg-gradient-to-b from-transparent to-slate-900">
-                                    <h1 className="text-white text-lg text-center font-semibold">Title of the card</h1>
-                                    <h1 className="text-white text-sm text-center font-semibold">Explore</h1>
-                                </div>
-                            </div>
+                            <TripCard key={index} title="Title of the card" agency="name of the agency" price="300" type="PUBLIC" image={item} link="/dashboard/trips/1"></TripCard>
                         );
                     })
                 }
@@ -79,19 +55,7 @@ const AgencyDashboard = () => {
                         "/test/img3.jpg",
                     ].map((item: string, index: number) => {
                         return (
-                            <div className="h-80 rounded-md relative" key={index}>
-
-                                <Image
-                                    removeWrapper
-                                    alt="Card background"
-                                    className="z-0 w-full h-full object-cover relative rounded-md"
-                                    src={item}
-                                />
-                                <div className="rounded-md absolute bottom-0 left-0 w-full pb-2 bg-gradient-to-b from-transparent to-slate-900">
-                                    <h1 className="text-white text-lg text-center font-semibold">Title of the card</h1>
-                                    <h1 className="text-white text-sm text-center font-semibold">Explore</h1>
-                                </div>
-                            </div>
+                            <TripCard key={index} title="Title of the card" agency="name of the agency" price="300" type="PUBLIC" image={item} link="/dashboard/trips/1"></TripCard>
                         );
                     })
                 }
@@ -109,19 +73,7 @@ const AgencyDashboard = () => {
                         "/test/img4.jpg",
                     ].map((item: string, index: number) => {
                         return (
-                            <div className="h-80 rounded-md relative" key={index}>
-
-                                <Image
-                                    removeWrapper
-                                    alt="Card background"
-                                    className="z-0 w-full h-full object-cover relative rounded-md"
-                                    src={item}
-                                />
-                                <div className="rounded-md absolute bottom-0 left-0 w-full pb-2 bg-gradient-to-b from-transparent to-slate-900">
-                                    <h1 className="text-white text-lg text-center font-semibold">Title of the card</h1>
-                                    <h1 className="text-white text-sm text-center font-semibold">Explore</h1>
-                                </div>
-                            </div>
+                            <TripCard key={index} title="Title of the card" agency="name of the agency" price="300" type="PUBLIC" image={item} link="/dashboard/trips/1"></TripCard>
                         );
                     })
                 }

@@ -1,4 +1,4 @@
-import { Input, custom, date, email, forward, maxValue, minLength, minValue, number, object, regex, string } from "valibot";
+import { Input, custom, forward, minLength, minValue, number, object, string } from "valibot";
 
 const TripSchema = object({
     name: string([
@@ -18,9 +18,6 @@ const TripSchema = object({
     ]),
     end_date: string([
         minLength(1, 'Select Trip Category.'),
-    ]),
-    number_of_days: number([
-        minValue(1, 'Please enter number of days.'),
     ]),
     price: number([
         minValue(1, 'Please enter trip price.'),
