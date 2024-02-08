@@ -10,13 +10,14 @@ export const registerUser = async (args: RegisterPayload): Promise<ApiResponseTy
 
         const alreadyexist = await prisma.user.findFirst({ where: { email: args.email } });
 
-        if (!alreadyexist) return { status: false, data: null, message: "Invalid user email.Try Again", apiurl: "registerUser" };
+        if (alreadyexist) return { status: false, data: null, message: "Email Already exist.Try Different email  ", apiurl: "registerUser" };
         const password = await hash(args.password, 10);
 
         const user = await prisma.user.create({
             data: {
                 email: args.email,
-                password: password
+                password: password,
+                role: "USER"
             }
         });
 
