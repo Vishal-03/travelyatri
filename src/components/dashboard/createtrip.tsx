@@ -1,11 +1,9 @@
 "use client"
 import { createTrip, uploadtripLogo } from "@/actions/trip/createtrip";
 import { ApiResponseType } from "@/models/responnse";
-import { TripForm, TripSchema } from "@/schemas/createtrip";
+import { TripSchema } from "@/schemas/createtrip";
 import { Image } from "@nextui-org/react";
 import { TripCategory, TripType } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";

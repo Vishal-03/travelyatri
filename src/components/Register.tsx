@@ -5,12 +5,11 @@ import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
-import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Image } from "@nextui-org/react";
 import { signIn, useSession } from "next-auth/react";
 import { MaterialSymbolsVisibilityOffRounded, MaterialSymbolsVisibilityRounded } from "./icons";
+import { registerUser } from "@/actions/user/register";
 
 
 interface RegisterProps {
@@ -29,32 +28,6 @@ const Register = (props: RegisterProps) => {
     }, []);
 
 
-
-    const mutation = useMutation({
-        mutationFn: (regsiter: RegisterForm) => {
-            return axios.post('/api/user/register', regsiter)
-        },
-        onError: (error, variables, context) => {
-            toast.error(error.message);
-        },
-        onSuccess: async (data, variables, context) => {
-            if (data.data.status) {
-                const credentials = await signIn("credentials", { email: data.data.data.email, password: registerForm.password, redirect: false });
-                if (credentials?.error) {
-                    return toast.error("Invalid credentials");
-                } else {
-                    if (data.data.data.role == "AGENCY") {
-                        router.replace("/createagency");
-                    } else {
-                        router.replace("/dashboard");
-                    }
-                }
-            } else {
-                toast.error(data.data.message);
-            }
-        },
-    });
-
     interface registerForm {
         email: string;
         password: string
@@ -69,7 +42,7 @@ const Register = (props: RegisterProps) => {
 
     const [userType, setuserType] = useState<boolean>(false)
 
-    async function registerUser() {
+    async function registerNewUser() {
 
         const result = safeParse(RegisterSchema, {
             ...registerForm,
@@ -77,7 +50,26 @@ const Register = (props: RegisterProps) => {
         });
 
         if (result.success) {
-            mutation.mutate(result.output);
+            const response = await registerUser({
+                email: result.output.email,
+                password: result.output.password
+            });
+
+            if (response.status) {
+                toast.success(response.message);
+                const credentials = await signIn("credentials", { email: result.output.email, password: registerForm.password, redirect: false });
+                if (credentials?.error) {
+                    return toast.error("Invalid credentials");
+                } else {
+                    if (result.output.role == "AGENCY") {
+                        router.replace("/createagency");
+                    } else {
+                        router.replace("/dashboard");
+                    }
+                }
+            } else {
+                toast.error(response.message);
+            }
         } else {
             let errorMessage = "";
             if (result.issues[0].input) {
@@ -127,7 +119,7 @@ const Register = (props: RegisterProps) => {
                         </div>
                     </div>
 
-                    <button onClick={registerUser} disabled={mutation.isPending} className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">{mutation.isPending ? "Loading..." : "Register"}</button>
+                    <button onClick={registerNewUser} className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Register</button>
                     {!userType ? <>
                         <div className="flex items-center gap-4 my-2">
                             <div className="grow h-[1px] bg-black"> </div>

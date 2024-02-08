@@ -1,15 +1,13 @@
 "use client"
 import { updateUser, uploaduserAvatar } from "@/actions/user/updateuser";
 import { ApiResponseType } from "@/models/responnse";
-import { UserProfileUpdateForm, UserProfileUpdateSchema } from "@/schemas/userprofileupdate";
+import { UserProfileUpdateSchema } from "@/schemas/userprofileupdate";
 import { Image } from "@nextui-org/react";
 import { user } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { email, safeParse } from "valibot";
+import { safeParse } from "valibot";
 
 interface EditProfile {
     userdata: user;

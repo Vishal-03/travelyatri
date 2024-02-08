@@ -1,10 +1,8 @@
 "use client"
 import { createAgency, uploadagencyBanner, uploadagencyLogo } from "@/actions/agency/createagency";
 import { ApiResponseType } from "@/models/responnse";
-import { CreateAgencyForm, createAgencySchema } from "@/schemas/createagency";
+import { createAgencySchema } from "@/schemas/createagency";
 import { Image } from "@nextui-org/react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -47,28 +45,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
     };
 
 
-    const mutation = useMutation({
-        mutationFn: (createAgency: CreateAgencyForm) => {
-            return axios.post('/api/agency/createagency', createAgency)
-        },
-        onError: (error, variables, context) => {
-            toast.error(error.message);
-        },
-        onSuccess: async (data, variables, context) => {
-            if (data.data.status) {
-                toast.success(data.data.message);
-                name.current!.value = "";
-                website.current!.value = "";
-                contact.current!.value = "";
-                email.current!.value = "";
-                address.current!.value = "";
-                description.current!.value = "";
-                return router.back();
-            } else {
-                toast.error(data.data.message);
-            }
-        },
-    });
+
 
     async function createAgencyFuncation() {
         const result = safeParse(createAgencySchema, {

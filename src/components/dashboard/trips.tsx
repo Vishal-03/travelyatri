@@ -30,12 +30,14 @@ const TripsSection = (props: TripsSectionProps) => {
 
     return (
         <>
-            <div className="flex gap-4 mt-4">
+            <div className="flex gap-4 mt-4 flex-wrap">
                 <div className={`cursor-pointer  rounded-md shadow-md  text-lg font-semibold px-6 py-1 ${isrunning ? "text-white bg-gradient-to-bl from-orange-500 to-orange-300" : "text-orange-500 bg-white"}`} onClick={() => { init(true) }}>Runing</div>
                 <div className={`cursor-pointer  rounded-md shadow-md  text-lg font-semibold px-6 py-1 ${!isrunning ? "text-white bg-gradient-to-bl from-orange-500 to-orange-300" : "text-orange-500 bg-white"}`} onClick={() => { init(false) }}>Expired</div>
-                <input type="text" className="grow rounded-md placeholder:text-orange-500 px-4 focus:outline-none" placeholder="Start typing to search..." /> <button className="grid place-items-center rounded-md text-white w-10 bg-gradient-to-bl from-orange-500 to-orange-300">
-                    <Fa6SolidMagnifyingGlass />
-                </button>
+                <div className="flex items-center grow gap-4">
+                    <input type="text" className="grow rounded-md placeholder:text-orange-500 px-4 focus:outline-none  py-2" placeholder="Start typing to search..." /> <button className="grid place-items-center rounded-md text-white w-10 bg-gradient-to-bl from-orange-500 to-orange-300">
+                        <Fa6SolidMagnifyingGlass className="h-9" />
+                    </button>
+                </div>
             </div>
 
             {tripstoshow == null || tripstoshow.length == 0 ? <>

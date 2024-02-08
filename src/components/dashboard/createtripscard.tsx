@@ -6,7 +6,7 @@ const CreateTripsCard = () => {
         <>
             <div className="p-6 rounded-md  bg-gradient-to-l from-orange-200 to-orange-400 flex">
                 <div className="grow flex flex-col">
-                    <h1 className="text-white text-3xl font-semibold">Create Trips to start your<br /> contribute to your world tour.</h1>
+                    <h1 className="text-white text-lg sm:text-3xl font-semibold ">Create Trips to start your<br /> contribute to your world tour.</h1>
                     <div className="grow"></div>
                     <Link href={"/dashboard/createtrips"} className="w-40 bg-white text-orange-500 px-4 py-1">Create Trips</Link>
                 </div>

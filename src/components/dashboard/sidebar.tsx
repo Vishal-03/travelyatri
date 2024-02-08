@@ -2,13 +2,10 @@
 import { Fa6SolidCircleQuestion, Fa6SolidDoorOpen, Fa6SolidMagnifyingGlass, Fa6SolidMountainSun, Fa6SolidUser, MaterialSymbolsContactEmergency, MaterialSymbolsDashboard } from "@/components/icons";
 import { Image } from "@nextui-org/react";
 import { user } from "@prisma/client";
-import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
-import { toast } from "react-toastify";
 interface SideBarProps {
     id: number;
     user: user;

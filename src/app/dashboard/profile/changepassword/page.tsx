@@ -1,7 +1,6 @@
 "use client"
-import { ChangePassowrdForm, ChangePassowrdSchema } from "@/schemas/changepassword";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import { changePassword } from "@/actions/user/changepassword";
+import { ChangePassowrdSchema } from "@/schemas/changepassword";
 import { useSession } from "next-auth/react";
 import { useRef } from "react";
 import { toast } from "react-toastify";
@@ -9,27 +8,7 @@ import { safeParse } from "valibot";
 
 const ChangePassword = () => {
     const session = useSession();
-    
 
-
-    const mutation = useMutation({
-        mutationFn: (ChangePassword: ChangePassowrdForm) => {
-            return axios.post('/api/user/changepassword', ChangePassword)
-        },
-        onError: (error, variables, context) => {
-            toast.error(error.message);
-        },
-        onSuccess: async (data, variables, context) => {
-            if (data.data.status) {
-                toast.success(data.data.message);
-                currentpassword.current!.value = "";
-                newpassword.current!.value = "";
-                confirmpassword.current!.value = "";
-            } else {
-                toast.error(data.data.message);
-            }
-        },
-    });
 
     const currentpassword = useRef<HTMLInputElement>(null);
     const newpassword = useRef<HTMLInputElement>(null);
@@ -45,7 +24,21 @@ const ChangePassword = () => {
         });
 
         if (result.success) {
-            mutation.mutate(result.output);
+
+            const response = await changePassword({
+                currentpassword: result.output.currentpassword,
+                newpassword: result.output.newpassword,
+                email: result.output.email
+            });
+
+            if (response.status) {
+                toast.success(response.message);
+                currentpassword.current!.value = "";
+                newpassword.current!.value = "";
+                confirmpassword.current!.value = "";
+            } else {
+                toast.error(response.message);
+            }
         } else {
             let errorMessage = "";
             if (result.issues[0].input) {

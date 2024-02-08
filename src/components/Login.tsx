@@ -3,13 +3,11 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
-import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { LoginSchema } from "@/schemas/login";
 import Link from "next/link";
 import { Image } from "@nextui-org/react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { MaterialSymbolsVisibilityOffRounded, MaterialSymbolsVisibilityRounded } from "./icons";
 
 const Login = () => {
@@ -25,22 +23,7 @@ const Login = () => {
         }
     }, [session, router]);
 
-    const mutation = useMutation({
-        mutationFn: (regsiter: LoginForm) => {
-            return axios.post('/api/user/login', regsiter)
-        },
-        onError: (error, variables, context) => {
-            toast.error(error.message);
-        },
-        onSuccess: (data, variables, context) => {
-            if (data.data.status) {
-                toast.success(data.data.message);
-                return router.replace("/dashboard");
-            } else {
-                toast.error(data.data.message);
-            }
-        },
-    })
+
 
 
 
@@ -64,7 +47,6 @@ const Login = () => {
             } else {
                 router.replace("/dashboard");
             }
-            // mutation.mutate(result.output);
         } else {
             let errorMessage = "";
             if (result.issues[0].input) {
