@@ -24,7 +24,7 @@ const DashboardLaoyut = (props: DashboardLaoyutProps) => {
 
     return (
         <>
-            <div className={`${isOpen ? "" : ""} md:ml-60 min-h-screen w-full bg-[#eeeeee]`}>
+            <div className={`${isOpen ? "" : ""} md:ml-60 min-h-screen w-full bg-[#ecedf1]`}>
                 {props.children}
             </div>
             <a target="_blank" href="https://wa.me/911111111111" className="fixed bottom-5 right-5 bg-white rounded-full p-2 shadow-md">

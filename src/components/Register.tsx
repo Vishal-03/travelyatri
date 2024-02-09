@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { safeParse } from "valibot";
 import { useRouter } from "next/navigation";
 import { Image } from "@nextui-org/react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { MaterialSymbolsVisibilityOffRounded, MaterialSymbolsVisibilityRounded } from "./icons";
 import { registerUser } from "@/actions/user/register";
 
@@ -15,6 +15,7 @@ import { registerUser } from "@/actions/user/register";
 interface RegisterProps {
     isUser: boolean;
 }
+
 const Register = (props: RegisterProps) => {
 
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false);

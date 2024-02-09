@@ -1,18 +1,18 @@
 "use client"
 import { getUser } from '@/actions/user/getuser'
 import Navbar from '@/components/home/Navbar'
-import { backgroundColor } from '@/utils/colors'
-import { Image } from '@nextui-org/react'
-import Link from 'next/link'
-import { title } from 'process'
-import { useEffect } from 'react'
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
+import { Card, Image } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
+import Autoplay from "embla-carousel-autoplay"
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
 
 interface Feature {
   title: string;
   description: string;
   image: string;
-
 }
 interface PriceCard {
   title: string;
@@ -22,6 +22,7 @@ interface PriceCard {
   image: string;
 }
 export default function Home() {
+  const route = useRouter();
 
   const init = async () => {
     const user = await getUser({ userid: 1 });
@@ -30,6 +31,35 @@ export default function Home() {
     init();
   }, []);
 
+
+
+  const slider: Feature[] = [
+    {
+      title: "banner one",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
+      image: "/images/banner1.jpg"
+    },
+    {
+      title: "banner two",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
+      image: "/images/banner2.jpg"
+    },
+    {
+      title: "banner three",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
+      image: "/images/banner3.jpg"
+    },
+    {
+      title: "banner four",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
+      image: "/images/fea1.jpeg"
+    },
+    {
+      title: "banner five",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
+      image: "/images/fea2.jpeg"
+    },
+  ];
   const price: PriceCard[] = [
     {
       title: "Basic",
@@ -84,10 +114,51 @@ export default function Home() {
     },
   ];
 
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap() + 1)
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1)
+    })
+  }, [api])
+
   return (
     <>
-      <Navbar />
-      <div className="flex min-h-screen w-full flex-col gap-6 bg-gray-100">
+      <div className='grid place-items-center' id='home'>
+        <Carousel setApi={setApi} className="w-full"
+          plugins={[
+            Autoplay({
+              delay: 4000,
+            }),
+          ]}
+        >
+          <CarouselContent>
+            {slider.map((value: Feature, index) => (
+              <CarouselItem key={index} className='w-full h-screen relative'>
+                <Image src={value.image} alt='error' className='relative object-cover object-center h-screen w-screen'></Image>
+                <div className='w-full h-40 absolute bottom-0 left-0 bg-gradient-to-b from-transparent to-slate-700 flex flex-col'>
+                  <div className="grow"></div>
+                  <h1 className='text-center text-2xl text-white'>{value.title}</h1>
+                  <p className='text-center text-sm w-4/6 mx-auto text-white mb-4'>{value.description}</p>
+                </div>
+                <CarouselNext className='absolute top-[50%] right-6' />
+                <CarouselPrevious className='absolute top-[50%] left-6' />
+
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+      <div className="flex min-h-screen w-full flex-col gap-6 bg-gray-100" id='about'>
         <div className="flex sm:flex-row flex-col grow">
           <div className="flex-1 sm:grid place-items-center order-2">
             <div className='p-10 sm:p-20'>
@@ -96,7 +167,7 @@ export default function Home() {
               <div className="flex flex-col gap-4 mt-4">
                 <div className="text-balck">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti illo quos laudantium quidem alias minima inventore recusandae ratione voluptatibus. Quasi!</div>
                 <div>
-                  <Link href={"/login"} className="mt-6 px-6 py-2 rounded-md font-normal text-blue-500 shadow-md bg-blue-500 bg-opacity-25">Lets Discuss Travling</Link>
+                  <Button onClick={() => route.push("/login")} >Lets Discuss Travling</Button>
                 </div>
               </div>
             </div>
@@ -122,7 +193,7 @@ export default function Home() {
 
         </div>
 
-        <div className=" my-10 flex  w-full flex-col gap-3 py-10">
+        <div className=" my-10 flex  w-full flex-col gap-3 py-10" id='trips'>
           <div className="text-2xl font-semibold text-center">Best Trips Available</div>
           <p className="text-center">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut quo
@@ -135,7 +206,7 @@ export default function Home() {
           {price.map((data: PriceCard, index: number) => <PriceCard key={index} title={data.title} description={data.description} price={data.price} link={data.link} image={data.image} />)}
         </div>
       </div>
-      <footer className="text-gray-600 body-font">
+      <footer className="text-gray-600 body-font" id='contact'>
         <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
           <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
             <span className="ml-3 text-xl">Travel yatri</span>
@@ -168,6 +239,7 @@ export default function Home() {
           </span>
         </div>
       </footer>
+      <Navbar />
     </>
   )
 }
@@ -194,24 +266,24 @@ const FeatureCard = (props: FeatureCardProps) => {
 }
 
 const PriceCard = (props: PriceCard) => {
+  const router = useRouter();
   return (
-    <>
-      <div className="p-4 bg-gray-100 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white hover:shadow-2xl rounded-md">
-        <div className=''>
-          <Image src={props.image} alt='error' className='w-72 h-48 object-cover object-center inline-block rounded-md'></Image>
-        </div>
-        <div>
-          <p className="font-semibold mt-2 text-lg">Best Trip Available</p>
-          <p className="font-normal text-sm">
-            For limited Time only join this lovely trip
-          </p>
-          <div className="flex mt-4 items-center">
-            <h1 className="px-3 text-xl font-bold">$6000</h1>
-            <div className="grow"></div>
-            <button className=" bg-blue-500 py-1 px-4 text-white rounded-md">See More</button>
-          </div>
+    <Card className=' bg-gray-100 p-4 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white hover:shadow-2xl rounded-md'>
+
+      <div className=''>
+        <Image src={props.image} alt='error' className='w-72 h-48 object-cover object-center inline-block rounded-md'></Image>
+      </div>
+      <div>
+        <p className="font-semibold mt-2 text-lg">Best Trip Available</p>
+        <p className="font-normal text-sm">
+          For limited Time only join this lovely trip
+        </p>
+        <div className="flex mt-4 items-center">
+          <h1 className="px-3 text-xl font-bold">$6000</h1>
+          <div className="grow"></div>
+          <Button onClick={() => router.push("/login")}>See More</Button>
         </div>
       </div>
-    </>
+    </Card>
   );
 }

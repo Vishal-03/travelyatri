@@ -131,7 +131,7 @@ const EditProfile = (props: EditProfile) => {
                     {logo == null && props.userdata.avatar != null ? <><Image
                         src={props.userdata.avatar}
                         alt="logo"
-                        className="w-80 h-80 object-cover object-center rounded-md mx-4"
+                        className="w-80 h-80 object-cover object-center rounded-md"
                     /></> : <></>}
 
                     {logo != null ? (
@@ -139,7 +139,7 @@ const EditProfile = (props: EditProfile) => {
                             <Image
                                 src={URL.createObjectURL(logo!)}
                                 alt="logo"
-                                className="w-80 h-80 object-cover object-center rounded-md mx-4"
+                                className="w-80 h-80 object-cover object-center rounded-md"
                             />
                         </div>
                     ) : null}
@@ -157,7 +157,7 @@ const EditProfile = (props: EditProfile) => {
                             onChange={handleLogoChange}
                         />
                     </div>
-                    <div className="flex h-24 w-full   ">
+                    <div className="flex flex-col sm:flex-row sm:h-24 w-full   ">
                         <div className="flex flex-col grow">
                             <label className="p-2 px-4 text-gray-500">
                                 Name
@@ -186,10 +186,8 @@ const EditProfile = (props: EditProfile) => {
                                 value={props.userdata!.email}
                             />
                         </div>
-
                     </div>
-
-                    <div className="flex h-24 w-full ">
+                    <div className="flex w-full flex-col sm:flex-row sm:h-24">
                         <div className="flex flex-col grow">
                             <label className="p-2 px-4 text-gray-500">
                                 Contact
@@ -217,7 +215,7 @@ const EditProfile = (props: EditProfile) => {
                             />
                         </div>
                     </div>
-                    <div className="flex w-full flex-col grow">
+                    <div className="flex w-full flex-col grow mt-2">
                         <label className="px-4 text-gray-500">
                             Address
                         </label>
