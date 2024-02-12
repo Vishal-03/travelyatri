@@ -145,7 +145,7 @@ export default function Home() {
             {slider.map((value: Feature, index) => (
               <CarouselItem key={index} className='w-full h-screen relative'>
                 <Image src={value.image} alt='error' className='relative object-cover object-center h-screen w-screen'></Image>
-                <div className='w-full h-40 absolute bottom-0 left-0 bg-gradient-to-b from-transparent to-slate-700 flex flex-col'>
+                <div className='w-full h-40 absolute bottom-0 left-0 bg-gradient-to-b from-transparent to-slate-700 flex flex-col pb-10'>
                   <div className="grow"></div>
                   <h1 className='text-center text-2xl text-white'>{value.title}</h1>
                   <p className='text-center text-sm w-4/6 mx-auto text-white mb-4'>{value.description}</p>
@@ -165,9 +165,9 @@ export default function Home() {
               <div className="font-semibold text-4xl">Let&apos;s Find a Home</div>
               <div className="font-semibold text-4xl">That&apos;s Perfect for you</div>
               <div className="flex flex-col gap-4 mt-4">
-                <div className="text-balck">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti illo quos laudantium quidem alias minima inventore recusandae ratione voluptatibus. Quasi!</div>
+                <div className="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti illo quos laudantium quidem alias minima inventore recusandae ratione voluptatibus. Quasi!</div>
                 <div>
-                  <Button onClick={() => route.push("/login")} >Lets Discuss Travling</Button>
+                  <Button onClick={() => route.push("/login")} className='bg-[#13c788]' >Lets Discuss Travling</Button>
                 </div>
               </div>
             </div>
@@ -180,32 +180,73 @@ export default function Home() {
 
       {/* new sec */}
 
-      <div className="flex min-h-screen w-full flex-col items-center gap-5 py-20 px-6">
-        <h1 className="text-xl font-bold">What we do?</h1>
+      <div className="min-h-screen w-full flex-col items-center py-20 px-6">
+        <h1 className="text-xl font-semibold text-center">What we do?</h1>
         <p className="text-center">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex, unde?
         </p>
-
-
-        <div className="flex flex-wrap items-center justify-evenly gap-10 py-8 px-4">
-
+        <div className="grid grid-cols-1 lg:grid-cols-2 place-items-center gap-10 py-4 md:w-5/6 lg:w-4/6 mx-auto md:p-0 p-10 mt-6">
           {features.map((data: Feature, index: number) => <FeatureCard key={index} img={data.image} title={data.title} description={data.description} />)}
-
-        </div>
-
-        <div className=" my-10 flex  w-full flex-col gap-3 py-10" id='trips'>
-          <div className="text-2xl font-semibold text-center">Best Trips Available</div>
-          <p className="text-center">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut quo
-            repellat remrem dolore voluptatem recusandae excepturi iure
-            commodi
-          </p>
-        </div>
-
-        <div className="flex flex-wrap justify-evenly gap-6">
-          {price.map((data: PriceCard, index: number) => <PriceCard key={index} title={data.title} description={data.description} price={data.price} link={data.link} image={data.image} />)}
         </div>
       </div>
+
+      <div className='relative h-full'>
+        <div className='w-full h-auto lg:h-screen absolute top-0 left-0 hidden lg:block'>
+          <Image src='/images/homebanner.jpg' alt='error' className='w-screen h-full lg:h-screen object-cover inline-block object-center' />
+        </div>
+        <div className='relative top-0 left-0 h-auto lg:h-screen w-full'>
+          <div className=" my-10 w-full py-10" id='trips'>
+            <div className="text-2xl font-semibold text-center lg:text-white">Best Trips Available</div>
+            <p className="text-center lg;text-white">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut quo
+              repellat remrem dolore voluptatem recusandae excepturi iure
+              commodi
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-6">
+            {price.map((data: PriceCard, index: number) => <PriceCard key={index} title={data.title} description={data.description} price={data.price} link={data.link} image={data.image} />)}
+          </div>
+        </div>
+      </div>
+
+      <div className='py-10 px-6 mt-10'>
+        <h1 className="text-xl font-semibold text-center">Testimonial</h1>
+        <p className="text-center">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex, unde?
+        </p>
+        <div className="flex flex-wrap mt-10">
+          <div className="xl:w-1/4 md:w-1/2 p-4">
+            <div className="bg-[#bff2e1] p-6 rounded-lg">
+              <Image src='/images/user.png' alt='error' className='w-20 h-20 mb-4' ></Image>
+              <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Chichen Itza</h2>
+              <p className="leading-relaxed text-base">Fingerstache flexitarian street art 8-bit waistcoat. Distillery hexagon disrupt edison bulbche.</p>
+            </div>
+          </div>
+          <div className="xl:w-1/4 md:w-1/2 p-4">
+            <div className="bg-[#bff2e1] p-6 rounded-lg">
+              <Image src='/images/user.png' alt='error' className='w-20 h-20 mb-4' ></Image>
+              <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Chichen Itza</h2>
+              <p className="leading-relaxed text-base">Fingerstache flexitarian street art 8-bit waistcoat. Distillery hexagon disrupt edison bulbche.</p>
+            </div>
+          </div>
+          <div className="xl:w-1/4 md:w-1/2 p-4">
+            <div className="bg-[#bff2e1] p-6 rounded-lg">
+              <Image src='/images/user.png' alt='error' className='w-20 h-20 mb-4' ></Image>
+              <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Chichen Itza</h2>
+              <p className="leading-relaxed text-base">Fingerstache flexitarian street art 8-bit waistcoat. Distillery hexagon disrupt edison bulbche.</p>
+            </div>
+          </div>
+          <div className="xl:w-1/4 md:w-1/2 p-4">
+            <div className="bg-[#bff2e1] p-6 rounded-lg">
+              <Image src='/images/user.png' alt='error' className='w-20 h-20 mb-4' ></Image>
+              <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Chichen Itza</h2>
+              <p className="leading-relaxed text-base">Fingerstache flexitarian street art 8-bit waistcoat. Distillery hexagon disrupt edison bulbche.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <footer className="text-gray-600 body-font" id='contact'>
         <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
           <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
@@ -254,12 +295,17 @@ interface FeatureCardProps {
 const FeatureCard = (props: FeatureCardProps) => {
   return (
     <>
-      <div className="bg-gray-100 w-60 shadow-lg transition-all duration-200  ease-in-out   hover:bg-white hover:shadow-2xl p-4 rounded-md">
-        <Image src={props.img} alt='error' className='w-52 h-40 object-cover object-center rounded-md' />
-        <div className="pt-3 text-lg font-semibold text-center">{props.title}</div>
-        <p className="text-center text-sm">
-          {props.description}
-        </p>
+      <div className="bg-white flex gap-4 shadow-lg transition-all duration-200  ease-in-out hover:bg-gradient-to-t hover:from-[#d3f7eb] hover:to-[#bff2e1]   hover:bg-[#d3f7eb] hover:shadow-2xl p-4 rounded-md">
+        <div className=" flex-shrink-0">
+          <Image src={props.img} alt='error' className='inline-block  w-36 h-36 object-cover object-center rounded-md' />
+        </div>
+        <div>
+
+          <div className="pt-3 text-lg font-semibold text-left">{props.title}</div>
+          <p className=" text-justify text-sm mt-2">
+            {props.description}
+          </p>
+        </div>
       </div>
     </>
   );
@@ -268,21 +314,16 @@ const FeatureCard = (props: FeatureCardProps) => {
 const PriceCard = (props: PriceCard) => {
   const router = useRouter();
   return (
-    <Card className=' bg-gray-100 p-4 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white hover:shadow-2xl rounded-md'>
-
-      <div className=''>
-        <Image src={props.image} alt='error' className='w-72 h-48 object-cover object-center inline-block rounded-md'></Image>
-      </div>
+    <Card className=' bg-gray-100 w-64 p-2 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white hover:shadow-2xl rounded-md'>
+      <Image src={props.image} alt='error' className='w-64 h-48 object-cover object-center inline-block rounded-md'></Image>
       <div>
         <p className="font-semibold mt-2 text-lg">Best Trip Available</p>
+        <h1 className="text-sm font-normal text-gray-600">$6000</h1>
+
         <p className="font-normal text-sm">
           For limited Time only join this lovely trip
         </p>
-        <div className="flex mt-4 items-center">
-          <h1 className="px-3 text-xl font-bold">$6000</h1>
-          <div className="grow"></div>
-          <Button onClick={() => router.push("/login")}>See More</Button>
-        </div>
+        <Button onClick={() => router.push("/login")} className='bg-[#13c788] w-full mt-4'>See More</Button>
       </div>
     </Card>
   );

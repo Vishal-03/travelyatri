@@ -48,7 +48,7 @@ const Profile = async () => {
                                 <Link href={"/dashboard/profile/updateprofile"} className="flex-1 inline-block rounded-md bg-blue-500 text-white py-1 w-full mt-4 font-semibold text-center">Edit Profile</Link>
                                 {userdata!.password != null ?
                                     <>
-                                        <Link href={"/dashboard/profile/changepassword"} className="flex-1 inline-block rounded-md bg-red-500 text-white py-1 w-full mt-4 font-semibold text-center">Change Password</Link>
+                                        <Link href={"/dashboard/profile/changepassword"} className="flex-1 inline-block rounded-md  text-white py-1 w-full mt-4 font-semibold text-center">Change Password</Link>
                                     </> : <></>}
 
                             </CardFooter>
