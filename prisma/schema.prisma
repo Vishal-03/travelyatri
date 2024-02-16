@@ -47,20 +47,20 @@ enum TripCategory {
 }
 
 model user {
-  id            Int       @id @default(autoincrement())
+  id            Int        @id @default(autoincrement())
   avatar        String?
   name          String?
-  email         String    @unique
+  email         String     @unique
   password      String?
   contact       String?
   secondcontact String?
-  agency        agency?   @relation(fields: [agencyId], references: [id])
+  agency        agency?    @relation(fields: [agencyId], references: [id])
   agencyId      Int?
-  role          Role      @default(NONE)
-  address       String?   @db.MediumText
-  status        UserStatus    @default(ACTIVE)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  role          Role       @default(NONE)
+  address       String?    @db.MediumText
+  status        UserStatus @default(ACTIVE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   deletedAt     DateTime?
   trips         trips[]
 }
@@ -104,4 +104,15 @@ model agency {
   deletedAt   DateTime?
   user        user[]
   trips       trips[]
+}
+
+model contact {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String
+  contact   String
+  message   String    @db.MediumText
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 }

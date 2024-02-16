@@ -1,13 +1,35 @@
-"use client"
-import { getUser } from '@/actions/user/getuser'
-import Navbar from '@/components/home/Navbar'
-import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
-import { Card, Image } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import Autoplay from "embla-carousel-autoplay"
-import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
-
+"use client";
+import Navbar from "@/components/home/Navbar";
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
+  Accordion,
+  AccordionItem,
+  Card,
+  Image,
+  Input,
+} from "@nextui-org/react";
+import { use, useEffect, useRef, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import {
+  Fa6BrandsFacebook,
+  Fa6BrandsInstagram,
+  Fa6BrandsWhatsapp,
+} from "@/components/icons";
+import { email, safeParse } from "valibot";
+import { ContactSchema } from "@/schemas/contact";
+import { toast } from "react-toastify";
+import { createContact } from "@/actions/contact/addcontact";
+import { trips } from "@prisma/client";
+import { getTrips } from "@/actions/trip/gettrips";
 
 interface Feature {
   title: string;
@@ -23,118 +45,166 @@ interface PriceCard {
 }
 export default function Home() {
   const route = useRouter();
+  const [isLoading, setIsLoding] = useState<boolean>(true);
+
+  const [trips, setTrips] = useState<trips[]>([]);
 
   const init = async () => {
-    const user = await getUser({ userid: 1 });
-  }
+    setIsLoding(true);
+    const tripsres = await getTrips({});
+    if (tripsres.status) setTrips(tripsres.data!);
+
+    setIsLoding(false);
+  };
   useEffect(() => {
     init();
   }, []);
 
-
-
   const slider: Feature[] = [
     {
-      title: "banner one",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
-      image: "/images/banner1.jpg"
+      title: "Nature's Duality",
+      description:
+        "Tranquil valley nestled below a dazzling, sunlight-kissed glacier peak.",
+      image: "/img/img1.jpg",
     },
     {
-      title: "banner two",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
-      image: "/images/banner2.jpg"
+      title: "Village Under Giant's Gaze",
+      description:
+        "Colorful houses nestled in a green valley, watched over by a towering mountain.",
+      image: "/img/img2.jpg",
     },
     {
-      title: "banner three",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
-      image: "/images/banner3.jpg"
+      title: "Green Majesty",
+      description:
+        "Sunlit river winds through verdant mountains, crowned by clouds.",
+      image: "/img/img3.jpg",
     },
     {
-      title: "banner four",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
-      image: "/images/fea1.jpeg"
-    },
-    {
-      title: "banner five",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
-      image: "/images/fea2.jpeg"
+      title: "Stone & Stream",
+      description:
+        "Majestic Indian temple beside a gentle river, with mountains as its backdrop.",
+      image: "/img/img4.png",
     },
   ];
   const price: PriceCard[] = [
     {
       title: "Basic",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
       price: 100,
       link: "/login",
-      image: "/images/fea1.jpeg"
+      image: "/images/fea1.jpeg",
     },
     {
       title: "Basic",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
       price: 100,
       link: "/login",
-      image: "/images/fea1.jpeg"
+      image: "/images/fea1.jpeg",
     },
     {
       title: "Basic",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
       price: 100,
       link: "/login",
-      image: "/images/fea1.jpeg"
+      image: "/images/fea1.jpeg",
     },
     {
       title: "Basic",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, voluptatibus.",
       price: 100,
       link: "/login",
-      image: "/images/fea1.jpeg"
-    }
+      image: "/images/fea1.jpeg",
+    },
   ];
 
   const features: Feature[] = [
     {
-      title: "Communication",
-      description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure pariatur ex voluptatem consequuntur harum, numquam facere et",
-      image: "/images/fea1.jpeg"
+      title: "Buy trips - Explore with ease, experience affordability.",
+      description:
+        "Discover a world of curated adventures at budget-friendly prices. Browse handpicked itineraries designed for every wanderer's heart. Book your dream vacation with just a few clicks, secure in the knowledge you're getting the best value. Leave the planning to us, focus on making memories that last a lifetime.",
+      image: "/images/fea1.jpeg",
     },
     {
-      title: "Communication",
-      description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure pariatur ex voluptatem consequuntur harum, numquam facere et",
-      image: "/images/fea2.jpeg"
-    },
-    {
-      title: "Communication",
-      description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure pariatur ex voluptatem consequuntur harum, numquam facere et",
-      image: "/images/fea4.jpeg"
-    },
-    {
-      title: "Communication",
-      description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure pariatur ex voluptatem consequuntur harum, numquam facere et",
-      image: "/images/fea5.jpeg"
+      title:
+        "Create trips - Design your own journey, unleash your inner explorer",
+      description:
+        "Dream bigger, plan further. Craft a personalized itinerary tailored to your unique desires. Connect with trusted local agencies, access their expertise and insider knowledge. Build your trip brick by brick, choosing experiences that ignite your passions. Login, collaborate, and embark on an adventure that's truly yours.",
+      image: "/images/fea2.jpeg",
     },
   ];
 
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
-  const [count, setCount] = useState(0)
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (!api) {
-      return
+      return;
     }
 
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap() + 1)
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
 
     api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1)
-    })
-  }, [api])
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const contactRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+
+  const submit = async () => {
+    const result = safeParse(ContactSchema, {
+      name: nameRef.current!.value,
+      email: emailRef.current!.value,
+      contact: contactRef.current!.value,
+      message: messageRef.current!.value,
+    });
+
+    if (result.success) {
+      const createdcontact = await createContact({
+        name: result.output.name,
+        mobile: result.output.contact,
+        email: result.output.email,
+        message: result.output.message,
+      });
+
+      if (!createdcontact.status) return toast.error(createdcontact.message);
+      toast.success(createdcontact.message);
+      nameRef.current!.value = "";
+      emailRef.current!.value = "";
+      contactRef.current!.value = "";
+      messageRef.current!.value = "";
+    } else {
+      let errorMessage = "";
+      if (result.issues[0].input) {
+        errorMessage = result.issues[0].message;
+      } else {
+        errorMessage = result.issues[0].path![0].key + " is required";
+      }
+      toast.error(errorMessage);
+    }
+  };
+
+  if (isLoading)
+    return (
+      <div className="h-screen w-full grid place-items-center text-3xl text-gray-600 bg-gray-200">
+        Loading...
+      </div>
+    );
 
   return (
     <>
-      <div className='grid place-items-center' id='home'>
-        <Carousel setApi={setApi} className="w-full"
+      <div className="grid place-items-center" id="home">
+        <Carousel
+          setApi={setApi}
+          className="w-full"
           plugins={[
             Autoplay({
               delay: 4000,
@@ -143,61 +213,107 @@ export default function Home() {
         >
           <CarouselContent>
             {slider.map((value: Feature, index) => (
-              <CarouselItem key={index} className='w-full h-screen relative'>
-                <Image src={value.image} alt='error' className='relative object-cover object-center h-screen w-screen'></Image>
-                <div className='w-full h-40 absolute bottom-0 left-0 bg-gradient-to-b from-transparent to-slate-700 flex flex-col pb-10'>
+              <CarouselItem key={index} className="w-full h-screen relative">
+                <Image
+                  removeWrapper
+                  src={value.image}
+                  alt="error"
+                  className="relative object-cover object-center h-screen w-full"
+                ></Image>
+                <div className="w-full h-40 absolute bottom-0 left-0 bg-gradient-to-b from-transparent to-slate-700 flex flex-col pb-10">
                   <div className="grow"></div>
-                  <h1 className='text-center text-2xl text-white'>{value.title}</h1>
-                  <p className='text-center text-sm w-4/6 mx-auto text-white mb-4'>{value.description}</p>
+                  <h1 className="text-center text-2xl text-white font-title">
+                    {value.title}
+                  </h1>
+                  <p className="text-center text-sm w-4/6 mx-auto text-white mb-4 font-para">
+                    {value.description}
+                  </p>
                 </div>
-                <CarouselNext className='absolute top-[50%] right-6' />
-                <CarouselPrevious className='absolute top-[50%] left-6' />
-
+                <CarouselNext className="absolute top-[50%] right-6" />
+                <CarouselPrevious className="absolute top-[50%] left-6" />
               </CarouselItem>
             ))}
           </CarouselContent>
         </Carousel>
       </div>
-      <div className="flex min-h-screen w-full flex-col gap-6 bg-gray-100" id='about'>
+      <div
+        className="flex min-h-screen w-full flex-col gap-6 bg-gray-100"
+        id="about"
+      >
         <div className="flex sm:flex-row flex-col grow">
           <div className="flex-1 sm:grid place-items-center order-2">
-            <div className='p-10 sm:p-20'>
-              <div className="font-semibold text-4xl">Let&apos;s Find a Home</div>
-              <div className="font-semibold text-4xl">That&apos;s Perfect for you</div>
+            <div className="p-10 sm:p-20">
+              <div className="font-semibold text-4xl font-title">
+                Let&apos;s Find a Home
+              </div>
+              <div className="font-semibold text-4xl font-title">
+                That&apos;s Perfect for you
+              </div>
               <div className="flex flex-col gap-4 mt-4">
-                <div className="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti illo quos laudantium quidem alias minima inventore recusandae ratione voluptatibus. Quasi!</div>
+                <div className="text-gray-600 font-para">
+                  Craving an Indian adventure but worried about the cost? Fear
+                  not! We unlock India&apos;s magic on a budget. Trek the
+                  Himalayas, sail Kerala backwaters, or explore hidden gems -
+                  all while saving rupees! Homestays, street eats, and local
+                  transport await. Join us, ditch the tourist traps, and
+                  experience India&apos;s soul, affordably!
+                </div>
                 <div>
-                  <Button onClick={() => route.push("/login")} className='bg-[#13c788]' >Lets Discuss Travling</Button>
+                  <Button
+                    onClick={() => route.push("/login")}
+                    className="bg-[#13c788]"
+                  >
+                    Lets Discuss Travling
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
           <div className="grid place-items-center flex-1 order-1">
-            <Image src='/images/homebg.png' alt='error' className="w-80 sm:w-full h-full" />
+            <Image
+              src="/images/homebg.png"
+              alt="error"
+              className="w-80 sm:w-full h-full"
+            />
           </div>
         </div>
       </div>
 
       {/* new sec */}
 
-      <div className="min-h-screen w-full flex-col items-center py-20 px-6">
-        <h1 className="text-xl font-semibold text-center">What we do?</h1>
-        <p className="text-center">
+      <div className="min-h-screen w-full flex-col items-center py-20">
+        <h1 className="text-xl font-semibold text-center md:text-2xl font-title">
+          What we do?
+        </h1>
+        <p className="text-center font-para">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex, unde?
         </p>
-        <div className="grid grid-cols-1 lg:grid-cols-2 place-items-center gap-10 py-4 md:w-5/6 lg:w-4/6 mx-auto md:p-0 p-10 mt-6">
-          {features.map((data: Feature, index: number) => <FeatureCard key={index} img={data.image} title={data.title} description={data.description} />)}
+        <div className="py-4 md:w-5/6 lg:w-4/6 mx-auto md:p-0 p-10 mt-6 font-para">
+          {features.map((data: Feature, index: number) => (
+            <FeatureCard
+              key={index}
+              img={data.image}
+              title={data.title}
+              description={data.description}
+            />
+          ))}
         </div>
       </div>
 
-      <div className='relative h-full'>
-        <div className='w-full h-auto lg:h-screen absolute top-0 left-0 hidden lg:block'>
-          <Image src='/images/homebanner.jpg' alt='error' className='w-screen h-full lg:h-screen object-cover inline-block object-center' />
+      <div className="relative h-full">
+        <div className="w-full h-auto lg:h-screen absolute top-0 left-0 hidden lg:block ">
+          <Image
+            src="/images/homebanner.jpg"
+            alt="error"
+            className="grayscale-[50%] w-screen h-full lg:h-screen object-cover inline-block object-center"
+          />
         </div>
-        <div className='relative top-0 left-0 h-auto lg:h-screen w-full'>
-          <div className=" my-10 w-full py-10" id='trips'>
-            <div className="text-2xl font-semibold text-center lg:text-white">Best Trips Available</div>
-            <p className="text-center lg;text-white">
+        <div className="relative top-0 left-0 h-auto lg:h-screen w-full">
+          <div className=" my-10 w-full py-10" id="trips">
+            <div className="text-2xl font-semibold text-center lg:text-white font-title">
+              Best Trips Available
+            </div>
+            <p className="text-center lg:text-white font-para">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut quo
               repellat remrem dolore voluptatem recusandae excepturi iure
               commodi
@@ -205,86 +321,238 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-6">
-            {price.map((data: PriceCard, index: number) => <PriceCard key={index} title={data.title} description={data.description} price={data.price} link={data.link} image={data.image} />)}
+            {trips.slice(0, 4).map((data: trips, index: number) => (
+              <PriceCard
+                key={index}
+                title={data.name!}
+                description={data.description!}
+                price={data.price}
+                link={data.id.toString()!}
+                image={data.image!}
+              />
+            ))}
           </div>
         </div>
       </div>
 
-      <div className='py-10 px-6 mt-10'>
-        <h1 className="text-xl font-semibold text-center">Testimonial</h1>
-        <p className="text-center">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex, unde?
-        </p>
-        <div className="flex flex-wrap mt-10">
-          <div className="xl:w-1/4 md:w-1/2 p-4">
-            <div className="bg-[#bff2e1] p-6 rounded-lg">
-              <Image src='/images/user.png' alt='error' className='w-20 h-20 mb-4' ></Image>
-              <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Chichen Itza</h2>
-              <p className="leading-relaxed text-base">Fingerstache flexitarian street art 8-bit waistcoat. Distillery hexagon disrupt edison bulbche.</p>
+      <div className="py-10 px-6 mt-10">
+        <h1 className="text-xl font-semibold text-center md:text-3xl font-title">
+          Testimonial
+        </h1>
+        <p className="text-center">Some of our user best experiences</p>
+        <div className="flex flex-wrap justify-center items-center mt-10">
+          <div className="w-80 p-4">
+            <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+              <Image
+                src="/user/david.jpg"
+                alt="error"
+                className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+              ></Image>
+              <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                David T., Budget Foodie
+              </h2>
+              <p className="leading-relaxed text-base font-para">
+                Wow, your street food tours in Mexico were incredible! Not only
+                delicious, but they introduced me to hidden gems and local
+                culture. All on a budget that fit my backpacker wallet!
+              </p>
             </div>
           </div>
-          <div className="xl:w-1/4 md:w-1/2 p-4">
-            <div className="bg-[#bff2e1] p-6 rounded-lg">
-              <Image src='/images/user.png' alt='error' className='w-20 h-20 mb-4' ></Image>
-              <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Chichen Itza</h2>
-              <p className="leading-relaxed text-base">Fingerstache flexitarian street art 8-bit waistcoat. Distillery hexagon disrupt edison bulbche.</p>
+          <div className="p-4 w-80">
+            <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+              <Image
+                src="/user/emily.jpg"
+                alt="error"
+                className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+              ></Image>
+              <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                Emily & Alex W., Honeymooners
+              </h2>
+              <p className="leading-relaxed text-base font-para">
+                We found the most romantic Bali escape on your site, complete
+                with luxurious accommodation and unforgettable experiences. It
+                was truly paradise found, at a price that didn&apos;t break the
+                bank!
+              </p>
             </div>
           </div>
-          <div className="xl:w-1/4 md:w-1/2 p-4">
-            <div className="bg-[#bff2e1] p-6 rounded-lg">
-              <Image src='/images/user.png' alt='error' className='w-20 h-20 mb-4' ></Image>
-              <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Chichen Itza</h2>
-              <p className="leading-relaxed text-base">Fingerstache flexitarian street art 8-bit waistcoat. Distillery hexagon disrupt edison bulbche.</p>
+          <div className="p-4 w-80">
+            <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+              <Image
+                src="/user/priya.jpg"
+                alt="error"
+                className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+              ></Image>
+              <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                Priya S., Budget Traveler
+              </h2>
+              <p className="leading-relaxed text-base font-para">
+                Found the perfect Kerala backwaters tour on your site!
+                Affordable, hassle-free, and filled with incredible experiences.
+                Thanks for showing me the hidden beauty of Kerala!
+              </p>
             </div>
           </div>
-          <div className="xl:w-1/4 md:w-1/2 p-4">
-            <div className="bg-[#bff2e1] p-6 rounded-lg">
-              <Image src='/images/user.png' alt='error' className='w-20 h-20 mb-4' ></Image>
-              <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Chichen Itza</h2>
-              <p className="leading-relaxed text-base">Fingerstache flexitarian street art 8-bit waistcoat. Distillery hexagon disrupt edison bulbche.</p>
+          <div className="p-4 w-80">
+            <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+              <Image
+                src="/user/rahul.jpg"
+                alt="error"
+                className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+              ></Image>
+              <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                Rahul & Preeti M., Family Travelers
+              </h2>
+              <p className="leading-relaxed text-base font-para">
+                Booked our dream Ladakh adventure through you. Everything was
+                smooth, and the price fit our budget perfectly. Memories made,
+                smiles guaranteed!art 8-bit waistcoat.
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      <footer className="text-gray-600 body-font" id='contact'>
+      {/* Contact us */}
+      <div
+        className="w-full px-6 flex justify-center items-center"
+        id="contact"
+      >
+        <div className="hidden lg:flex p-2">
+          <Image alt="Contact us" src="images/home_contact.svg" removeWrapper />
+        </div>
+        <div className="w-full md:w-3/4 justify-center items-center">
+          <h1 className="text-3xl text-center font-title">Contact Us</h1>
+          <div className="w-full mt-10 flex flex-col gap-6 font-para">
+            <input
+              ref={nameRef}
+              type="name"
+              placeholder="Enter Your Name"
+              className="px-5 py-2 rounded-lg border-[#1bc48b] border-2 outline-none"
+            />
+            <input
+              ref={emailRef}
+              type="email"
+              placeholder="example@travelyatri.com"
+              className="px-5 py-2 rounded-lg border-[#1bc48b] border-2 outline-none"
+            />
+            <input
+              ref={contactRef}
+              type="tel"
+              placeholder="Enter Your Phone Number"
+              className="px-5 py-2 rounded-lg border-[#1bc48b] border-2 outline-none"
+            />
+            <textarea
+              ref={messageRef}
+              placeholder="Enter Your Message"
+              className="px-5 py-2 rounded-lg border-[#1bc48b] border-2 outline-none resize-none h-20"
+            />
+
+            <Button className="bg-[#1bc48b]" onClick={submit}>
+              Submit
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className="w-full py-20">
+        <h1 className="text-xl font-semibold text-center md:text-3xl font-title">
+          FAQ
+        </h1>
+        <p className="text-center">Frequently Asked Questions</p>
+
+        <div className="px-6 md:p-0 md:w-4/6 mx-auto mt-6">
+          <Accordion variant="bordered">
+            <AccordionItem
+              key="1"
+              aria-label="FAQ1"
+              title="1. Are your trips truly affordable?"
+            >
+              Yes! We understand the importance of budget travel in India. We
+              offer a range of pre-planned itineraries at different price
+              points, catering to various budgets. Additionally, our
+              &quot;Create Trips&quot; section allows you to customize your
+              journey within your specific budget constraints.
+            </AccordionItem>
+            <AccordionItem
+              key="2"
+              aria-label="FAQ2"
+              title="2. Is it safe to travel in India on a budget?"
+            >
+              India is generally a safe country for travelers, regardless of
+              budget. However, like any place, common sense and basic
+              precautions are essential. We provide safety tips and resources on
+              our website, and work with reputable local partners who ensure
+              your well-being throughout your trip.
+            </AccordionItem>
+            <AccordionItem
+              key="3"
+              aria-label="FAQ3"
+              title="3. Do I need to speak Hindi to travel in India?"
+            >
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi
+              tempore aliquam mollitia amet similique voluptatem dolores hic a
+              laboriosam eligendi incidunt at iusto nostrum fugiat itaque,
+              quisquam impedit, sunt placeat reprehenderit! Sunt, culpa.
+              Exercitationem pariatur consectetur necessitatibus beatae iure
+              molestias.
+            </AccordionItem>
+            <AccordionItem
+              key="4"
+              aria-label="FAQ4"
+              title="4. What kind of experiences can I expect on your trips?"
+            >
+              Our experiences range from cultural immersions and historical
+              explorations to adventure activities and nature getaways. We cater
+              to diverse interests and offer both curated and personalized
+              options.
+            </AccordionItem>
+            <AccordionItem
+              key="5"
+              aria-label="FAQ5"
+              title="5. Do you offer deals and discounts?"
+            >
+              Absolutely! We regularly offer seasonal promotions and partner
+              discounts. Sign up for our newsletter or follow us on social media
+              to stay updated on the latest deals.
+            </AccordionItem>
+            <AccordionItem
+              key="6"
+              aria-label="FAQ6"
+              title="6. Can I travel solo using your services?"
+            >
+              Yes, we have several solo-friendly trip options and resources to
+              ensure your safety and comfort while traveling independently.
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </div>
+
+      <footer className="text-gray-600 body-font">
         <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
           <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
-            <span className="ml-3 text-xl">Travel yatri</span>
+            <span className="ml-3 text-xl font-title">Travel yatri</span>
           </a>
-          <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4"> 2024-2025 &copy; Travel Yatri
+          <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 font-para">
+            {" "}
+            2024-2025 &copy; Travel Yatri
           </p>
-          <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
-            <a className="text-gray-500">
-              <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-              </svg>
+          <span className="inline-flex gap-4 sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+            <a>
+              <Fa6BrandsInstagram className="text-2xl text-gray-500 hover:text-rose-500 cursor-pointer" />
             </a>
-            <a className="ml-3 text-gray-500">
-              <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
-              </svg>
+            <a>
+              <Fa6BrandsFacebook className="text-2xl text-gray-500 hover:text-blue-500 cursor-pointer" />
             </a>
-            <a className="ml-3 text-gray-500">
-              <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
-              </svg>
-            </a>
-            <a className="ml-3 text-gray-500">
-              <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="0" className="w-5 h-5" viewBox="0 0 24 24">
-                <path stroke="none" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
-                <circle cx="4" cy="4" r="2" stroke="none"></circle>
-              </svg>
+            <a>
+              <Fa6BrandsWhatsapp className="text-2xl text-gray-500 hover:text-green-500 cursor-pointer" />
             </a>
           </span>
         </div>
       </footer>
       <Navbar />
     </>
-  )
+  );
 }
-
 
 interface FeatureCardProps {
   img: string;
@@ -295,36 +563,52 @@ interface FeatureCardProps {
 const FeatureCard = (props: FeatureCardProps) => {
   return (
     <>
-      <div className="bg-white flex gap-4 shadow-lg transition-all duration-200  ease-in-out hover:bg-gradient-to-t hover:from-[#d3f7eb] hover:to-[#bff2e1]   hover:bg-[#d3f7eb] hover:shadow-2xl p-4 rounded-md">
+      <div className="bg-white flex gap-4 transition-all duration-200  ease-in-out p-4 rounded-md flex-col md:flex-row">
         <div className=" flex-shrink-0">
-          <Image src={props.img} alt='error' className='inline-block  w-36 h-36 object-cover object-center rounded-md' />
+          <Image
+            src={props.img}
+            alt="error"
+            className="inline-block  w-36 h-36 object-cover object-center rounded-md"
+          />
         </div>
         <div>
-
-          <div className="pt-3 text-lg font-semibold text-left">{props.title}</div>
-          <p className=" text-justify text-sm mt-2">
-            {props.description}
-          </p>
+          <div className="pt-3 text-lg font-semibold text-left">
+            {props.title}
+          </div>
+          <p className=" text-justify text-sm mt-2">{props.description}</p>
         </div>
       </div>
     </>
   );
-}
+};
 
 const PriceCard = (props: PriceCard) => {
   const router = useRouter();
   return (
-    <Card className=' bg-gray-100 w-64 p-2 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white hover:shadow-2xl rounded-md'>
-      <Image src={props.image} alt='error' className='w-64 h-48 object-cover object-center inline-block rounded-md'></Image>
+    <Card className=" bg-gray-100 w-64 p-2 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white hover:shadow-2xl rounded-md">
+      <Image
+        src={props.image}
+        alt="error"
+        className="w-64 h-48 object-cover object-center inline-block rounded-md"
+      ></Image>
       <div>
-        <p className="font-semibold mt-2 text-lg">Best Trip Available</p>
-        <h1 className="text-sm font-normal text-gray-600">$6000</h1>
+        <p className="font-semibold mt-2 text-lg font-title">
+          Best Trip Available
+        </p>
+        <h1 className="text-sm font-normal text-gray-600 font-para">
+          {props.price}
+        </h1>
 
-        <p className="font-normal text-sm">
+        <p className="font-normal text-sm font-para">
           For limited Time only join this lovely trip
         </p>
-        <Button onClick={() => router.push("/login")} className='bg-[#13c788] w-full mt-4'>See More</Button>
+        <Button
+          onClick={() => router.push(`/dashboard/trips/${props.link}`)}
+          className="bg-[#1bc48b] w-full mt-4 hover:bg-transparent border-[#1bc48b] border-2 hover:text-[#1bc48b]"
+        >
+          See More
+        </Button>
       </div>
     </Card>
   );
-}
+};
