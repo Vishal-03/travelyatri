@@ -66,26 +66,27 @@ model user {
 }
 
 model trips {
-  id                   Int          @id @default(autoincrement())
+  id                   Int            @id @default(autoincrement())
   name                 String?
   start                DateTime
   end                  DateTime
   image                String?
   price                Int
-  trip_type            TripType     @default(NONE)
-  category             TripCategory @default(NONE)
-  description          String?      @db.MediumText
+  trip_type            TripType       @default(NONE)
+  category             TripCategory   @default(NONE)
+  description          String?        @db.MediumText
   location             String?
-  location_description String?      @db.MediumText
+  location_description String?        @db.MediumText
   number_of_people     Int
-  status               Status       @default(ACTIVE)
-  createdAt            DateTime     @default(now())
-  create               user         @relation(fields: [createdBy], references: [id])
+  status               Status         @default(ACTIVE)
+  createdAt            DateTime       @default(now())
+  create               user           @relation(fields: [createdBy], references: [id])
   createdBy            Int
-  agency               agency       @relation(fields: [agencyId], references: [id])
+  agency               agency         @relation(fields: [agencyId], references: [id])
   agencyId             Int
-  updatedAt            DateTime     @updatedAt
+  updatedAt            DateTime       @updatedAt
   deletedAt            DateTime?
+  trips_images         trips_images[]
 }
 
 model agency {
@@ -112,6 +113,16 @@ model contact {
   email     String
   contact   String
   message   String    @db.MediumText
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model trips_images {
+  id        Int       @id @default(autoincrement())
+  image     String
+  trip      trips     @relation(fields: [tripId], references: [id])
+  tripId    Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?

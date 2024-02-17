@@ -8,6 +8,7 @@ interface TripProps {
   trip: any;
 }
 const ViewTrips = (props: TripProps) => {
+  console.log(props.trip);
   const start_date = new Date(props.trip?.start!);
   const start = `${start_date.getDate()}-${
     start_date.getMonth() + 1
@@ -19,11 +20,12 @@ const ViewTrips = (props: TripProps) => {
   return (
     <>
       <div className="p-6">
-        <div className=" w-full bg-white shadow-xl rounded-xl p-4 flex gap-4">
+        <div className="w-full bg-white shadow-xl rounded-xl p-4 flex flex-col md:flex-row gap-4">
           <Image
+            removeWrapper
             alt="error"
             src={props.trip.image!}
-            className="w-60 h-60 rounded-lg object-cover object-center"
+            className=" w-full h-60 md:w-60 md:h-60 rounded-lg object-cover object-center"
           />
           <div className="grow flex flex-col">
             <h1 className="text-black font-semibold text-2xl">
@@ -33,7 +35,7 @@ const ViewTrips = (props: TripProps) => {
               <p>{props.trip?.description}</p>
             </div>
             <div className="grow"></div>
-            <div className="flex bg-blue-500 p-2 rounded-lg bg-opacity-20 gap-2">
+            <div className="flex bg-blue-500 p-2 rounded-lg bg-opacity-20 gap-2 mt-4 md:m-0  ">
               <Image
                 alt="error"
                 src={props.trip.create.agency.logo}
@@ -80,6 +82,22 @@ const ViewTrips = (props: TripProps) => {
           <p className="text-lg font-normal">{props.trip?.location}</p>
           <p className="text-gray-500">{props.trip?.location_description}</p>
         </div>
+        {props.trip?.trips_images.length > 0 && (
+          <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4">
+            <h1 className="text-2xl mb-4 font-semibold text-center">Gallery</h1>
+            <div className=" flex flex-wrap gap-4 justify-center">
+              {props.trip?.trips_images.map((image: any, index: number) => (
+                <Image
+                  key={index}
+                  removeWrapper
+                  alt="error"
+                  src={image.image}
+                  className="w-60 h-60 rounded-lg object-cover object-center"
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

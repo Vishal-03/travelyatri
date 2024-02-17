@@ -11,7 +11,7 @@ export const getTrips = async (
 ): Promise<ApiResponseType<trips[] | null>> => {
   try {
     const trips: trips[] = await prisma.trips.findMany({
-      include: { agency: true },
+      include: { agency: true, trips_images: true },
     });
     if (!trips) {
       return {

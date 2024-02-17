@@ -1,7 +1,13 @@
 "use server";
 import { ApiResponseType } from "@/models/responnse";
 import { errorToString } from "@/utils/methods";
-import { TripCategory, TripType, trips, user } from "@prisma/client";
+import {
+  TripCategory,
+  TripType,
+  trips,
+  trips_images,
+  user,
+} from "@prisma/client";
 import prisma from "../../../prisma/database";
 import { mkdir, writeFile } from "fs/promises";
 import { revalidatePath } from "next/cache";
@@ -115,5 +121,86 @@ export const uploadtripLogo = async (
       message: errorToString(e),
       apiurl: "uploadtripLogo",
     };
+  }
+};
+
+export const uploadtripImage = async (
+  args: updatetriplogoPayload
+): Promise<ApiResponseType<string | null>> => {
+  try {
+    const file_name = `${new Date().getTime()}_image.${args.name
+      .split(".")
+      .pop()}`;
+    const buffer = Buffer.from(args.arrayBuffer, "base64");
+    const file_dir = process.cwd() + `/upload/trips/image`;
+    const file_path = `${file_dir}/${file_name}`;
+    await ensureDirectory(file_dir);
+    await writeFile(file_path, buffer);
+    return {
+      status: true,
+      data: `/upload/trips/image/${file_name}`,
+      message: "Image uploaded",
+      apiurl: "uploadtripImage",
+    };
+  } catch (e) {
+    return {
+      status: false,
+      data: null,
+      message: errorToString(e),
+      apiurl: "uploadtripImage",
+    };
+  }
+};
+
+type uploadTripsPayload = {
+  path: string;
+  id: number;
+};
+
+export const uploadimageTrip = async (
+  args: uploadTripsPayload
+): Promise<ApiResponseType<trips_images | null>> => {
+  try {
+    const tripfound = await prisma.trips.findUnique({
+      where: { id: args.id },
+      include: { agency: true },
+    });
+    if (!tripfound)
+      return {
+        status: false,
+        data: null,
+        message: "Trips User not found",
+        apiurl: "uploadimageTrip",
+      };
+
+    const tripimage: trips_images = await prisma.trips_images.create({
+      data: {
+        tripId: args.id,
+        image: args.path,
+      },
+    });
+
+    if (!tripimage)
+      return {
+        status: false,
+        data: null,
+        message: "Something want wrong unable to upload trip image.",
+        apiurl: "uploadimageTrip",
+      };
+
+    return {
+      status: true,
+      data: tripimage,
+      message: "Trip image added successfully",
+      apiurl: "uploadimageTrip",
+    };
+  } catch (e) {
+    const response: ApiResponseType<null> = {
+      status: false,
+      data: null,
+      message: errorToString(e),
+      apiurl: "uploadimageTrip",
+    };
+    return response;
   }
 };

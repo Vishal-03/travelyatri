@@ -23,6 +23,8 @@ import {
   Fa6BrandsFacebook,
   Fa6BrandsInstagram,
   Fa6BrandsWhatsapp,
+  IconamoonSearch,
+  PajamasSearch,
 } from "@/components/icons";
 import { email, safeParse } from "valibot";
 import { ContactSchema } from "@/schemas/contact";
@@ -201,10 +203,10 @@ export default function Home() {
 
   return (
     <>
-      <div className="grid place-items-center" id="home">
+      <div className="grid place-items-center relative" id="home">
         <Carousel
           setApi={setApi}
-          className="w-full"
+          className="w-full relative"
           plugins={[
             Autoplay({
               delay: 4000,
@@ -213,13 +215,18 @@ export default function Home() {
         >
           <CarouselContent>
             {slider.map((value: Feature, index) => (
-              <CarouselItem key={index} className="w-full h-screen relative">
+              <CarouselItem
+                key={index}
+                className="w-full h-96 md:h-screen relative"
+              >
+                <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
                 <Image
                   removeWrapper
                   src={value.image}
                   alt="error"
                   className="relative object-cover object-center h-screen w-full"
                 ></Image>
+
                 <div className="w-full h-40 absolute bottom-0 left-0 bg-gradient-to-b from-transparent to-slate-700 flex flex-col pb-10">
                   <div className="grow"></div>
                   <h1 className="text-center text-2xl text-white font-title">
@@ -235,6 +242,18 @@ export default function Home() {
             ))}
           </CarouselContent>
         </Carousel>
+        <div className="w-full absolute top-0 left-0 mt-20 md:mt-40 p-4 sm:p-0">
+          <div className="rounded-full mx-auto w-full sm:w-4/6 md:w-5/12 flex p-1 bg-white">
+            <input
+              className="p-0 w-full bg-transparent outline-none px-4"
+              placeholder="E.g. Hotels, Travels"
+            />
+            <Button className="flex gap-2 bg-[#22c18b] rounded-full hover:bg-[#22c18b]">
+              <IconamoonSearch className="text-white text-xl" />
+              <p>Search</p>
+            </Button>
+          </div>
+        </div>
       </div>
       <div
         className="flex min-h-screen w-full flex-col gap-6 bg-gray-100"
@@ -341,7 +360,7 @@ export default function Home() {
         </h1>
         <p className="text-center">Some of our user best experiences</p>
         <div className="flex flex-wrap justify-center items-center mt-10">
-          <div className="w-80 p-4">
+          <div className="w-72 p-4">
             <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
               <Image
                 src="/user/david.jpg"
@@ -358,7 +377,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="p-4 w-80">
+          <div className="p-4 w-72">
             <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
               <Image
                 src="/user/emily.jpg"
@@ -376,7 +395,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="p-4 w-80">
+          <div className="p-4 w-72">
             <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
               <Image
                 src="/user/priya.jpg"
@@ -393,7 +412,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="p-4 w-80">
+          <div className="p-4 w-72">
             <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
               <Image
                 src="/user/rahul.jpg"
@@ -612,3 +631,15 @@ const PriceCard = (props: PriceCard) => {
     </Card>
   );
 };
+
+type mycusprops = {
+  one: string;
+  two: string;
+  three: string;
+  four: string;
+  five: string;
+  six: string;
+  seven: string;
+};
+
+const mycus = (props: mycusprops) => {};

@@ -350,3 +350,93 @@ export function IcBaselineContactPage(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function PajamasSearch(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 16 16"
+      {...props}
+    >
+      <path
+        fill="#888888"
+        fillRule="evenodd"
+        d="M11.5 7a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-.82 4.74a6 6 0 1 1 1.06-1.06l3.04 3.04a.75.75 0 1 1-1.06 1.06z"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+  );
+}
+
+export function IconamoonSearch(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="none"
+        stroke="#fff"
+        strokeLinecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m21 21l-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314"
+      ></path>
+    </svg>
+  );
+}
+
+export function IconamoonSignPlusCircleLight(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <g
+        fill="none"
+        stroke="#888888"
+        strokeLinecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.5"
+      >
+        <circle cx="12" cy="11.999" r="9"></circle>
+        <path d="M12 9v6m-3-3h6"></path>
+      </g>
+    </svg>
+  );
+}
+
+export function IconamoonTrashDuotone(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <g fill="none">
+        <path
+          fill="#888888"
+          d="M8 21h8a2 2 0 0 0 2-2V7H6v12a2 2 0 0 0 2 2"
+          opacity=".16"
+        ></path>
+        <path
+          stroke="#888888"
+          strokeLinecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M14 11v6m-4-6v6M6 7v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7M4 7h16M7 7l2-4h6l2 4"
+        ></path>
+      </g>
+    </svg>
+  );
+}

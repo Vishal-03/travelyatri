@@ -1,5 +1,10 @@
 "use client";
-import { createTrip, uploadtripLogo } from "@/actions/trip/createtrip";
+import {
+  createTrip,
+  uploadimageTrip,
+  uploadtripImage,
+  uploadtripLogo,
+} from "@/actions/trip/createtrip";
 import { ApiResponseType } from "@/models/responnse";
 import { TripSchema } from "@/schemas/createtrip";
 import { Image } from "@nextui-org/react";
@@ -8,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
+import { IconamoonSignPlusCircleLight, IconamoonTrashDuotone } from "../icons";
 
 interface TripProps {
   id: number;
@@ -52,6 +58,9 @@ const CreateTrips = (props: TripProps) => {
   const [logo, setLogo] = useState<File | null>(null);
   const cLogo = useRef<HTMLInputElement>(null);
 
+  let imgref = useRef<HTMLInputElement | null>(null);
+  let [images, setImages] = useState<File[]>([]);
+
   const handleLogoChange = (
     value: React.ChangeEvent<HTMLInputElement>,
     setFun: (value: SetStateAction<File | null>) => void
@@ -88,6 +97,9 @@ const CreateTrips = (props: TripProps) => {
     if (result.success) {
       if (logo == null) return toast.error("Upload your trip logo first.");
 
+      if (images.length < 3)
+        return toast.error("Please upload at least three image.");
+
       const imageBuffer = await logo.arrayBuffer();
       const image: string = Buffer.from(imageBuffer).toString("base64");
 
@@ -115,6 +127,25 @@ const CreateTrips = (props: TripProps) => {
       });
 
       if (!createdtrip.status) return toast.error(createdtrip.message);
+
+      for (let i = 0; i < images.length; i++) {
+        const imageBufferTwo = await images[i].arrayBuffer();
+        const imageTwo: string = Buffer.from(imageBufferTwo).toString("base64");
+        const uploadimageTwo: ApiResponseType<string | null> =
+          await uploadtripImage({
+            name: images[i].name,
+            arrayBuffer: imageTwo,
+          });
+        if (!uploadimageTwo.status || uploadimageTwo.data == null)
+          return toast.error(uploadimageTwo.message);
+
+        const updatetrip = await uploadimageTrip({
+          id: createdtrip.data?.id!,
+          path: uploadimageTwo!.data!,
+        });
+
+        if (!updatetrip.status) return toast.error(updatetrip.message);
+      }
 
       toast.success(createdtrip.message);
       return router.replace(`/dashboard/trips/${createdtrip.data?.id}`);
@@ -307,6 +338,72 @@ const CreateTrips = (props: TripProps) => {
             </select>
           </div>
         </div>
+
+        <div className="hidden">
+          <input
+            type="file"
+            accept="image/*"
+            ref={imgref}
+            onChange={(value) => {
+              let file_size = parseInt(
+                (value!.target.files![0].size / 1024 / 1024).toString()
+              );
+              if (file_size < 1) {
+                if (value!.target.files![0].type.startsWith("image/")) {
+                  setImages((val) => [...val, value!.target.files![0]]);
+                } else {
+                  toast.error("Please select an image file.");
+                }
+              } else {
+                toast.error("Image file size must be less then 1 mb");
+              }
+            }}
+          />
+        </div>
+
+        <div className="flex gap-4 flex-wrap w-full mt-6">
+          {images.map((value: File, i: number) => {
+            var url = URL.createObjectURL(value);
+            return (
+              <div key={i}>
+                <div className="w-40 h-40 bg-gray-200 rounded-xl grid place-items-center relative">
+                  <div className="top-0 left-0 absolute h-full w-full">
+                    <Image
+                      removeWrapper
+                      src={url}
+                      alt="error"
+                      className="w-full h-full rounded-xl object-cover"
+                    />
+                  </div>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      // removeImage(value);
+                      let arr = [...images];
+                      arr.splice(i, 1);
+                      setImages(arr);
+                    }}
+                  >
+                    <IconamoonTrashDuotone className="text-red-500 font-bold text-xl top-0 right-0 absolute" />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+          {images.length < 6 ? (
+            <div
+              className="w-40 h-40 bg-gray-200 rounded-xl grid place-items-center cursor-pointer"
+              onClick={() => {
+                imgref.current?.click();
+              }}
+            >
+              <IconamoonSignPlusCircleLight className="text-gray-400 text-3xl font-bold text-center" />
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+
         <button
           onClick={submit}
           className="bg-green-500 py-1 px-4 rounded-md text-white text-lg mt-6 font-semibold"

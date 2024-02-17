@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
+import { IconamoonSignPlusCircleLight, IconamoonTrashDuotone } from "../icons";
 
 interface CreateAgencyProps {
   user: any;
@@ -123,6 +124,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
       toast.error(errorMessage);
     }
   }
+
   return (
     <>
       <div className="flex min-h-screen w-full flex-col gap-10 p-10 bg-[#eeeeee]">
@@ -245,6 +247,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
               ></textarea>
             </div>
           </div>
+
           <button
             onClick={createAgencyFuncation}
             className="rounded-md border-2 bg-[#1bc48b]  p-2 font-bold text-white transition-all duration-300 ease-in-out hover:opacity-80"
