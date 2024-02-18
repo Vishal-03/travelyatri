@@ -24,6 +24,8 @@ import {
   Fa6BrandsInstagram,
   Fa6BrandsWhatsapp,
   IconamoonSearch,
+  MaterialSymbolsArrowBackIos,
+  MaterialSymbolsArrowForwardIosRounded,
   PajamasSearch,
 } from "@/components/icons";
 import { email, safeParse } from "valibot";
@@ -32,6 +34,7 @@ import { toast } from "react-toastify";
 import { createContact } from "@/actions/contact/addcontact";
 import { trips } from "@prisma/client";
 import { getTrips } from "@/actions/trip/gettrips";
+import Slider from "react-slick";
 
 interface Feature {
   title: string;
@@ -45,6 +48,9 @@ interface PriceCard {
   link: string;
   image: string;
 }
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 export default function Home() {
   const route = useRouter();
   const [isLoading, setIsLoding] = useState<boolean>(true);
@@ -201,6 +207,55 @@ export default function Home() {
       </div>
     );
 
+  const getcardnumberfromscreensize = () => {
+    if (window.innerWidth > 1024) {
+      return 4;
+    } else if (window.innerWidth > 600) {
+      return 3;
+    } else {
+      return 1;
+    }
+  };
+
+  var tsettings1 = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    prevArrow: <MaterialSymbolsArrowBackIos className="text-black text-xl" />,
+    nextArrow: (
+      <MaterialSymbolsArrowForwardIosRounded className="text-black text-xl" />
+    ),
+    centerMode: true,
+  };
+  var tsettings2 = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    prevArrow: <MaterialSymbolsArrowBackIos className="text-black text-xl" />,
+    nextArrow: (
+      <MaterialSymbolsArrowForwardIosRounded className="text-black text-xl" />
+    ),
+    centerMode: true,
+  };
+  var tsettings3 = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    prevArrow: <MaterialSymbolsArrowBackIos className="text-black text-xl" />,
+    nextArrow: (
+      <MaterialSymbolsArrowForwardIosRounded className="text-black text-xl" />
+    ),
+  };
+
   return (
     <>
       <div className="grid place-items-center relative" id="home">
@@ -253,6 +308,59 @@ export default function Home() {
               <p>Search</p>
             </Button>
           </div>
+        </div>
+      </div>
+      <div className="relative h-full py-20" id="trips">
+        <div className="text-2xl font-semibold text-center text-black font-title">
+          Best Trips Available
+        </div>
+
+        <div className="hidden md:block lg:hidden">
+          <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
+            {trips.slice(0, 4).map((data: trips, index: number) => (
+              <PriceCard
+                key={index}
+                title={data.name!}
+                description={data.description!}
+                price={data.price}
+                link={data.id.toString()!}
+                image={data.image!}
+              />
+            ))}
+          </Slider>
+        </div>
+
+        <div className="hidden lg:block">
+          <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
+            {trips.slice(0, 4).map((data: trips, index: number) => (
+              <PriceCard
+                key={index}
+                title={data.name!}
+                description={data.description!}
+                price={data.price}
+                link={data.id.toString()!}
+                image={data.image!}
+              />
+            ))}
+          </Slider>
+        </div>
+
+        <div className="md:hidden">
+          <Slider
+            {...tsettings1}
+            className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
+          >
+            {trips.slice(0, 4).map((data: trips, index: number) => (
+              <PriceCard
+                key={index}
+                title={data.name!}
+                description={data.description!}
+                price={data.price}
+                link={data.id.toString()!}
+                image={data.image!}
+              />
+            ))}
+          </Slider>
         </div>
       </div>
       <div
@@ -319,118 +427,239 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="relative h-full">
-        <div className="w-full h-auto lg:h-screen absolute top-0 left-0 hidden lg:block ">
-          <Image
-            src="/images/homebanner.jpg"
-            alt="error"
-            className="grayscale-[50%] w-screen h-full lg:h-screen object-cover inline-block object-center"
-          />
-        </div>
-        <div className="relative top-0 left-0 h-auto lg:h-screen w-full">
-          <div className=" my-10 w-full py-10" id="trips">
-            <div className="text-2xl font-semibold text-center lg:text-white font-title">
-              Best Trips Available
-            </div>
-            <p className="text-center lg:text-white font-para">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut quo
-              repellat remrem dolore voluptatem recusandae excepturi iure
-              commodi
-            </p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-6">
-            {trips.slice(0, 4).map((data: trips, index: number) => (
-              <PriceCard
-                key={index}
-                title={data.name!}
-                description={data.description!}
-                price={data.price}
-                link={data.id.toString()!}
-                image={data.image!}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
       <div className="py-10 px-6 mt-10">
         <h1 className="text-xl font-semibold text-center md:text-3xl font-title">
           Testimonial
         </h1>
         <p className="text-center">Some of our user best experiences</p>
-        <div className="flex flex-wrap justify-center items-center mt-10">
-          <div className="w-72 p-4">
-            <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
-              <Image
-                src="/user/david.jpg"
-                alt="error"
-                className="w-20 h-20 mb-4 object-cover object-center rounded-full"
-              ></Image>
-              <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
-                David T., Budget Foodie
-              </h2>
-              <p className="leading-relaxed text-base font-para">
-                Wow, your street food tours in Mexico were incredible! Not only
-                delicious, but they introduced me to hidden gems and local
-                culture. All on a budget that fit my backpacker wallet!
-              </p>
+        <div className="md:hidden">
+          <Slider
+            {...tsettings1}
+            className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
+          >
+            <div className="w-72 p-4">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/david.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  David T., Budget Foodie
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  Wow, your street food tours in Mexico were incredible! Not
+                  only delicious, but they introduced me to hidden gems and
+                  local culture. All on a budget that fit my backpacker wallet!
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="p-4 w-72">
-            <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
-              <Image
-                src="/user/emily.jpg"
-                alt="error"
-                className="w-20 h-20 mb-4 object-cover object-center rounded-full"
-              ></Image>
-              <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
-                Emily & Alex W., Honeymooners
-              </h2>
-              <p className="leading-relaxed text-base font-para">
-                We found the most romantic Bali escape on your site, complete
-                with luxurious accommodation and unforgettable experiences. It
-                was truly paradise found, at a price that didn&apos;t break the
-                bank!
-              </p>
+            <div className="p-4 w-72">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/emily.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  Emily & Alex W., Honeymooners
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  We found the most romantic Bali escape on your site, complete
+                  with luxurious accommodation and unforgettable experiences. It
+                  was truly paradise found, at a price that didn&apos;t break
+                  the bank!
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="p-4 w-72">
-            <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
-              <Image
-                src="/user/priya.jpg"
-                alt="error"
-                className="w-20 h-20 mb-4 object-cover object-center rounded-full"
-              ></Image>
-              <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
-                Priya S., Budget Traveler
-              </h2>
-              <p className="leading-relaxed text-base font-para">
-                Found the perfect Kerala backwaters tour on your site!
-                Affordable, hassle-free, and filled with incredible experiences.
-                Thanks for showing me the hidden beauty of Kerala!
-              </p>
+            <div className="p-4 w-72">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/priya.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  Priya S., Budget Traveler
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  Found the perfect Kerala backwaters tour on your site!
+                  Affordable, hassle-free, and filled with incredible
+                  experiences. Thanks for showing me the hidden beauty of
+                  Kerala!
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="p-4 w-72">
-            <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
-              <Image
-                src="/user/rahul.jpg"
-                alt="error"
-                className="w-20 h-20 mb-4 object-cover object-center rounded-full"
-              ></Image>
-              <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
-                Rahul & Preeti M., Family Travelers
-              </h2>
-              <p className="leading-relaxed text-base font-para">
-                Booked our dream Ladakh adventure through you. Everything was
-                smooth, and the price fit our budget perfectly. Memories made,
-                smiles guaranteed!art 8-bit waistcoat.
-              </p>
+            <div className="p-4 w-72">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/rahul.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  Rahul & Preeti M., Family Travelers
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  Booked our dream Ladakh adventure through you. Everything was
+                  smooth, and the price fit our budget perfectly. Memories made,
+                  smiles guaranteed!art 8-bit waistcoat.
+                </p>
+              </div>
             </div>
-          </div>
+          </Slider>
+        </div>
+
+        <div className="hidden md:block lg:hidden">
+          <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
+            <div className="w-72 p-4">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/david.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  David T., Budget Foodie
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  Wow, your street food tours in Mexico were incredible! Not
+                  only delicious, but they introduced me to hidden gems and
+                  local culture. All on a budget that fit my backpacker wallet!
+                </p>
+              </div>
+            </div>
+            <div className="p-4 w-72">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/emily.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  Emily & Alex W., Honeymooners
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  We found the most romantic Bali escape on your site, complete
+                  with luxurious accommodation and unforgettable experiences. It
+                  was truly paradise found, at a price that didn&apos;t break
+                  the bank!
+                </p>
+              </div>
+            </div>
+            <div className="p-4 w-72">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/priya.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  Priya S., Budget Traveler
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  Found the perfect Kerala backwaters tour on your site!
+                  Affordable, hassle-free, and filled with incredible
+                  experiences. Thanks for showing me the hidden beauty of
+                  Kerala!
+                </p>
+              </div>
+            </div>
+            <div className="p-4 w-72">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/rahul.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  Rahul & Preeti M., Family Travelers
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  Booked our dream Ladakh adventure through you. Everything was
+                  smooth, and the price fit our budget perfectly. Memories made,
+                  smiles guaranteed!art 8-bit waistcoat.
+                </p>
+              </div>
+            </div>
+          </Slider>
+        </div>
+        <div className="hidden lg:block">
+          <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
+            <div className="w-72 p-4">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/david.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  David T., Budget Foodie
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  Wow, your street food tours in Mexico were incredible! Not
+                  only delicious, but they introduced me to hidden gems and
+                  local culture. All on a budget that fit my backpacker wallet!
+                </p>
+              </div>
+            </div>
+            <div className="p-4 w-72">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/emily.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  Emily & Alex W., Honeymooners
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  We found the most romantic Bali escape on your site, complete
+                  with luxurious accommodation and unforgettable experiences. It
+                  was truly paradise found, at a price that didn&apos;t break
+                  the bank!
+                </p>
+              </div>
+            </div>
+            <div className="p-4 w-72">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/priya.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  Priya S., Budget Traveler
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  Found the perfect Kerala backwaters tour on your site!
+                  Affordable, hassle-free, and filled with incredible
+                  experiences. Thanks for showing me the hidden beauty of
+                  Kerala!
+                </p>
+              </div>
+            </div>
+            <div className="p-4 w-72">
+              <div className="shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-6 rounded-lg">
+                <Image
+                  src="/user/rahul.jpg"
+                  alt="error"
+                  className="w-20 h-20 mb-4 object-cover object-center rounded-full"
+                ></Image>
+                <h2 className="text-lg text-gray-900 font-medium title-font mb-4 font-title">
+                  Rahul & Preeti M., Family Travelers
+                </h2>
+                <p className="leading-relaxed text-base font-para">
+                  Booked our dream Ladakh adventure through you. Everything was
+                  smooth, and the price fit our budget perfectly. Memories made,
+                  smiles guaranteed!art 8-bit waistcoat.
+                </p>
+              </div>
+            </div>
+          </Slider>
         </div>
       </div>
+      {/* </div> */}
 
       {/* Contact us */}
       <div
@@ -604,7 +833,7 @@ const FeatureCard = (props: FeatureCardProps) => {
 const PriceCard = (props: PriceCard) => {
   const router = useRouter();
   return (
-    <Card className=" bg-gray-100 w-64 p-2 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 hover:bg-white hover:shadow-2xl rounded-md">
+    <Card className=" bg-gray-100 w-64 p-2 shadow-lg transition-all duration-200 ease-in-out  rounded-md mx-auto">
       <Image
         src={props.image}
         alt="error"

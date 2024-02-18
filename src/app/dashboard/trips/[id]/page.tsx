@@ -1,6 +1,5 @@
 "use server";
 
-import { NextRequest, NextResponse } from "next/server";
 import { trips } from "@prisma/client";
 import ViewTrips from "@/components/dashboard/viewtrip";
 import prisma from "../../../../../prisma/database";
