@@ -8,13 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-  Accordion,
-  AccordionItem,
-  Card,
-  Image,
-  Input,
-} from "@nextui-org/react";
+import { Accordion, AccordionItem, Card, Image } from "@nextui-org/react";
 import { use, useEffect, useRef, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
@@ -51,6 +45,7 @@ interface PriceCard {
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { getHomeTrips } from "@/actions/trip/gethometrips";
 export default function Home() {
   const route = useRouter();
   const [isLoading, setIsLoding] = useState<boolean>(true);
@@ -59,7 +54,7 @@ export default function Home() {
 
   const init = async () => {
     setIsLoding(true);
-    const tripsres = await getTrips({});
+    const tripsres = await getHomeTrips({});
     if (tripsres.status) setTrips(tripsres.data!);
 
     setIsLoding(false);
@@ -308,59 +303,63 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="relative h-full py-20" id="trips">
-        <div className="text-2xl font-semibold text-center text-black font-title mb-4">
-          Best Trips Available
-        </div>
+      {trips.length > 1 ? (
+        <div className="relative h-full py-20" id="trips">
+          <div className="text-2xl font-semibold text-center text-black font-title mb-4">
+            Travel Yatri
+          </div>
 
-        <div className="hidden md:block lg:hidden">
-          <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
-            {trips.slice(0, 4).map((data: trips, index: number) => (
-              <PriceCard
-                key={index}
-                title={data.name!}
-                description={data.description!}
-                price={data.price}
-                link={data.id.toString()!}
-                image={data.image!}
-              />
-            ))}
-          </Slider>
-        </div>
+          <div className="hidden md:block lg:hidden">
+            <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
+              {trips.slice(0, 4).map((data: trips, index: number) => (
+                <PriceCard
+                  key={index}
+                  title={data.name!}
+                  description={data.description!}
+                  price={data.price}
+                  link={data.id.toString()!}
+                  image={data.image!}
+                />
+              ))}
+            </Slider>
+          </div>
 
-        <div className="hidden lg:block">
-          <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
-            {trips.slice(0, 4).map((data: trips, index: number) => (
-              <PriceCard
-                key={index}
-                title={data.name!}
-                description={data.description!}
-                price={data.price}
-                link={data.id.toString()!}
-                image={data.image!}
-              />
-            ))}
-          </Slider>
-        </div>
+          <div className="hidden lg:block">
+            <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
+              {trips.slice(0, 4).map((data: trips, index: number) => (
+                <PriceCard
+                  key={index}
+                  title={data.name!}
+                  description={data.description!}
+                  price={data.price}
+                  link={data.id.toString()!}
+                  image={data.image!}
+                />
+              ))}
+            </Slider>
+          </div>
 
-        <div className="md:hidden">
-          <Slider
-            {...tsettings1}
-            className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
-          >
-            {trips.slice(0, 4).map((data: trips, index: number) => (
-              <PriceCard
-                key={index}
-                title={data.name!}
-                description={data.description!}
-                price={data.price}
-                link={data.id.toString()!}
-                image={data.image!}
-              />
-            ))}
-          </Slider>
+          <div className="md:hidden">
+            <Slider
+              {...tsettings1}
+              className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
+            >
+              {trips.slice(0, 4).map((data: trips, index: number) => (
+                <PriceCard
+                  key={index}
+                  title={data.name!}
+                  description={data.description!}
+                  price={data.price}
+                  link={data.id.toString()!}
+                  image={data.image!}
+                />
+              ))}
+            </Slider>
+          </div>
         </div>
-      </div>
+      ) : (
+        <></>
+      )}
       {/* <div
         className="flex min-h-screen w-full flex-col gap-6 bg-gray-100"
         id="about"
@@ -841,8 +840,8 @@ const PriceCard = (props: PriceCard) => {
         <p className="font-semibold mt-2 text-lg font-title">
           Best Trip Available
         </p>
-        <h1 className="text-sm font-normal text-gray-600 font-para">
-          {props.price}
+        <h1 className="text-sm font-normal text-gray-600 font-para my-1">
+          ₹ {props.price}
         </h1>
 
         <p className="font-normal text-sm font-para">

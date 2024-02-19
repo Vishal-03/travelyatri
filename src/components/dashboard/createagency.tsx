@@ -1,8 +1,10 @@
 "use client";
 import {
   createAgency,
+  uploadaadhar,
   uploadagencyBanner,
   uploadagencyLogo,
+  uploadpan,
 } from "@/actions/agency/createagency";
 import { ApiResponseType } from "@/models/responnse";
 import { createAgencySchema } from "@/schemas/createagency";
@@ -12,6 +14,7 @@ import { SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
 import { IconamoonSignPlusCircleLight, IconamoonTrashDuotone } from "../icons";
+import { longtext } from "@/utils/methods";
 
 interface CreateAgencyProps {
   user: any;
@@ -26,12 +29,19 @@ const CreateAgency = (props: CreateAgencyProps) => {
   const email = useRef<HTMLInputElement>(null);
   const address = useRef<HTMLTextAreaElement>(null);
   const description = useRef<HTMLTextAreaElement>(null);
+  const aadharcard = useRef<HTMLInputElement>(null);
+  const pancard = useRef<HTMLInputElement>(null);
 
   const [logo, setLogo] = useState<File | null>(null);
   const cLogo = useRef<HTMLInputElement>(null);
 
   const [banner, setBanner] = useState<File | null>(null);
   const cBanner = useRef<HTMLInputElement>(null);
+
+  const [aadharimg, setAadharimg] = useState<File | null>(null);
+  const cAadharimg = useRef<HTMLInputElement>(null);
+  const [panimg, setPanimg] = useState<File | null>(null);
+  const cPanimg = useRef<HTMLInputElement>(null);
 
   const handleLogoChange = (
     value: React.ChangeEvent<HTMLInputElement>,
@@ -60,11 +70,15 @@ const CreateAgency = (props: CreateAgencyProps) => {
       email: email.current?.value,
       address: address.current?.value,
       description: description.current?.value,
+      aadhar: aadharcard.current?.value,
+      pan: pancard.current?.value,
     });
 
     if (result.success) {
       if (logo == null) return toast.error("Upload your logo");
       if (banner == null) return toast.error("Upload your banner");
+      if (aadharimg == null) return toast.error("Upload aadhar card");
+      if (panimg == null) return toast.error("Upload your pan card");
 
       const imageBuffer = await logo.arrayBuffer();
       const image: string = Buffer.from(imageBuffer).toString("base64");
@@ -90,6 +104,30 @@ const CreateAgency = (props: CreateAgencyProps) => {
       if (!uploadimageTwo.status || uploadimageTwo.data == null)
         return toast.error(uploadimageTwo.message);
 
+      const imageBufferThree = await aadharimg.arrayBuffer();
+      const imageThree: string =
+        Buffer.from(imageBufferThree).toString("base64");
+
+      const uploadimageThree: ApiResponseType<string | null> =
+        await uploadaadhar({
+          name: aadharimg.name,
+          arrayBuffer: imageThree,
+        });
+
+      if (!uploadimageThree.status || uploadimageThree.data == null)
+        return toast.error(uploadimageThree.message);
+
+      const imageBufferFour = await panimg.arrayBuffer();
+      const imageFour: string = Buffer.from(imageBufferFour).toString("base64");
+
+      const uploadimageFour: ApiResponseType<string | null> = await uploadpan({
+        name: panimg.name,
+        arrayBuffer: imageFour,
+      });
+
+      if (!uploadimageFour.status || uploadimageFour.data == null)
+        return toast.error(uploadimageFour.message);
+
       const createAgencyResponse = await createAgency({
         id: props.user.id,
         name: result.output.name,
@@ -100,6 +138,10 @@ const CreateAgency = (props: CreateAgencyProps) => {
         description: result.output.description,
         logo: uploadimage.data,
         banner: uploadimageTwo.data,
+        aadhar: result.output.aadhar,
+        pan: result.output.pan,
+        aadharurl: uploadimageThree.data,
+        panurl: uploadimageFour.data,
       });
 
       if (createAgencyResponse.status) {
@@ -184,6 +226,20 @@ const CreateAgency = (props: CreateAgencyProps) => {
               accept="image/*"
               onChange={(val) => handleLogoChange(val, setBanner)}
             />
+
+            <input
+              type="file"
+              ref={cAadharimg}
+              accept="image/*"
+              onChange={(val) => handleLogoChange(val, setAadharimg)}
+            />
+
+            <input
+              type="file"
+              ref={cPanimg}
+              accept="image/*"
+              onChange={(val) => handleLogoChange(val, setPanimg)}
+            />
           </div>
 
           <p className="pt-2  text-gray-500 text-lg">Basic Information :</p>
@@ -227,6 +283,54 @@ const CreateAgency = (props: CreateAgencyProps) => {
                 className="grow rounded-lg border-2  p-4 focus:outline-none"
                 ref={email}
               />
+            </div>
+            <div className="w-full flex justify-between">
+              <span className="flex-1">Agency aadhar card number:</span>
+
+              <input
+                type="text"
+                className="grow rounded-lg border-2  p-4 focus:outline-none"
+                ref={aadharcard}
+              />
+            </div>
+            <div className="w-full flex justify-between items-center gap-4">
+              <span className="flex-1">Upload aadhar image:</span>
+
+              <button
+                onClick={() => cAadharimg.current?.click()}
+                className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-[#1bc48b]"
+              >
+                {aadharimg == null ? "Add Aadhar" : "Change Aadhar"}
+              </button>
+              {aadharimg == null || aadharimg == undefined ? (
+                <></>
+              ) : (
+                <p>{longtext(aadharimg.name, 25)}</p>
+              )}
+            </div>
+            <div className="w-full flex justify-between">
+              <span className="flex-1">Agency pan card number:</span>
+
+              <input
+                type="text"
+                className="grow rounded-lg border-2  p-4 focus:outline-none"
+                ref={pancard}
+              />
+            </div>
+            <div className="w-full flex justify-between items-center gap-4">
+              <span className="flex-1">Upload pan image:</span>
+
+              <button
+                onClick={() => cPanimg.current?.click()}
+                className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-[#1bc48b]"
+              >
+                {panimg == null ? "Add Pan" : "Change Pan"}
+              </button>
+              {panimg == null || panimg == undefined ? (
+                <></>
+              ) : (
+                <p>{longtext(panimg.name, 25)}</p>
+              )}
             </div>
 
             <div className="w-full flex justify-between">

@@ -46,6 +46,11 @@ enum TripCategory {
   FRIENDS
 }
 
+enum ShowHome {
+  NO
+  YES
+}
+
 model user {
   id            Int        @id @default(autoincrement())
   avatar        String?
@@ -84,6 +89,7 @@ model trips {
   createdBy            Int
   agency               agency         @relation(fields: [agencyId], references: [id])
   agencyId             Int
+  showhome             ShowHome       @default(NO)
   updatedAt            DateTime       @updatedAt
   deletedAt            DateTime?
   trips_images         trips_images[]
@@ -99,6 +105,10 @@ model agency {
   logo        String?
   banner      String?
   description String    @db.LongText
+  aadhar      String?
+  aadharurl   String?
+  pan         String?
+  panurl      String?
   status      Status    @default(ACTIVE)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt

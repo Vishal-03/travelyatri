@@ -16,7 +16,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import { CardContent } from "../ui/card";
 
 interface TripProps {
   trip: any;

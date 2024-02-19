@@ -66,6 +66,18 @@ const SideBar = (props: SideBarProps) => {
             <IcBaselineContactPage /> <p>contact</p>
           </Link>
         )}
+        {props.user?.role == "ADMIN" && (
+          <Link
+            href={"/dashboard/admintrips"}
+            className={`flex py-2 px-4 gap-4 items-center ${
+              pathname == "/dashboard/admintrips"
+                ? "text-green-500 bg-white bg-opacity-10 border-l-4 border-green-500"
+                : "text-white mx-4"
+            }`}
+          >
+            <IcBaselineContactPage /> <p>Trips</p>
+          </Link>
+        )}
 
         {["USER", "AGENCY"].includes(props.user?.role!) && (
           <Link
