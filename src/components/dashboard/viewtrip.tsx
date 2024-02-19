@@ -22,8 +22,6 @@ interface TripProps {
   trip: any;
 }
 const ViewTrips = (props: TripProps) => {
-  console.log(props.trip);
-  console.log(props.trip);
   const start_date = new Date(props.trip?.start!);
   const start = `${start_date.getDate()}-${
     start_date.getMonth() + 1
@@ -75,62 +73,9 @@ const ViewTrips = (props: TripProps) => {
   return (
     <>
       <div className="p-6">
-        <div className="w-full bg-white shadow-xl rounded-xl p-4 flex flex-col md:flex-row gap-4">
-          <Image
-            removeWrapper
-            alt="error"
-            src={props.trip.image!}
-            className=" w-full h-60 md:w-60 md:h-60 rounded-lg object-cover object-center"
-          />
-          <div className="grow flex flex-col">
-            <h1 className="text-black font-semibold text-2xl">
-              {props.trip?.name}
-            </h1>
-            <div className=" mt-2">
-              <p>{props.trip?.description}</p>
-            </div>
-            <div className="grow"></div>
-            <div className="flex bg-blue-500 p-2 rounded-lg bg-opacity-20 gap-2 mt-4 md:m-0  ">
-              <Image
-                alt="error"
-                src={props.trip.create.agency.logo}
-                className="w-14 h-14 rounded-lg object-cover object-center"
-              />
-              <div>
-                <p className="text-black text-xl font-semibold">
-                  {props.trip.create.agency.name}
-                </p>
-                <p className="text-black">{props.trip.create.agency.contact}</p>
-              </div>
-            </div>
-          </div>
-        </div>
         {props.trip?.trips_images.length > 0 && (
-          <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4">
+          <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4 mb-4">
             <h1 className="text-2xl mb-4 font-semibold text-center">Gallery</h1>
-            {/* <div className=" flex flex-wrap gap-4 justify-center">
-              {props.trip?.trips_images.map((image: any, index: number) => (
-                <Image
-                  key={index}
-                  removeWrapper
-                  alt="error"
-                  src={image.image}
-                  className="w-60 h-60 rounded-lg object-cover object-center"
-                />
-              ))}
-            
-            </div> */}
-
-            {/* <div className="slider-container mx-auto bg-red-500 block w-full">
-              <Slider {...tsettings1} className="w-4/6">
-                {props.trip?.trips_images.map((image: any, index: number) => (
-                  <div className="bg-blue-500" key={index}>
-                    test
-                  </div>
-                ))}
-              </Slider>
-            </div> */}
-
             <Carousel
               opts={{
                 align: "start",
@@ -138,13 +83,24 @@ const ViewTrips = (props: TripProps) => {
               className="w-full max-w-5xl mx-auto mt-4 relative"
             >
               <CarouselContent className="relative">
+                <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                  <div className="p-1 grid place-items-center">
+                    <Image
+                      removeWrapper
+                      alt="error"
+                      src={props.trip.image!}
+                      className="w-60 h-60  rounded-lg object-cover object-center"
+                    />
+                  </div>
+                </CarouselItem>
+
                 {Array.from({ length: props.trip?.trips_images.length }).map(
                   (_, index) => (
                     <CarouselItem
                       key={index}
                       className="md:basis-1/2 lg:basis-1/3"
                     >
-                      <div className="p-1">
+                      <div className="p-1 grid place-items-center">
                         <Image
                           removeWrapper
                           alt="error"
@@ -163,6 +119,37 @@ const ViewTrips = (props: TripProps) => {
             </Carousel>
           </div>
         )}
+        <div className="w-full bg-white shadow-xl rounded-xl p-4 flex flex-col md:flex-row gap-4">
+          {/* <Image
+            removeWrapper
+            alt="error"
+            src={props.trip.image!}
+            className=" w-full h-60 md:w-60 md:h-60 rounded-lg object-cover object-center"
+          /> */}
+          <div className="grow flex flex-col">
+            <h1 className="text-black font-semibold text-2xl">
+              {props.trip?.name}
+            </h1>
+            <div className=" mt-2 mb-4">
+              <p>{props.trip?.description}</p>
+            </div>
+            <div className="grow"></div>
+            <div className="flex bg-blue-500 p-2 rounded-lg bg-opacity-20 gap-2 mt-4 md:m-0  ">
+              <Image
+                alt="error"
+                src={props.trip.create.agency.logo}
+                className="w-14 h-14 rounded-lg object-cover object-center"
+              />
+              <div>
+                <p className="text-black text-xl font-semibold">
+                  {props.trip.create.agency.name}
+                </p>
+                {/* <p className="text-black">{props.trip.create.agency.contact}</p> */}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="w-full bg-white shadow-xl rounded-xl p-4 flex gap-4 mt-4 flex-wrap justify-between px-6">
           <div className="mx-4">
             <h1 className="text-center font-normal text-sm">Start Time</h1>

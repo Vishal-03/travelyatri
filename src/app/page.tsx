@@ -228,7 +228,6 @@ export default function Home() {
     nextArrow: (
       <MaterialSymbolsArrowForwardIosRounded className="text-black text-xl" />
     ),
-    centerMode: true,
   };
   var tsettings2 = {
     dots: true,
@@ -241,7 +240,6 @@ export default function Home() {
     nextArrow: (
       <MaterialSymbolsArrowForwardIosRounded className="text-black text-xl" />
     ),
-    centerMode: true,
   };
   var tsettings3 = {
     dots: true,
@@ -311,7 +309,7 @@ export default function Home() {
         </div>
       </div>
       <div className="relative h-full py-20" id="trips">
-        <div className="text-2xl font-semibold text-center text-black font-title">
+        <div className="text-2xl font-semibold text-center text-black font-title mb-4">
           Best Trips Available
         </div>
 
@@ -363,7 +361,7 @@ export default function Home() {
           </Slider>
         </div>
       </div>
-      <div
+      {/* <div
         className="flex min-h-screen w-full flex-col gap-6 bg-gray-100"
         id="about"
       >
@@ -404,7 +402,7 @@ export default function Home() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* new sec */}
 
