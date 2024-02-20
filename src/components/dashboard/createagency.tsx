@@ -166,18 +166,27 @@ const CreateAgency = (props: CreateAgencyProps) => {
       toast.error(errorMessage);
     }
   }
+  const onlyNumbersRegex = /^[0-9]*$/;
 
+  // Function to handle input change and validate against the regex
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (!onlyNumbersRegex.test(value)) {
+      // If the value doesn't match the regex, clear the input
+      event.target.value = "";
+    }
+  };
   return (
     <>
-      <div className="flex min-h-screen w-full flex-col gap-10 p-10 bg-[#eeeeee]">
-        <h1 className="text-4xl ">Agency information</h1>
+      <div className="flex min-h-screen w-full flex-col gap-10 p-6 bg-[#eeeeee]">
+        <h1 className="text-3xl text-center">Agency information</h1>
 
-        <div className="flex flex-col gap-5 rounded-lg shadow-lg p-5 bg-white">
-          <h1 className="text-3xl font-semibold">Agency details</h1>
+        <div className="flex flex-col gap-5 rounded-lg shadow-lg p-5 lg:w-4/6 w-full mx-auto bg-white">
+          <h1 className="text-xl font-medium">Agency details</h1>
 
           {/* Logo and banner */}
 
-          <div className="flex gap-4 flex-col sm:flex-row">
+          <div className="flex gap-4 flex-col md:flex-row flex-wrap">
             {logo != null ? (
               <div>
                 <Image
@@ -245,52 +254,55 @@ const CreateAgency = (props: CreateAgencyProps) => {
           <p className="pt-2  text-gray-500 text-lg">Basic Information :</p>
 
           <div className="flex flex-col gap-4">
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-col md:flex-row justify-between">
               <span className="flex-1">Name:</span>
 
               <input
                 type="text"
-                className="grow rounded-lg border-2  p-4 focus:outline-none"
+                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={name}
               />
             </div>
 
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-col md:flex-row justify-between">
               <span className="flex-1">Agency website:</span>
 
               <input
                 type="text"
-                className="grow rounded-lg border-2  p-4 focus:outline-none"
+                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={website}
               />
             </div>
 
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-col md:flex-row justify-between">
               <span className="flex-1">Agency support contact number:</span>
 
               <input
                 type="text"
-                className="grow rounded-lg border-2  p-4 focus:outline-none"
+                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={contact}
+                maxLength={10}
+                onChange={handleChange}
               />
             </div>
 
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-col md:flex-row justify-between">
               <span className="flex-1">Agency support email address:</span>
 
               <input
                 type="text"
-                className="grow rounded-lg border-2  p-4 focus:outline-none"
+                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={email}
               />
             </div>
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-col md:flex-row justify-between">
               <span className="flex-1">Agency aadhar card number:</span>
 
               <input
                 type="text"
-                className="grow rounded-lg border-2  p-4 focus:outline-none"
+                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={aadharcard}
+                onChange={handleChange}
               />
             </div>
             <div className="w-full flex justify-between items-center gap-4">
@@ -308,12 +320,12 @@ const CreateAgency = (props: CreateAgencyProps) => {
                 <p>{longtext(aadharimg.name, 25)}</p>
               )}
             </div>
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-col md:flex-row justify-between">
               <span className="flex-1">Agency pan card number:</span>
 
               <input
                 type="text"
-                className="grow rounded-lg border-2  p-4 focus:outline-none"
+                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={pancard}
               />
             </div>
@@ -333,7 +345,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
               )}
             </div>
 
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-col md:flex-row justify-between">
               <span className="flex-1">Agency complete address:</span>
 
               <textarea
@@ -342,11 +354,11 @@ const CreateAgency = (props: CreateAgencyProps) => {
               ></textarea>
             </div>
 
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-col md:flex-row justify-between">
               <span className="flex-1">Agency description:</span>
 
               <textarea
-                className="grow rounded-lg border-2 h-24 resize-none p-6 focus:outline-none"
+                className="grow rounded-lg border-2 h-24 resize-none px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={description}
               ></textarea>
             </div>

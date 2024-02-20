@@ -26,19 +26,23 @@ const AgencyInfo = (props: AgencyInfoProps) => {
             className="w-60 h-60 object-cover object-center rounded-full"
           />
         </div>
-        <div className="-translate-y-32 flex flex-col items-center justify-center">
-          <h1 className="text-lg font-medium">Name: {props.agency.name}</h1>
-          <h1 className="text-lg font-medium">Email: {props.agency.email}</h1>
-          <h1 className="text-lg font-medium">
+        <div className="-translate-y-32 flex flex-col items-start sm:items-center justify-center">
+          <h1 className="text-sm sm:text-lg font-medium">
+            Name: {props.agency.name}
+          </h1>
+          <h1 className="text-sm sm:text-lg font-medium">
+            Email: {props.agency.email}
+          </h1>
+          <h1 className="text-sm sm:text-lg font-medium">
             Contact: {props.agency.contact}
           </h1>
-          <h1 className="text-lg font-medium">
+          <h1 className="text-sm sm:text-lg font-medium">
             Website: {props.agency.website}
           </h1>
-          <h1 className="text-lg font-medium">
+          <h1 className="text-sm sm:text-lg font-medium">
             Description:: {props.agency.description}
           </h1>
-          <h1 className="text-lg font-medium">
+          <h1 className="text-sm sm:text-lg font-medium">
             Create Time:{" "}
             {new Date(props.agency.createdAt.toString()).toDateString()}
           </h1>

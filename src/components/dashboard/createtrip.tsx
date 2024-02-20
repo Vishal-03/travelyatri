@@ -160,6 +160,17 @@ const CreateTrips = (props: TripProps) => {
     }
   };
 
+  const onlyNumbersRegex = /^[0-9]*$/;
+
+  // Function to handle input change and validate against the regex
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (!onlyNumbersRegex.test(value)) {
+      // If the value doesn't match the regex, clear the input
+      event.target.value = "";
+    }
+  };
+
   return (
     <>
       <div className="w-5/6 bg-white rounded-md shadow-lg my-6 p-6 mx-auto">
@@ -193,11 +204,11 @@ const CreateTrips = (props: TripProps) => {
           />
         </div>
 
-        <div className="flex w-full items-center py-2 mt-6">
+        <div className="flex flex-col md:flex-row w-full py-2 mt-6">
           <div className="flex-1">
             <h1 className="text-lg font-medium">Trip Name</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <input
               type="text"
               className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
@@ -206,11 +217,11 @@ const CreateTrips = (props: TripProps) => {
             />
           </div>
         </div>
-        <div className="flex w-full py-2">
+        <div className="flex flex-col md:flex-row w-full py-2">
           <div className="flex-1">
             <h1 className="text-lg font-medium">Trip Description</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <textarea
               ref={description}
               placeholder="Enter trip description"
@@ -218,11 +229,11 @@ const CreateTrips = (props: TripProps) => {
             ></textarea>
           </div>
         </div>
-        <div className="flex w-full items-center py-2">
+        <div className="flex flex-col md:flex-row w-full py-2">
           <div className="flex-1">
             <h1 className="text-lg font-medium">Trip Location</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <input
               type="text"
               className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
@@ -231,11 +242,11 @@ const CreateTrips = (props: TripProps) => {
             />
           </div>
         </div>
-        <div className="flex w-full py-2">
+        <div className="flex flex-col md:flex-row w-full py-2">
           <div className="flex-1">
             <h1 className="text-lg font-medium">Trip Location Description</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <textarea
               ref={location_description}
               placeholder="Enter trip location description"
@@ -243,11 +254,11 @@ const CreateTrips = (props: TripProps) => {
             ></textarea>
           </div>
         </div>
-        <div className="flex w-full items-center py-2">
+        <div className="flex flex-col md:flex-row w-full py-2">
           <div className="flex-1">
             <h1 className="text-lg font-medium">Start Date</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <input
               type="date"
               onChange={handleStartDateChange}
@@ -257,11 +268,11 @@ const CreateTrips = (props: TripProps) => {
             />
           </div>
         </div>
-        <div className="flex w-full items-center py-2">
+        <div className="flex flex-col md:flex-row w-full py-2">
           <div className="flex-1">
             <h1 className="text-lg font-medium">End Date</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <input
               type="date"
               onChange={handleEntDateChange}
@@ -270,11 +281,11 @@ const CreateTrips = (props: TripProps) => {
             />
           </div>
         </div>
-        <div className="flex w-full items-center py-2">
+        <div className="flex flex-col md:flex-row w-full py-2">
           <div className="flex-1">
             <h1 className="text-lg font-medium">Price</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <input
               type="text"
               onChange={handlePriceInput}
@@ -285,11 +296,11 @@ const CreateTrips = (props: TripProps) => {
           </div>
         </div>
 
-        <div className="flex w-full items-center py-2">
+        <div className="flex flex-col md:flex-row w-full py-2">
           <div className="flex-1">
             <h1 className="text-lg font-medium">Number of Peoples</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <input
               type="text"
               onChange={handleNumberOfPeopleInput}
@@ -299,11 +310,11 @@ const CreateTrips = (props: TripProps) => {
             />
           </div>
         </div>
-        <div className="flex w-full items-center py-2">
+        <div className="flex flex-col md:flex-row w-full py-2">
           <div className="flex-1">
             <h1 className="text-lg font-medium">Select Trip Type</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <select
               ref={tripType}
               defaultValue={"0"}
@@ -317,11 +328,11 @@ const CreateTrips = (props: TripProps) => {
             </select>
           </div>
         </div>
-        <div className="flex w-full items-center py-2">
+        <div className="flex flex-col md:flex-row w-full py-2">
           <div className="flex-1">
             <h1 className="text-lg font-medium">Select Trip Category</h1>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 mt-2 sm:mt-0">
             <select
               ref={tripCategory}
               defaultValue={"0"}

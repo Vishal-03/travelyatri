@@ -117,6 +117,17 @@ const EditProfile = (props: EditProfile) => {
     address!.current!.value = props.userdata.address as string;
   }, []);
 
+  const onlyNumbersRegex = /^[0-9]*$/;
+
+  // Function to handle input change and validate against the regex
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (!onlyNumbersRegex.test(value)) {
+      // If the value doesn't match the regex, clear the input
+      event.target.value = "";
+    }
+  };
+
   return (
     <>
       <div className="p-6">
@@ -198,6 +209,8 @@ const EditProfile = (props: EditProfile) => {
                 className="mx-4   rounded-md border-2  bg-gray-100 p-2"
                 placeholder="Enter your Contact"
                 ref={contact}
+                onChange={handleChange}
+                maxLength={10}
               />
             </div>
             <div className="flex flex-col grow">
@@ -211,6 +224,8 @@ const EditProfile = (props: EditProfile) => {
                 className="mx-4  rounded-md border-2  bg-gray-100 p-2"
                 placeholder="Enter your secondary Contact"
                 ref={secondcontact}
+                onChange={handleChange}
+                maxLength={10}
               />
             </div>
           </div>
