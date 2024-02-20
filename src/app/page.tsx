@@ -306,7 +306,7 @@ export default function Home() {
       {trips.length > 1 ? (
         <div className="relative h-full py-20" id="trips">
           <div className="text-2xl font-semibold text-center text-black font-title mb-4">
-            Travel Yatri
+            Travel Yatri Trips
           </div>
 
           <div className="hidden md:block lg:hidden">
