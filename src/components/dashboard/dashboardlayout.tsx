@@ -33,8 +33,16 @@ const DashboardLaoyut = (props: DashboardLaoyutProps) => {
   }, []);
 
   const getHeader = (): string => {
-    if (path.toString().includes("/dashboard/trips/")) {
+    if (path.toString().includes("/dashboard/trips")) {
       return "Trip";
+    } else if (path.toString().includes("/dashboard/admintrips")) {
+      return "Trips";
+    } else if (path.toString().includes("/dashboard/adminagency")) {
+      return "Agency";
+    } else if (path.toString().includes("/dashboard/users/")) {
+      return "User";
+    } else if (path.toString().includes("/dashboard/agency/")) {
+      return "Agency";
     } else {
       return path.toString().split("/").pop()?.toUpperCase() ?? "";
     }
@@ -45,7 +53,7 @@ const DashboardLaoyut = (props: DashboardLaoyutProps) => {
       <div
         className={`${
           isOpen ? "" : ""
-        } md:ml-60 min-h-screen w-full bg-[#ecedf1]`}
+        } md:pl-60 min-h-screen w-full bg-[#ecedf1]`}
       >
         <div className="bg-[#f0f1f5] w-full flex py-3 px-4 gap-4 items-center">
           <div

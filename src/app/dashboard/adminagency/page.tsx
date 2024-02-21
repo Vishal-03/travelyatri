@@ -13,38 +13,37 @@ import { Image } from "@nextui-org/react";
 import { longtext } from "@/utils/methods";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ShowHome, trips } from "@prisma/client";
-import { tripsHomeUpdate } from "@/actions/trip/updatetriphome";
+import { ShowHome, agency } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { getTrips } from "@/actions/trip/gettrips";
 import { toast } from "react-toastify";
-const Trips = () => {
-  const [trips, setTrips] = useState<trips[]>([]);
+import { getAgency } from "@/actions/agency/getagency";
+const AdminAgency = () => {
+  const [agency, setAgency] = useState<agency[]>([]);
 
   const init = async () => {
-    const tripsresponse = await getTrips({});
-    if (tripsresponse.status) {
-      setTrips(tripsresponse.data as trips[]);
+    const agencyresponse = await getAgency({});
+    if (agencyresponse.status) {
+      setAgency(agencyresponse.data as agency[]);
     }
   };
   useEffect(() => {
     init();
   }, []);
 
-  const updatestatus = async (id: number, status: ShowHome) => {
-    const response = await tripsHomeUpdate({
-      id: id,
-      status: status === ShowHome.YES ? ShowHome.NO : ShowHome.YES,
-    });
-    if (response.status) {
-      toast.success("Status updated successfully");
-      await init();
-    }
-  };
+  // const updatestatus = async (id: number, status: ShowHome) => {
+  //   const response = await tripsHomeUpdate({
+  //     id: id,
+  //     status: status === ShowHome.YES ? ShowHome.NO : ShowHome.YES,
+  //   });
+  //   if (response.status) {
+  //     toast.success("Status updated successfully");
+  //     await init();
+  //   }
+  // };
 
   return (
     <>
-      {trips.length === 0 ? (
+      {agency.length === 0 ? (
         <div className="bg-white p-4 rounded-md border-l-4 border-red-500 m-5 w-full">
           <h1 className="text-center text-xl font-semibold">
             There is no trips
@@ -55,47 +54,35 @@ const Trips = () => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Name</TableHead>
-              <TableHead>Agency</TableHead>
-              <TableHead>Price</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Contact</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-center">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {trips.map((item: any, index: number) => (
+            {agency.map((item: any, index: number) => (
               <TableRow key={index}>
                 <TableCell className="font-medium flex w-72 gap-2 items-center">
                   <Image
-                    src={item.image}
-                    alt="trips image error"
+                    src={item.logo}
+                    alt="Agency image error"
                     className="object-cover shrink-0 object-center w-14 h-14 rounded-full"
                   />
                   <p> {longtext(item.name, 40)}</p>
                 </TableCell>
                 <TableCell className="min-w-80">
-                  <p>{item.agency.name}</p>
+                  <p>{item.email}</p>
                 </TableCell>
-                <TableCell>{item.price}</TableCell>
+                <TableCell>{item.contact}</TableCell>
                 <TableCell>{item.status}</TableCell>
-                <TableCell className="text-right flex gap-2 items-center justify-end">
+                <TableCell>
                   <Link
-                    href={`/dashboard/trips/${item.id}`}
+                    href={`/dashboard/agency/${item.id}`}
                     className="text-white bg-blue-500 px-4 rounded-md text-sm h-8 grid place-items-center"
                   >
                     View
                   </Link>
-                  <button
-                    onClick={() => updatestatus(item.id, item.showhome)}
-                    className={`text-white rounded-md text-sm grid place-items-center w-40 h-8 hover:bg-blue-400 ${
-                      item.showhome == ShowHome.YES
-                        ? "bg-red-500"
-                        : "bg-blue-500"
-                    }`}
-                  >
-                    {item.showhome === "YES"
-                      ? "Remove from home"
-                      : "Add to home"}
-                  </button>
                 </TableCell>
               </TableRow>
             ))}
@@ -106,4 +93,4 @@ const Trips = () => {
   );
 };
 
-export default Trips;
+export default AdminAgency;

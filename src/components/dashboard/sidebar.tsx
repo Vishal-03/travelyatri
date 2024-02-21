@@ -1,10 +1,13 @@
 "use client";
 import {
+  Fa6RegularBuilding,
+  Fa6RegularChessQueen,
   Fa6SolidCircleQuestion,
   Fa6SolidDoorOpen,
   Fa6SolidMagnifyingGlass,
   Fa6SolidMountainSun,
   Fa6SolidUser,
+  FaRegularCheckCircle,
   IcBaselineContactPage,
   MaterialSymbolsContactEmergency,
   MaterialSymbolsDashboard,
@@ -75,7 +78,19 @@ const SideBar = (props: SideBarProps) => {
                 : "text-white mx-4"
             }`}
           >
-            <IcBaselineContactPage /> <p>Trips</p>
+            <FaRegularCheckCircle /> <p>Trips</p>
+          </Link>
+        )}
+        {props.user?.role == "ADMIN" && (
+          <Link
+            href={"/dashboard/adminagency"}
+            className={`flex py-2 px-4 gap-4 items-center ${
+              pathname == "/dashboard/adminagency"
+                ? "text-green-500 bg-white bg-opacity-10 border-l-4 border-green-500"
+                : "text-white mx-4"
+            }`}
+          >
+            <Fa6RegularChessQueen /> <p>Agency</p>
           </Link>
         )}
 

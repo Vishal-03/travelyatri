@@ -5,15 +5,19 @@ import TripCard from "../card/tripcard";
 import { useEffect, useState } from "react";
 import { trips } from "@prisma/client";
 import { getTrips } from "@/actions/trip/gettrips";
+import { getTripsById } from "@/actions/trip/gettripbyid";
 
-const AgencyDashboard = () => {
+interface AgencyDashboardProps {
+  id: number;
+}
+const AgencyDashboard = (props: AgencyDashboardProps) => {
   const [isLoading, setIsLoding] = useState<boolean>(true);
 
   const [trips, setTrips] = useState<trips[]>([]);
 
   const init = async () => {
     setIsLoding(true);
-    const tripsres = await getTrips({});
+    const tripsres = await getTripsById({ id: props.id });
     if (tripsres.status) setTrips(tripsres.data!);
 
     setIsLoding(false);

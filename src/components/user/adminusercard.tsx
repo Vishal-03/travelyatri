@@ -1,7 +1,7 @@
 "use client";
 import { UpdateStatus } from "@/actions/user/updateStatus";
 import { ByIdSchema } from "@/schemas/byid";
-import { Image } from "@nextui-org/react";
+import { Image, Link } from "@nextui-org/react";
 import { UserStatus } from "@prisma/client";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
@@ -58,12 +58,12 @@ const UserCard = (props: UserCardProps) => {
           </div>
         </div>
         <div className="flex gap-2 mt-4">
-          <button className="flex-1 bg-gradient-to-bl from-orange-500 to-orange-300 text-white rounded-md px-4 py-1">
+          <Link
+            href={`/dashboard/users/${props.id}`}
+            className="flex-1 bg-gradient-to-bl from-blue-500 to-blue-300 text-center grid place-items-center text-white rounded-md px-4 py-1"
+          >
             View
-          </button>
-          <button className="flex-1 bg-gradient-to-bl from-red-500 to-red-300 text-white rounded-md px-4 py-1">
-            Delete
-          </button>
+          </Link>
           {props.status == "ADMINACTIVE" ? (
             <button
               onClick={registerUser}
