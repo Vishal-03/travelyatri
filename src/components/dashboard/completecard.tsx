@@ -4,7 +4,7 @@ import Link from "next/link";
 const CompleteCard = () => {
   return (
     <>
-      <div className="p-6 rounded-md  bg-gradient-to-l from-blue-200 to-blue-400 flex">
+      <div className="p-6 rounded-md  bg-gradient-to-l from-blue-200 to-blue-400 flex mt-6">
         <div className="grow flex flex-col">
           <h1 className="text-white text-lg sm:text-3xl font-semibold">
             Your Profile is not completed

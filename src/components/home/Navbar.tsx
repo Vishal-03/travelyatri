@@ -25,16 +25,16 @@ const Navbar = () => {
             <Link href={"/"}>Travel Yatri</Link>
           </h2>
           <div className="hidden md:flex grow justify-center gap-4 items-center text-black text-md font-medium transition-all duration-300">
-            <Link href={"#home"} className="hover:text-[#1bc48b]">
+            <Link href={"/#home"} className="hover:text-[#1bc48b]">
               Home
             </Link>
-            <Link href={"#trips"} className="hover:text-[#1bc48b]">
+            <Link href={"/#trips"} className="hover:text-[#1bc48b]">
               Trips
             </Link>
-            <Link href={"#about"} className="hover:text-[#1bc48b]">
+            <Link href={"/#about"} className="hover:text-[#1bc48b]">
               About
             </Link>
-            <Link href={"#contact"} className="hover:text-[#1bc48b]">
+            <Link href={"/#contact"} className="hover:text-[#1bc48b]">
               Contact
             </Link>
           </div>

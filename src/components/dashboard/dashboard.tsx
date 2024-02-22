@@ -1,15 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Fa6SolidMountainSun,
-  IconamoonSearch,
-  MaterialSymbolsDashboard,
-} from "../icons";
+import { IconamoonSearch } from "../icons";
 import AgencyDashboard from "./agencydashboard";
 import { useRouter } from "next/navigation";
 import CompleteCard from "./completecard";
-import { useSession } from "next-auth/react";
 import {
   Carousel,
   CarouselApi,
@@ -152,9 +147,9 @@ const DashboardPage = (props: DashboardPageProps) => {
 
       <div className="p-6">
         {props.user?.role == "USER" ? (
-          <AgencyDashboard id={props.user.id} />
-        ) : (
           <UserDashboard />
+        ) : (
+          <AgencyDashboard id={props.user.id} />
         )}
       </div>
     </>

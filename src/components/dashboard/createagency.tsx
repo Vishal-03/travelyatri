@@ -349,7 +349,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
               <span className="flex-1">Agency complete address:</span>
 
               <textarea
-                className="grow rounded-lg border-2 h-24 resize-none p-6 focus:outline-none"
+                className="grow rounded-lg border-2 h-24 resize-none px-2 py-2 mt-2 focus:outline-none"
                 ref={address}
               ></textarea>
             </div>
@@ -358,7 +358,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
               <span className="flex-1">Agency description:</span>
 
               <textarea
-                className="grow rounded-lg border-2 h-24 resize-none px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
+                className="grow rounded-lg border-2 h-24 resize-none px-2 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={description}
               ></textarea>
             </div>

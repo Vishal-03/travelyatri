@@ -46,16 +46,20 @@ interface PriceCard {
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { getHomeTrips } from "@/actions/trip/gethometrips";
+import Link from "next/link";
 export default function Home() {
   const route = useRouter();
   const [isLoading, setIsLoding] = useState<boolean>(true);
 
   const [trips, setTrips] = useState<trips[]>([]);
+  const [alltrips, setAllTrips] = useState<trips[]>([]);
 
   const init = async () => {
     setIsLoding(true);
     const tripsres = await getHomeTrips({});
     if (tripsres.status) setTrips(tripsres.data!);
+    const alltripsresponse = await getTrips({});
+    if (alltripsresponse.status) setAllTrips(alltripsresponse.data!);
 
     setIsLoding(false);
   };
@@ -249,6 +253,16 @@ export default function Home() {
     ),
   };
 
+  const onlyNumbersRegex = /^[0-9]*$/;
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (!onlyNumbersRegex.test(value)) {
+      // If the value doesn't match the regex, clear the input
+      event.target.value = "";
+    }
+  };
+
   return (
     <>
       <div className="grid place-items-center relative" id="home">
@@ -304,13 +318,13 @@ export default function Home() {
         </div>
       </div>
       {trips.length > 1 ? (
-        <div className="relative h-full py-20" id="trips">
+        <div className="relative h-full py-10" id="trips">
           <div className="text-2xl font-semibold text-center text-black font-title mb-4">
             Travel Yatri Trips
           </div>
 
-          <div className="hidden md:block lg:hidden">
-            <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
+          <div className="hidden md:block lg:hidden  p-4">
+            <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
               {trips.slice(0, 4).map((data: trips, index: number) => (
                 <PriceCard
                   key={index}
@@ -324,7 +338,7 @@ export default function Home() {
             </Slider>
           </div>
 
-          <div className="hidden lg:block">
+          <div className="hidden lg:block  p-4">
             <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
               {trips.slice(0, 4).map((data: trips, index: number) => (
                 <PriceCard
@@ -339,7 +353,7 @@ export default function Home() {
             </Slider>
           </div>
 
-          <div className="md:hidden">
+          <div className="md:hidden p-4">
             <Slider
               {...tsettings1}
               className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
@@ -355,6 +369,72 @@ export default function Home() {
                 />
               ))}
             </Slider>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+      {alltrips.length > 1 ? (
+        <div className="relative h-full py-10" id="trips">
+          <div className="text-2xl font-semibold text-center text-black font-title mb-4">
+            Travel Yatri All Trips
+          </div>
+
+          <div className="hidden md:block lg:hidden  p-4">
+            <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
+              {alltrips.slice(0, 4).map((data: trips, index: number) => (
+                <PriceCard
+                  key={index}
+                  title={data.name!}
+                  description={data.description!}
+                  price={data.price}
+                  link={data.id.toString()!}
+                  image={data.image!}
+                />
+              ))}
+            </Slider>
+          </div>
+
+          <div className="hidden lg:block  p-4">
+            <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
+              {alltrips.slice(0, 4).map((data: trips, index: number) => (
+                <PriceCard
+                  key={index}
+                  title={data.name!}
+                  description={data.description!}
+                  price={data.price}
+                  link={data.id.toString()!}
+                  image={data.image!}
+                />
+              ))}
+            </Slider>
+          </div>
+
+          <div className="md:hidden p-4">
+            <Slider
+              {...tsettings1}
+              className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
+            >
+              {alltrips.slice(0, 4).map((data: trips, index: number) => (
+                <PriceCard
+                  key={index}
+                  title={data.name!}
+                  description={data.description!}
+                  price={data.price}
+                  link={data.id.toString()!}
+                  image={data.image!}
+                />
+              ))}
+            </Slider>
+          </div>
+
+          <div className="grid place-items-center mt-6">
+            <Link
+              href={"/alltrips"}
+              className="bg-[#1bc48b] rounded-md py-2 px-4 text-white text-center font-semibold"
+            >
+              See All Trips
+            </Link>
           </div>
         </div>
       ) : (
@@ -686,6 +766,8 @@ export default function Home() {
               type="tel"
               placeholder="Enter Your Phone Number"
               className="px-5 py-2 rounded-lg border-[#1bc48b] border-2 outline-none"
+              maxLength={10}
+              onChange={handleChange}
             />
             <textarea
               ref={messageRef}
@@ -830,11 +912,11 @@ const FeatureCard = (props: FeatureCardProps) => {
 const PriceCard = (props: PriceCard) => {
   const router = useRouter();
   return (
-    <Card className=" bg-gray-100 w-64 p-2 shadow-lg transition-all duration-200 ease-in-out  rounded-md mx-auto">
+    <Card className=" bg-gray-100 w-56 p-2 shadow-lg transition-all duration-200 ease-in-out  rounded-md mx-auto">
       <Image
         src={props.image}
         alt="error"
-        className="w-64 h-48 object-cover object-center inline-block rounded-md"
+        className="w-56 h-40 object-cover object-center inline-block rounded-md"
       ></Image>
       <div>
         <p className="font-semibold mt-2 text-lg font-title">
@@ -857,15 +939,3 @@ const PriceCard = (props: PriceCard) => {
     </Card>
   );
 };
-
-type mycusprops = {
-  one: string;
-  two: string;
-  three: string;
-  four: string;
-  five: string;
-  six: string;
-  seven: string;
-};
-
-const mycus = (props: mycusprops) => {};
