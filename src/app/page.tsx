@@ -377,10 +377,22 @@ export default function Home() {
       {alltrips.length > 1 ? (
         <div className="relative h-full py-10" id="trips">
           <div className="text-2xl font-semibold text-center text-black font-title mb-4">
-            Travel Yatri All Trips
+            All Trips Of Travel Yatri
           </div>
 
-          <div className="hidden md:block lg:hidden  p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {alltrips.slice(0, 4).map((data: trips, index: number) => (
+              <PriceCard
+                key={index}
+                title={data.name!}
+                description={data.description!}
+                price={data.price}
+                link={data.id.toString()!}
+                image={data.image!}
+              />
+            ))}
+          </div>
+          {/* <div className="hidden md:block lg:hidden  p-4">
             <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
               {alltrips.slice(0, 4).map((data: trips, index: number) => (
                 <PriceCard
@@ -426,7 +438,7 @@ export default function Home() {
                 />
               ))}
             </Slider>
-          </div>
+          </div> */}
 
           <div className="grid place-items-center mt-6">
             <Link
@@ -931,7 +943,7 @@ const PriceCard = (props: PriceCard) => {
         </p>
         <Button
           onClick={() => router.push(`/dashboard/trips/${props.link}`)}
-          className="bg-[#1bc48b] w-full mt-4 hover:bg-transparent border-[#1bc48b] border-2 hover:text-[#1bc48b]"
+          className="bg-[#1bc48b] w-full mt-4 hover:bg-transparent border-[#1bc48b] border-2 hover:text-[#1bc48b] text-white rounded-sm"
         >
           See More
         </Button>
