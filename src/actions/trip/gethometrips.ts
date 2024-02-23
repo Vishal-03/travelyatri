@@ -4,6 +4,7 @@ import { ApiResponseType } from "@/models/responnse";
 import { errorToString } from "@/utils/methods";
 import prisma from "../../../prisma/database";
 import { ShowHome, trips } from "@prisma/client";
+import { time } from "console";
 
 type getHomeTripsPayload = {};
 
@@ -15,6 +16,7 @@ export const getHomeTrips = async (
       where: { showhome: ShowHome.YES },
       include: { agency: true, trips_images: true },
     });
+    console.log(trips);
     if (!trips) {
       return {
         status: false,

@@ -206,16 +206,6 @@ export default function Home() {
       </div>
     );
 
-  const getcardnumberfromscreensize = () => {
-    if (window.innerWidth > 1024) {
-      return 4;
-    } else if (window.innerWidth > 600) {
-      return 3;
-    } else {
-      return 1;
-    }
-  };
-
   var tsettings1 = {
     dots: true,
     infinite: true,
@@ -377,7 +367,7 @@ export default function Home() {
       {alltrips.length > 1 ? (
         <div className="relative h-full py-10" id="trips">
           <div className="text-2xl font-semibold text-center text-black font-title mb-4">
-            All Trips Of Travel Yatri
+            All Trips
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -922,7 +912,6 @@ const FeatureCard = (props: FeatureCardProps) => {
 };
 
 const PriceCard = (props: PriceCard) => {
-  const router = useRouter();
   return (
     <Card className=" bg-gray-100 w-56 p-2 shadow-lg transition-all duration-200 ease-in-out  rounded-md mx-auto">
       <Image
@@ -931,22 +920,22 @@ const PriceCard = (props: PriceCard) => {
         className="w-56 h-40 object-cover object-center inline-block rounded-md"
       ></Image>
       <div>
-        <p className="font-semibold mt-2 text-lg font-title">
-          Best Trip Available
+        <p className="font-semibold mt-2 text-lg font-title truncate">
+          {props.title}
         </p>
         <h1 className="text-sm font-normal text-gray-600 font-para my-1">
           ₹ {props.price}
         </h1>
 
-        <p className="font-normal text-sm font-para">
-          For limited Time only join this lovely trip
+        <p className="font-normal text-sm font-para truncate">
+          {props.description}
         </p>
-        <Button
-          onClick={() => router.push(`/dashboard/trips/${props.link}`)}
-          className="bg-[#1bc48b] w-full mt-4 hover:bg-transparent border-[#1bc48b] border-2 hover:text-[#1bc48b] text-white rounded-sm"
+        <Link
+          href={`/trips/${props.link}`}
+          className="bg-[#1bc48b] w-full mt-2 inline-block hover:bg-transparent border-[#1bc48b] border-2 hover:text-[#1bc48b] text-white rounded-sm py-1 text-center"
         >
           See More
-        </Button>
+        </Link>
       </div>
     </Card>
   );

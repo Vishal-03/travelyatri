@@ -43,6 +43,8 @@ const DashboardLaoyut = (props: DashboardLaoyutProps) => {
       return "User";
     } else if (path.toString().includes("/dashboard/agency/")) {
       return "Agency";
+    } else if (path.toString().includes("/dashboard/alltrips")) {
+      return "All Trips";
     } else {
       return path.toString().split("/").pop()?.toUpperCase() ?? "";
     }

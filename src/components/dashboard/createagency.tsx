@@ -60,6 +60,23 @@ const CreateAgency = (props: CreateAgencyProps) => {
       toast.error("Image file size must be less then 1 mb", { theme: "light" });
     }
   };
+  const handlepaChange = (
+    value: React.ChangeEvent<HTMLInputElement>,
+    setFun: (value: SetStateAction<File | null>) => void
+  ) => {
+    let file_size = parseInt((value!.target.files![0].size / 1024).toString());
+    if (file_size < 101) {
+      if (value!.target.files![0].type.startsWith("image/")) {
+        setFun((val) => value!.target.files![0]);
+      } else {
+        toast.error("Please select an image file.", { theme: "light" });
+      }
+    } else {
+      toast.error("Image file size must be less then 100 kb", {
+        theme: "light",
+      });
+    }
+  };
 
   async function createAgencyFuncation() {
     const result = safeParse(createAgencySchema, {
@@ -240,14 +257,14 @@ const CreateAgency = (props: CreateAgencyProps) => {
               type="file"
               ref={cAadharimg}
               accept="image/*"
-              onChange={(val) => handleLogoChange(val, setAadharimg)}
+              onChange={(val) => handlepaChange(val, setAadharimg)}
             />
 
             <input
               type="file"
               ref={cPanimg}
               accept="image/*"
-              onChange={(val) => handleLogoChange(val, setPanimg)}
+              onChange={(val) => handlepaChange(val, setPanimg)}
             />
           </div>
 
@@ -303,6 +320,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
                 className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={aadharcard}
                 onChange={handleChange}
+                maxLength={12}
               />
             </div>
             <div className="w-full flex justify-between items-center gap-4">
@@ -327,6 +345,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
                 type="text"
                 className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={pancard}
+                maxLength={10}
               />
             </div>
             <div className="w-full flex justify-between items-center gap-4">

@@ -39,7 +39,7 @@ const TripCard = (props: TripCardProps) => {
       </div>
       <Link
         href={props.link}
-        className="w-full inline-block text-center bg-blue-500 text-white py-1 mt-2 rounded-md"
+        className="w-full inline-block text-center bg-[#1bc48b] text-white py-1 mt-2 rounded-md"
       >
         View
       </Link>

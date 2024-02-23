@@ -120,7 +120,7 @@ const SideBar = (props: SideBarProps) => {
           </Link>
         )}
 
-        {props.user?.role == "USER" && (
+        {/* {props.user?.role == "USER" && (
           <Link
             href={"/dashboard/search"}
             className={`flex py-2 px-4 gap-4 items-center ${
@@ -131,7 +131,7 @@ const SideBar = (props: SideBarProps) => {
           >
             <Fa6SolidMagnifyingGlass /> <p>Search</p>
           </Link>
-        )}
+        )} */}
 
         {/* {props.user?.role == "AGENCY" && (
           <Link

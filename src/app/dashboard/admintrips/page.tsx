@@ -80,7 +80,7 @@ const Trips = () => {
                 <TableCell className="text-right flex gap-2 items-center justify-end">
                   <Link
                     href={`/dashboard/trips/${item.id}`}
-                    className="text-white bg-blue-500 px-4 rounded-md text-sm h-8 grid place-items-center"
+                    className="text-white bg-[#1bc48b] px-4 rounded-md text-sm h-8 grid place-items-center"
                   >
                     View
                   </Link>

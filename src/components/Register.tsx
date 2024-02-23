@@ -92,7 +92,7 @@ const Register = (props: RegisterProps) => {
   };
 
   return (
-    <div className="bg-gray-100 flex items-center justify-center h-screen">
+    <div className="bg-gray-100 flex items-center justify-center min-h-screen py-6">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
         <h2 className="text-2xl font-semibold text-center mb-4">
           Create a new account
@@ -246,11 +246,19 @@ const Register = (props: RegisterProps) => {
           </p>
         </div>
         <h1 className="text-center text-sm mt-6">
-          Already have an account?{" "}
+          Already have an account?
           <Link href={"/login"} className="cursor-pointer text-blue-500">
             Login
-          </Link>{" "}
+          </Link>
         </h1>
+        <div className="grid place-items-center">
+          <Link
+            href={"/"}
+            className="text-sm cursor-pointer text-blue-500 mt-4 inline-block mx-auto"
+          >
+            Go Back To Home
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -16,11 +16,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
+import Link from "next/link";
 
 interface TripProps {
   trip: any;
 }
-const ViewTrips = (props: TripProps) => {
+const ViewTripsHome = (props: TripProps) => {
   const start_date = new Date(props.trip?.start!);
   const start = `${start_date.getDate()}-${
     start_date.getMonth() + 1
@@ -181,8 +182,16 @@ const ViewTrips = (props: TripProps) => {
           <p className="text-lg font-normal">{props.trip?.location}</p>
           <p className="text-gray-500">{props.trip?.location_description}</p>
         </div>
+        <div className="grid place-items-center mt-6">
+          <Link
+            href={"/login"}
+            className="bg-blue-500 rounded-sm w-60 text-center py-1 text-white"
+          >
+            Book The Trip
+          </Link>
+        </div>
       </div>
     </>
   );
 };
-export default ViewTrips;
+export default ViewTripsHome;

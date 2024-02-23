@@ -6,7 +6,7 @@ import { trips } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const AllTrips = () => {
+const AllTripsDashboard = () => {
   const route = useRouter();
   const [isLoading, setIsLoding] = useState<boolean>(true);
 
@@ -41,15 +41,14 @@ const AllTrips = () => {
                 price={item.price!.toString()}
                 type={item.trip_type!}
                 image={item.image!}
-                link={`/trip/${item.id}`}
+                link={`/dashboard/trips/${item.id}`}
               ></TripCard>
             );
           })}
         </div>
       </div>
-      <Navbar />
     </>
   );
 };
 
-export default AllTrips;
+export default AllTripsDashboard;
