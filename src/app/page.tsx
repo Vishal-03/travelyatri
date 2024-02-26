@@ -931,7 +931,7 @@ const PriceCard = (props: PriceCard) => {
           {props.description}
         </p>
         <Link
-          href={`/trips/${props.link}`}
+          href={`/trip/${props.link}`}
           className="bg-[#1bc48b] w-full mt-2 inline-block hover:bg-transparent border-[#1bc48b] border-2 hover:text-[#1bc48b] text-white rounded-sm py-1 text-center"
         >
           See More

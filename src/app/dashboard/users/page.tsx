@@ -7,14 +7,7 @@ const Users = async () => {
   // remover the id 1 and 2 from the list
   const users = await prisma.user.findMany({
     where: {
-      NOT: [
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-      ],
+      role: "AGENCY",
     },
   });
 
