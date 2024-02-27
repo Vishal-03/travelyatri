@@ -12,7 +12,6 @@ import {
 const createAgencySchema = object({
   userId: number([minValue(1, "Please enter the user id.")]),
   name: string([minLength(1, "Please enter your agency name.")]),
-  website: string([minLength(1, "Please enter your agency website address.")]),
   contact: string([
     minLength(1, "Please enter your agency contact number."),
     maxLength(10, "Please enter your valid agency contact number"),

@@ -14,7 +14,7 @@ type createAgencyPayload = {
   logo: string;
   banner: string;
   name: string;
-  website: string;
+  website?: string;
   email: string;
   contact: string;
   address: string;
@@ -49,21 +49,27 @@ export const createAgency = async (
         apiurl: "createAgency",
       };
 
+    let data_to_update: any = {
+      name: args.name,
+      email: args.email,
+      contact: args.contact,
+      logo: args.logo,
+      banner: args.banner,
+      website: args.website,
+      address: args.address,
+      description: args.description,
+      aadhar: args.aadhar,
+      aadharurl: args.aadharurl,
+      pan: args.pan,
+      panurl: args.panurl,
+    };
+
+    if (args.website) {
+      data_to_update["website"] = args.website;
+    }
+
     const createdagencyuser: agency | null = await prisma.agency.create({
-      data: {
-        name: args.name,
-        email: args.email,
-        contact: args.contact,
-        logo: args.logo,
-        banner: args.banner,
-        website: args.website,
-        address: args.address,
-        description: args.description,
-        aadhar: args.aadhar,
-        aadharurl: args.aadharurl,
-        pan: args.pan,
-        panurl: args.panurl,
-      },
+      data: data_to_update,
     });
 
     if (!createdagencyuser)

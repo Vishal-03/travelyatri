@@ -83,7 +83,6 @@ const CreateAgency = (props: CreateAgencyProps) => {
       const result = safeParse(createAgencySchema, {
         userId: props.user.id,
         name: name.current?.value,
-        website: website.current?.value,
         contact: contact.current?.value,
         email: email.current?.value,
         address: address.current?.value,
@@ -152,7 +151,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
         const createAgencyResponse = await createAgency({
           id: props.user.id,
           name: result.output.name,
-          website: result.output.website,
+          website: website.current?.value,
           contact: result.output.contact,
           email: result.output.email,
           address: result.output.address,
