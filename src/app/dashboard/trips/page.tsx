@@ -6,6 +6,9 @@ import prisma from "../../../../prisma/database";
 import { getServerSession } from "next-auth";
 import { user } from "@prisma/client";
 import UserTripsSection from "@/components/dashboard/trips/usertripsection";
+import { profileCompleted } from "@/actions/user/profilecompleted";
+import AgencyInfo from "@/components/dashboard/agency/agencyinfo";
+import CompleteAgencyCard from "@/components/dashboard/completeagency";
 
 const Trips = async () => {
   const session = await getServerSession();
@@ -24,12 +27,32 @@ const Trips = async () => {
     },
   });
 
+  const userProfile = await profileCompleted({
+    userid: userdata?.id as number,
+  });
+
   return (
     <>
       <div className="w-full relative p-6">
-        {userdata?.role == "AGENCY" ? <CreateTripsCard /> : <></>}
         {userdata?.role == "AGENCY" ? (
-          <TripsSection trips={trips} />
+          userProfile.data?.agency ? (
+            <CreateTripsCard />
+          ) : (
+            <div className="w-4/6 mx-auto grid place-items-center h-screen ">
+              <CompleteAgencyCard />
+            </div>
+          )
+        ) : (
+          <></>
+        )}
+        {userdata?.role == "AGENCY" ? (
+          userProfile.data?.agency ? (
+            <>
+              <TripsSection trips={trips} />
+            </>
+          ) : (
+            <></>
+          )
         ) : (
           <UserTripsSection trips={trips}></UserTripsSection>
         )}

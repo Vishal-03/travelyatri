@@ -4,7 +4,7 @@ import Link from "next/link";
 const CompleteAgencyCard = () => {
   return (
     <>
-      <div className="p-6 rounded-md  bg-gradient-to-l from-blue-200 to-blue-400 flex flex-col md:flex-row mt-6  order-2 md:order-1">
+      <div className="p-6 rounded-md  bg-gradient-to-l from-blue-200 to-blue-400 flex flex-col md:flex-row mt-6 order-2 md:order-1">
         <div className="grow flex flex-col">
           <h1 className="text-white text-sm sm:text-3xl font-semibold">
             You havne&apos;t created agency yet

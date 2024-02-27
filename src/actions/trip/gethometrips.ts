@@ -4,7 +4,6 @@ import { ApiResponseType } from "@/models/responnse";
 import { errorToString } from "@/utils/methods";
 import prisma from "../../../prisma/database";
 import { ShowHome, trips } from "@prisma/client";
-import { time } from "console";
 
 type getHomeTripsPayload = {};
 

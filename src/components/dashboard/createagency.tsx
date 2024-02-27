@@ -14,7 +14,7 @@ import { SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
 import { IconamoonSignPlusCircleLight, IconamoonTrashDuotone } from "../icons";
-import { longtext } from "@/utils/methods";
+import { errorToString, longtext } from "@/utils/methods";
 
 interface CreateAgencyProps {
   user: any;
@@ -79,108 +79,115 @@ const CreateAgency = (props: CreateAgencyProps) => {
   };
 
   async function createAgencyFuncation() {
-    const result = safeParse(createAgencySchema, {
-      userId: props.user.id,
-      name: name.current?.value,
-      website: website.current?.value,
-      contact: contact.current?.value,
-      email: email.current?.value,
-      address: address.current?.value,
-      description: description.current?.value,
-      aadhar: aadharcard.current?.value,
-      pan: pancard.current?.value,
-    });
-
-    if (result.success) {
-      if (logo == null) return toast.error("Upload your logo");
-      if (banner == null) return toast.error("Upload your banner");
-      if (aadharimg == null) return toast.error("Upload aadhar card");
-      if (panimg == null) return toast.error("Upload your pan card");
-
-      const imageBuffer = await logo.arrayBuffer();
-      const image: string = Buffer.from(imageBuffer).toString("base64");
-
-      const uploadimage: ApiResponseType<string | null> =
-        await uploadagencyLogo({
-          name: logo.name,
-          arrayBuffer: image,
-        });
-
-      if (!uploadimage.status || uploadimage.data == null)
-        return toast.error(uploadimage.message);
-
-      const imageBufferTwo = await banner.arrayBuffer();
-      const imageTwo: string = Buffer.from(imageBufferTwo).toString("base64");
-
-      const uploadimageTwo: ApiResponseType<string | null> =
-        await uploadagencyBanner({
-          name: banner.name,
-          arrayBuffer: imageTwo,
-        });
-
-      if (!uploadimageTwo.status || uploadimageTwo.data == null)
-        return toast.error(uploadimageTwo.message);
-
-      const imageBufferThree = await aadharimg.arrayBuffer();
-      const imageThree: string =
-        Buffer.from(imageBufferThree).toString("base64");
-
-      const uploadimageThree: ApiResponseType<string | null> =
-        await uploadaadhar({
-          name: aadharimg.name,
-          arrayBuffer: imageThree,
-        });
-
-      if (!uploadimageThree.status || uploadimageThree.data == null)
-        return toast.error(uploadimageThree.message);
-
-      const imageBufferFour = await panimg.arrayBuffer();
-      const imageFour: string = Buffer.from(imageBufferFour).toString("base64");
-
-      const uploadimageFour: ApiResponseType<string | null> = await uploadpan({
-        name: panimg.name,
-        arrayBuffer: imageFour,
+    try {
+      const result = safeParse(createAgencySchema, {
+        userId: props.user.id,
+        name: name.current?.value,
+        website: website.current?.value,
+        contact: contact.current?.value,
+        email: email.current?.value,
+        address: address.current?.value,
+        description: description.current?.value,
+        aadhar: aadharcard.current?.value,
+        pan: pancard.current?.value,
       });
 
-      if (!uploadimageFour.status || uploadimageFour.data == null)
-        return toast.error(uploadimageFour.message);
+      if (result.success) {
+        if (logo == null) return toast.error("Upload your logo");
+        if (banner == null) return toast.error("Upload your banner");
+        if (aadharimg == null) return toast.error("Upload aadhar card");
+        if (panimg == null) return toast.error("Upload your pan card");
 
-      const createAgencyResponse = await createAgency({
-        id: props.user.id,
-        name: result.output.name,
-        website: result.output.website,
-        contact: result.output.contact,
-        email: result.output.email,
-        address: result.output.address,
-        description: result.output.description,
-        logo: uploadimage.data,
-        banner: uploadimageTwo.data,
-        aadhar: result.output.aadhar,
-        pan: result.output.pan,
-        aadharurl: uploadimageThree.data,
-        panurl: uploadimageFour.data,
-      });
+        const imageBuffer = await logo.arrayBuffer();
+        const image: string = Buffer.from(imageBuffer).toString("base64");
 
-      if (createAgencyResponse.status) {
-        toast.success(createAgencyResponse.message);
-        name.current!.value = "";
-        website.current!.value = "";
-        contact.current!.value = "";
-        email.current!.value = "";
-        address.current!.value = "";
-        description.current!.value = "";
-        return router.push("/dashboard");
+        const uploadimage: ApiResponseType<string | null> =
+          await uploadagencyLogo({
+            name: logo.name,
+            arrayBuffer: image,
+          });
+
+        if (!uploadimage.status || uploadimage.data == null)
+          return toast.error(uploadimage.message);
+
+        const imageBufferTwo = await banner.arrayBuffer();
+        const imageTwo: string = Buffer.from(imageBufferTwo).toString("base64");
+
+        const uploadimageTwo: ApiResponseType<string | null> =
+          await uploadagencyBanner({
+            name: banner.name,
+            arrayBuffer: imageTwo,
+          });
+
+        if (!uploadimageTwo.status || uploadimageTwo.data == null)
+          return toast.error(uploadimageTwo.message);
+
+        const imageBufferThree = await aadharimg.arrayBuffer();
+        const imageThree: string =
+          Buffer.from(imageBufferThree).toString("base64");
+
+        const uploadimageThree: ApiResponseType<string | null> =
+          await uploadaadhar({
+            name: aadharimg.name,
+            arrayBuffer: imageThree,
+          });
+
+        if (!uploadimageThree.status || uploadimageThree.data == null)
+          return toast.error(uploadimageThree.message);
+
+        const imageBufferFour = await panimg.arrayBuffer();
+        const imageFour: string =
+          Buffer.from(imageBufferFour).toString("base64");
+
+        const uploadimageFour: ApiResponseType<string | null> = await uploadpan(
+          {
+            name: panimg.name,
+            arrayBuffer: imageFour,
+          }
+        );
+
+        if (!uploadimageFour.status || uploadimageFour.data == null)
+          return toast.error(uploadimageFour.message);
+
+        const createAgencyResponse = await createAgency({
+          id: props.user.id,
+          name: result.output.name,
+          website: result.output.website,
+          contact: result.output.contact,
+          email: result.output.email,
+          address: result.output.address,
+          description: result.output.description,
+          logo: uploadimage.data,
+          banner: uploadimageTwo.data,
+          aadhar: result.output.aadhar,
+          pan: result.output.pan,
+          aadharurl: uploadimageThree.data,
+          panurl: uploadimageFour.data,
+        });
+
+        if (createAgencyResponse.status) {
+          toast.success(createAgencyResponse.message);
+          name.current!.value = "";
+          website.current!.value = "";
+          contact.current!.value = "";
+          email.current!.value = "";
+          address.current!.value = "";
+          description.current!.value = "";
+          return router.push("/dashboard");
+        } else {
+          toast.error(createAgencyResponse.message);
+        }
       } else {
-        toast.error(createAgencyResponse.message);
+        let errorMessage = "";
+        if (result.issues[0].input) {
+          errorMessage = result.issues[0].message;
+        } else {
+          errorMessage = result.issues[0].path![0].key + " is required";
+        }
+        toast.error(errorMessage);
       }
-    } else {
-      let errorMessage = "";
-      if (result.issues[0].input) {
-        errorMessage = result.issues[0].message;
-      } else {
-        errorMessage = result.issues[0].path![0].key + " is required";
-      }
-      toast.error(errorMessage);
+    } catch (e) {
+      toast.error(errorToString(e));
     }
   }
   const onlyNumbersRegex = /^[0-9]*$/;
