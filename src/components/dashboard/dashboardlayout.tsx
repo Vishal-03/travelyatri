@@ -70,10 +70,10 @@ const DashboardLaoyut = (props: DashboardLaoyutProps) => {
             <Image
               alt="erro"
               src={props.userdata.avatar}
-              className="h-8 w-8 rounded-full object-cover object-center mx-auto inline-block"
+              className="h-8 w-8 rounded-full object-cover object-center mx-auto inline-block shrink-0"
             />
           ) : (
-            <div className="h-8 w-8 bg-blue-500 rounded-full grid place-items-center mx-auto">
+            <div className="h-8 w-8 bg-blue-500 rounded-full grid place-items-center mx-auto shrink-0">
               <p className="text-white text-lg font-semibold">
                 {props.userdata?.name == undefined ||
                 props.userdata.name == null ||
@@ -83,7 +83,7 @@ const DashboardLaoyut = (props: DashboardLaoyutProps) => {
               </p>
             </div>
           )}
-          <p className="text-lg font-semibold">
+          <p className="text-lg font-semibold hidden sm:block">
             {props.userdata?.name == undefined ||
             props.userdata.name == null ||
             props.userdata.name == ""

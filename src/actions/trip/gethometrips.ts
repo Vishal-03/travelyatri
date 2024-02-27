@@ -16,7 +16,6 @@ export const getHomeTrips = async (
       where: { showhome: ShowHome.YES },
       include: { agency: true, trips_images: true },
     });
-    console.log(trips);
     if (!trips) {
       return {
         status: false,

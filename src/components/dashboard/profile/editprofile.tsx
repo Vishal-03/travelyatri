@@ -159,7 +159,7 @@ const EditProfile = (props: EditProfile) => {
           ) : null}
           <button
             onClick={() => cLogo.current?.click()}
-            className="text-white font-semibold text-md mx-4 py-1 my-2 inline-block px-4 rounded-md bg-green-500"
+            className="text-white font-semibold text-md mx-4 py-1 my-2 inline-block px-4 rounded-md bg-green-500 mt-4"
           >
             {props.userdata.avatar == null && logo == null
               ? "Add Avatar"

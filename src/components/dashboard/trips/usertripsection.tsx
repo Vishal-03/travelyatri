@@ -13,25 +13,27 @@ const UserTripsSection = (props: UserTripsSectionProps) => {
   return (
     <>
       <div className="flex gap-4 mt-4 flex-wrap">
-        <div
-          className={`cursor-pointer  rounded-md shadow-md  text-lg font-semibold px-6 py-1 ${
-            isrunning
-              ? "text-white bg-gradient-to-bl from-orange-500 to-orange-300"
-              : "text-orange-500 bg-white"
-          }`}
-          onClick={() => setisrunning(true)}
-        >
-          Runing
-        </div>
-        <div
-          className={`cursor-pointer  rounded-md shadow-md  text-lg font-semibold px-6 py-1 ${
-            !isrunning
-              ? "text-white bg-gradient-to-bl from-orange-500 to-orange-300"
-              : "text-orange-500 bg-white"
-          }`}
-          onClick={() => setisrunning(false)}
-        >
-          Expired
+        <div className="flex flex-row gap-4 grow">
+          <div
+            className={`cursor-pointer flex-1 sm:flex-auto grid place-items-center  rounded-md shadow-md  text-lg font-semibold px-6 py-1 ${
+              isrunning
+                ? "text-white bg-gradient-to-bl from-orange-500 to-orange-300"
+                : "text-orange-500 bg-white"
+            }`}
+            onClick={() => setisrunning(true)}
+          >
+            Runing
+          </div>
+          <div
+            className={`cursor-pointer flex-1 sm:flex-auto grid place-items-center  rounded-md shadow-md  text-lg font-semibold px-6 py-1 ${
+              !isrunning
+                ? "text-white bg-gradient-to-bl from-orange-500 to-orange-300"
+                : "text-orange-500 bg-white"
+            }`}
+            onClick={() => setisrunning(false)}
+          >
+            Expired
+          </div>
         </div>
         <div className="flex items-center grow gap-4">
           <input

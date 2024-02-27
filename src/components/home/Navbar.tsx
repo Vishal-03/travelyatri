@@ -107,7 +107,7 @@ const Navbar = () => {
           </Link>
           <Link
             href={"login"}
-            className={`rounded-md border-2 hover:text-white hover:bg-[#1bc48b] border-[#1bc48b] px-6 py-1 text-sm text-[#1bc48b] font-medium`}
+            className={`rounded-md border-2 hover:text-white hover:bg-[#1bc48b] border-[#1bc48b] px-6 py-1 text-sm text-[#1bc48b] font-medium mt-10`}
           >
             Login
           </Link>

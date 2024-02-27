@@ -323,7 +323,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
                 maxLength={12}
               />
             </div>
-            <div className="w-full flex justify-between items-center gap-4">
+            <div className="w-full flex flex-col md:flex-row  justify-between">
               <span className="flex-1">Upload aadhar image:</span>
 
               <button
@@ -348,7 +348,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
                 maxLength={10}
               />
             </div>
-            <div className="w-full flex justify-between items-center gap-4">
+            <div className="w-full flex flex-col md:flex-row justify-between">
               <span className="flex-1">Upload pan image:</span>
 
               <button
