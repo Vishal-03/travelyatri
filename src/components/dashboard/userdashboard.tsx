@@ -73,6 +73,10 @@ const UserDashboard = (props: UserDashboardProps) => {
     ),
   };
 
+  if (trips.length == 0) {
+    return <></>;
+  }
+
   return (
     <div className="w-full">
       {trips.length > 1 ? (
@@ -151,53 +155,6 @@ const UserDashboard = (props: UserDashboardProps) => {
               />
             ))}
           </div>
-          {/* <div className="hidden md:block lg:hidden  p-4">
-            <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
-              {alltrips.slice(0, 4).map((data: trips, index: number) => (
-                <PriceCard
-                  key={index}
-                  title={data.name!}
-                  description={data.description!}
-                  price={data.price}
-                  link={data.id.toString()!}
-                  image={data.image!}
-                />
-              ))}
-            </Slider>
-          </div>
-
-          <div className="hidden lg:block  p-4">
-            <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
-              {alltrips.slice(0, 4).map((data: trips, index: number) => (
-                <PriceCard
-                  key={index}
-                  title={data.name!}
-                  description={data.description!}
-                  price={data.price}
-                  link={data.id.toString()!}
-                  image={data.image!}
-                />
-              ))}
-            </Slider>
-          </div>
-
-          <div className="md:hidden p-4">
-            <Slider
-              {...tsettings1}
-              className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
-            >
-              {alltrips.slice(0, 4).map((data: trips, index: number) => (
-                <PriceCard
-                  key={index}
-                  title={data.name!}
-                  description={data.description!}
-                  price={data.price}
-                  link={data.id.toString()!}
-                  image={data.image!}
-                />
-              ))}
-            </Slider>
-          </div> */}
 
           <div className="grid place-items-center mt-6">
             <Link

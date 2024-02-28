@@ -401,7 +401,7 @@ const CreateTrips = (props: TripProps) => {
               </div>
             );
           })}
-          {images.length < 6 ? (
+          {images.length < 8 ? (
             <div
               className="w-40 h-40 bg-gray-200 rounded-xl grid place-items-center cursor-pointer"
               onClick={() => {

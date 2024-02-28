@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
-import { IconamoonSignPlusCircleLight, IconamoonTrashDuotone } from "../icons";
 import { errorToString, longtext } from "@/utils/methods";
 
 interface CreateAgencyProps {
@@ -172,7 +171,9 @@ const CreateAgency = (props: CreateAgencyProps) => {
           email.current!.value = "";
           address.current!.value = "";
           description.current!.value = "";
-          return router.push("/dashboard");
+          return router.push(
+            `/dashboard/trip/${createAgencyResponse.data?.id}`
+          );
         } else {
           toast.error(createAgencyResponse.message);
         }
@@ -329,7 +330,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
                 maxLength={12}
               />
             </div>
-            <div className="w-full flex flex-col md:flex-row  justify-between">
+            <div className="w-full flex flex-col md:flex-row  justify-between items-center gap-4">
               <span className="flex-1">Upload aadhar image:</span>
 
               <button
@@ -354,7 +355,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
                 maxLength={10}
               />
             </div>
-            <div className="w-full flex flex-col md:flex-row justify-between">
+            <div className="w-full flex flex-col md:flex-row justify-between  items-center gap-4">
               <span className="flex-1">Upload pan image:</span>
 
               <button

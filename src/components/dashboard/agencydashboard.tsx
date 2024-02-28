@@ -11,6 +11,7 @@ import { getTripsById } from "@/actions/trip/gettripbyid";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { time } from "console";
 
 interface AgencyDashboardProps {
   id: number;
@@ -18,7 +19,7 @@ interface AgencyDashboardProps {
 const AgencyDashboard = (props: AgencyDashboardProps) => {
   const [isLoading, setIsLoding] = useState<boolean>(true);
 
-  const [trips, setTrips] = useState<trips[]>([]);
+  const [trips, setTrips] = useState<any[]>([]);
 
   const init = async () => {
     setIsLoding(true);
@@ -68,59 +69,80 @@ const AgencyDashboard = (props: AgencyDashboardProps) => {
     ),
   };
 
+  if (trips.length == 0) {
+    return <></>;
+  }
+
   return (
     <div className="w-full">
       <div className="text-2xl font-semibold text-center text-black font-title">
         Your Created Trips
       </div>
-      <div className="hidden md:block lg:hidden  p-4">
-        <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
-          {trips.map((item: any, index: number) => (
-            <TripCard
-              key={index}
-              title={item.name!}
-              agency={item.agency!.name!}
-              price={item.price!.toString()}
-              type={item.trip_type!}
-              image={item.image!}
-              link={`/dashboard/trips/${item.id}`}
-            ></TripCard>
-          ))}
-        </Slider>
-      </div>
-      <div className="hidden lg:block  p-4">
-        <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
-          {trips.map((item: any, index: number) => (
-            <TripCard
-              key={index}
-              title={item.name!}
-              agency={item.agency!.name!}
-              price={item.price!.toString()}
-              type={item.trip_type!}
-              image={item.image!}
-              link={`/dashboard/trips/${item.id}`}
-            ></TripCard>
-          ))}
-        </Slider>
-      </div>
-      <div className="md:hidden p-4">
-        <Slider
-          {...tsettings1}
-          className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden grid place-items-center"
-        >
-          {trips.map((item: any, index: number) => (
-            <TripCard
-              key={index}
-              title={item.name!}
-              agency={item.agency!.name!}
-              price={item.price!.toString()}
-              type={item.trip_type!}
-              image={item.image!}
-              link={`/dashboard/trips/${item.id}`}
-            ></TripCard>
-          ))}
-        </Slider>
-      </div>
+
+      {trips.length == 1 ? (
+        <>
+          <div className="mt-4"></div>
+          <TripCard
+            title={trips[0].name!}
+            agency={trips[0].agency.name!}
+            price={trips[0].price!.toString()}
+            type={trips[0].trip_type!}
+            image={trips[0].image!}
+            link={`/dashboard/trips/${trips[0].id}`}
+          ></TripCard>
+        </>
+      ) : (
+        <>
+          <div className="hidden md:block lg:hidden  p-4">
+            <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
+              {trips.map((item: any, index: number) => (
+                <TripCard
+                  key={index}
+                  title={item.name!}
+                  agency={item.agency!.name!}
+                  price={item.price!.toString()}
+                  type={item.trip_type!}
+                  image={item.image!}
+                  link={`/dashboard/trips/${item.id}`}
+                ></TripCard>
+              ))}
+            </Slider>
+          </div>
+          <div className="hidden lg:block  p-4">
+            <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
+              {trips.map((item: any, index: number) => (
+                <TripCard
+                  key={index}
+                  title={item.name!}
+                  agency={item.agency!.name!}
+                  price={item.price!.toString()}
+                  type={item.trip_type!}
+                  image={item.image!}
+                  link={`/dashboard/trips/${item.id}`}
+                ></TripCard>
+              ))}
+            </Slider>
+          </div>
+          <div className="md:hidden p-4">
+            <Slider
+              {...tsettings1}
+              className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden grid place-items-center"
+            >
+              {trips.map((item: any, index: number) => (
+                <TripCard
+                  key={index}
+                  title={item.name!}
+                  agency={item.agency!.name!}
+                  price={item.price!.toString()}
+                  type={item.trip_type!}
+                  image={item.image!}
+                  link={`/dashboard/trips/${item.id}`}
+                ></TripCard>
+              ))}
+            </Slider>
+          </div>
+        </>
+      )}
 
       {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {trips.map((item: any, index: number) => {

@@ -17,6 +17,7 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 import Link from "next/link";
+import { useState } from "react";
 
 interface TripProps {
   trip: any;
@@ -30,6 +31,15 @@ const ViewTripsHome = (props: TripProps) => {
   const end = `${end_date.getDate()}-${
     end_date.getMonth() + 1
   }-${end_date.getFullYear()}`;
+
+  const [isReadMoreOne, setIsReadMoreOne] = useState(true);
+  const toggleReadMoreOne = () => {
+    setIsReadMoreOne(!isReadMoreOne);
+  };
+  const [isReadMoreTwo, setIsReadMoreTwo] = useState(true);
+  const toggleReadMoreTwo = () => {
+    setIsReadMoreTwo(!isReadMoreTwo);
+  };
 
   var tsettings1 = {
     dots: true,
@@ -125,7 +135,23 @@ const ViewTripsHome = (props: TripProps) => {
               {props.trip?.name}
             </h1>
             <div className=" mt-2 mb-4">
-              <p>{props.trip?.description}</p>
+              {props.trip?.description.length > 100 ? (
+                <p className="text-black">
+                  {isReadMoreOne
+                    ? props.trip?.description.slice(0, 100)
+                    : props.trip?.description}
+                  <span
+                    onClick={toggleReadMoreOne}
+                    className="text-blue-500 cursor-pointer"
+                  >
+                    {isReadMoreOne ? "...read more" : " show less"}
+                  </span>
+                </p>
+              ) : (
+                <p className="text-black">{props.trip?.description}</p>
+              )}
+
+              {/* <p>{props.trip?.description}</p> */}
             </div>
             <div className="grow"></div>
             <div className="flex bg-blue-500 p-2 rounded-lg bg-opacity-20 gap-2 mt-4 md:m-0  ">
@@ -180,7 +206,22 @@ const ViewTripsHome = (props: TripProps) => {
         </div>
         <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4">
           <p className="text-lg font-normal">{props.trip?.location}</p>
-          <p className="text-gray-500">{props.trip?.location_description}</p>
+
+          {props.trip?.location_description.length > 100 ? (
+            <p className="text-black">
+              {isReadMoreTwo
+                ? props.trip?.location_description.slice(0, 100)
+                : props.trip?.location_description}
+              <span
+                onClick={toggleReadMoreTwo}
+                className="text-blue-500 cursor-pointer"
+              >
+                {isReadMoreTwo ? "...read more" : " show less"}
+              </span>
+            </p>
+          ) : (
+            <p className="text-black">{props.trip?.location_description}</p>
+          )}
         </div>
         <div className="grid place-items-center mt-6">
           <Link
