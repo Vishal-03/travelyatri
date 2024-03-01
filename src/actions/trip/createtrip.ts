@@ -10,7 +10,6 @@ import {
 } from "@prisma/client";
 import prisma from "../../../prisma/database";
 import { mkdir, writeFile } from "fs/promises";
-import { revalidatePath } from "next/cache";
 
 const ensureDirectory = async (dir: string) => {
   await mkdir(dir, { recursive: true });
@@ -18,17 +17,17 @@ const ensureDirectory = async (dir: string) => {
 
 type createTripsPayload = {
   name: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   image: string;
   price: number;
   category: TripCategory;
   trip_type: TripType;
   description: string;
-  location: string;
-  location_description: string;
   number_of_people: number;
   createdBy: number;
+  location: string[];
+  dayinfo: string[];
 };
 
 export const createTrip = async (
@@ -50,15 +49,13 @@ export const createTrip = async (
     const trip: trips = await prisma.trips.create({
       data: {
         name: args.name,
-        start: new Date(args.start),
-        end: new Date(args.end),
+        start: args.start,
+        end: args.end,
         image: args.image,
         price: args.price,
         category: args.category,
         trip_type: args.trip_type,
         description: args.description,
-        location: args.location,
-        location_description: args.location_description,
         number_of_people: args.number_of_people,
         createdBy: userfound.id,
         agencyId: userfound!.agency!.id,
@@ -73,7 +70,22 @@ export const createTrip = async (
         message: "Something want wrong unable to create trip.",
         apiurl: "createTrip",
       };
-    revalidatePath("/dashboard/trips");
+
+    await prisma.trip_location.createMany({
+      data: args.location.map((name: string) => ({
+        location: name,
+        tripId: trip.id,
+      })),
+    });
+
+    await prisma.day_info.createMany({
+      data: args.dayinfo.map((info: string, index: number) => ({
+        description: info,
+        day: `Day ${index + 1}`,
+        tripId: trip.id,
+      })),
+    });
+
     return {
       status: true,
       data: trip,

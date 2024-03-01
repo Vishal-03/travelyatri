@@ -1,7 +1,11 @@
 "use client";
 import { updateUser, uploaduserAvatar } from "@/actions/user/updateuser";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { ApiResponseType } from "@/models/responnse";
 import { UserProfileUpdateSchema } from "@/schemas/userprofileupdate";
+import { handleNumberChange } from "@/utils/methods";
 import { Image } from "@nextui-org/react";
 import { user } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -117,17 +121,6 @@ const EditProfile = (props: EditProfile) => {
     address!.current!.value = props.userdata.address as string;
   }, []);
 
-  const onlyNumbersRegex = /^[0-9]*$/;
-
-  // Function to handle input change and validate against the regex
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    if (!onlyNumbersRegex.test(value)) {
-      // If the value doesn't match the regex, clear the input
-      event.target.value = "";
-    }
-  };
-
   return (
     <>
       <div className="p-6">
@@ -135,28 +128,30 @@ const EditProfile = (props: EditProfile) => {
           <div className="p-4 font-serif text-2xl font-semibold text-center">
             Edit Profile
           </div>
+          <div className="mx-4">
+            {logo == null && props.userdata.avatar != null ? (
+              <>
+                <Image
+                  src={props.userdata.avatar}
+                  alt="logo"
+                  className="w-80 h-80 object-cover object-center rounded-md"
+                />
+              </>
+            ) : (
+              <></>
+            )}
 
-          {logo == null && props.userdata.avatar != null ? (
-            <>
-              <Image
-                src={props.userdata.avatar}
-                alt="logo"
-                className="w-80 h-80 object-cover object-center rounded-md"
-              />
-            </>
-          ) : (
-            <></>
-          )}
+            {logo != null ? (
+              <div className="mx-4">
+                <Image
+                  src={URL.createObjectURL(logo!)}
+                  alt="logo"
+                  className="w-80 h-80 object-cover object-center rounded-md"
+                />
+              </div>
+            ) : null}
+          </div>
 
-          {logo != null ? (
-            <div className="mx-4">
-              <Image
-                src={URL.createObjectURL(logo!)}
-                alt="logo"
-                className="w-80 h-80 object-cover object-center rounded-md"
-              />
-            </div>
-          ) : null}
           <button
             onClick={() => cLogo.current?.click()}
             className="text-white font-semibold text-md mx-4 py-1 my-2 inline-block px-4 rounded-md bg-green-500 mt-4"
@@ -173,74 +168,72 @@ const EditProfile = (props: EditProfile) => {
               onChange={handleLogoChange}
             />
           </div>
-          <div className="flex flex-col sm:flex-row sm:h-24 w-full   ">
-            <div className="flex flex-col grow">
-              <label className="p-2 px-4 text-gray-500">Name</label>
-              <input
-                type="search"
-                name=""
-                id=""
-                className="mx-4   rounded-md border-2  bg-gray-100 p-2  "
+          <div className="flex flex-col sm:flex-row w-full gap-4 px-4">
+            <div className="flex flex-col flex-1">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                type="text"
+                name="name"
+                id="name"
                 placeholder="Enter your name"
+                className="mt-2"
                 ref={name}
               />
             </div>
 
-            <div className="flex flex-col grow">
-              <label className="p-2 px-4 text-gray-500">Email</label>
-              <input
-                type="search"
-                name=""
-                id=""
+            <div className="flex flex-col flex-1">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                name="email"
+                id="email"
                 disabled
-                className="mx-4 rounded-md border-2  bg-gray-100 p-2"
                 placeholder="Enter your email"
+                className="mt-2"
                 value={props.userdata!.email}
               />
             </div>
           </div>
-          <div className="flex w-full flex-col sm:flex-row sm:h-24">
+          <div className="flex w-full flex-col sm:flex-row  gap-4 px-4 mt-4">
             <div className="flex flex-col grow">
-              <label className="p-2 px-4 text-gray-500">Contact</label>
-              <input
-                type="search"
-                name=""
-                id=""
-                className="mx-4   rounded-md border-2  bg-gray-100 p-2"
+              <Label htmlFor="contect">Contact</Label>
+              <Input
+                type="text"
+                name="contect"
+                id="contect"
                 placeholder="Enter your Contact"
                 ref={contact}
-                onChange={handleChange}
+                className="mt-2"
+                onChange={handleNumberChange}
                 maxLength={10}
               />
             </div>
             <div className="flex flex-col grow">
-              <label className="p-2 px-4 text-gray-500">
-                Secondary Contact
-              </label>
-              <input
-                type="search"
-                name=""
-                id=""
-                className="mx-4  rounded-md border-2  bg-gray-100 p-2"
+              <Label>Secondary Contact</Label>
+              <Input
+                type="contectsec"
+                name="contectsec"
+                id="contectsec"
                 placeholder="Enter your secondary Contact"
+                className="mt-2"
                 ref={secondcontact}
-                onChange={handleChange}
+                onChange={handleNumberChange}
                 maxLength={10}
               />
             </div>
           </div>
-          <div className="flex w-full flex-col grow mt-2">
-            <label className="px-4 text-gray-500">Address</label>
-            <textarea
-              name=""
-              id=""
-              className="mx-4 h-16  rounded-md border-2  bg-gray-100 p-2 resize-none"
+          <div className="flex w-full flex-col grow mt-2 px-4">
+            <Label>Address</Label>
+            <Textarea
+              name="address"
+              id="address"
+              className="mt-2 border-2 rounded-md resize-none h-28"
               placeholder="Enter your Address"
               ref={address}
-            ></textarea>
+            ></Textarea>
             <button
               onClick={updateprofile}
-              className="mx-4 mt-4  rounded-md border-2 bg-rose-500  p-2 font-bold text-white transition-all duration-300 ease-in-out hover:bg-rose-600"
+              className="mt-4  rounded-md border-2 bg-green-500  p-2 font-bold text-white transition-all duration-300 ease-in-out hover:bg-green-600"
             >
               Submit
             </button>

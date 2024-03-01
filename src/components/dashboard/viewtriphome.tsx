@@ -1,7 +1,6 @@
 "use client";
 import { Card, Image } from "@nextui-org/react";
 
-import Slider from "react-slick";
 import {
   MaterialSymbolsArrowBackIos,
   MaterialSymbolsArrowForwardIosRounded,
@@ -82,7 +81,7 @@ const ViewTripsHome = (props: TripProps) => {
 
   return (
     <>
-      <div className="p-6">
+      <div className="p-6 mx-auto sm:w-5/6 md:w-4/5">
         {props.trip?.trips_images.length > 0 && (
           <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4 mb-4">
             <h1 className="text-2xl mb-4 font-semibold text-center">Gallery</h1>
@@ -205,28 +204,30 @@ const ViewTripsHome = (props: TripProps) => {
           </div>
         </div>
         <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4">
-          <p className="text-lg font-normal">{props.trip?.location}</p>
-
-          {props.trip?.location_description.length > 100 ? (
-            <p className="text-black">
-              {isReadMoreTwo
-                ? props.trip?.location_description.slice(0, 100)
-                : props.trip?.location_description}
-              <span
-                onClick={toggleReadMoreTwo}
-                className="text-blue-500 cursor-pointer"
+          <p className="text-lg font-normal">Locations</p>
+          <div className="flex gap-4 flex-wrap">
+            {props.trip.trip_location.map((val: any, index: number) => (
+              <div
+                key={index}
+                className="py-2 text-black font-medium text-sm px-4 rounded-sm bg-gray-100"
               >
-                {isReadMoreTwo ? "...read more" : " show less"}
-              </span>
-            </p>
-          ) : (
-            <p className="text-black">{props.trip?.location_description}</p>
-          )}
+                {val.location}
+              </div>
+            ))}
+          </div>
+          <p className="text-lg font-normal mt-4">Day info</p>
+          <ul className="list-disc mx-6">
+            {props.trip.day_info.map((val: any, index: number) => (
+              <li className="text-sm" key={index}>
+                Day-{index + 1}: {val.description}
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="grid place-items-center mt-6">
           <Link
             href={"/login"}
-            className="bg-blue-500 rounded-sm w-60 text-center py-1 text-white"
+            className="bg-green-500 rounded-sm w-full text-center py-1 text-white"
           >
             Book The Trip
           </Link>

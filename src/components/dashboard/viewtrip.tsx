@@ -1,12 +1,6 @@
 "use client";
 import { Card, Image } from "@nextui-org/react";
 
-import Slider from "react-slick";
-import {
-  MaterialSymbolsArrowBackIos,
-  MaterialSymbolsArrowForwardIosRounded,
-} from "../icons";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {
@@ -30,45 +24,6 @@ const ViewTrips = (props: TripProps) => {
   const end = `${end_date.getDate()}-${
     end_date.getMonth() + 1
   }-${end_date.getFullYear()}`;
-
-  var tsettings1 = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    initialSlide: 0,
-    prevArrow: <MaterialSymbolsArrowBackIos className="text-black text-xl" />,
-    nextArrow: (
-      <MaterialSymbolsArrowForwardIosRounded className="text-black text-xl" />
-    ),
-    centerMode: true,
-  };
-  var tsettings2 = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    initialSlide: 0,
-    prevArrow: <MaterialSymbolsArrowBackIos className="text-black text-xl" />,
-    nextArrow: (
-      <MaterialSymbolsArrowForwardIosRounded className="text-black text-xl" />
-    ),
-    centerMode: true,
-  };
-  var tsettings3 = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    initialSlide: 0,
-    prevArrow: <MaterialSymbolsArrowBackIos className="text-black text-xl" />,
-    nextArrow: (
-      <MaterialSymbolsArrowForwardIosRounded className="text-black text-xl" />
-    ),
-  };
 
   const [isReadMoreOne, setIsReadMoreOne] = useState(true);
   const toggleReadMoreOne = () => {
@@ -202,22 +157,25 @@ const ViewTrips = (props: TripProps) => {
           </div>
         </div>
         <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4">
-          <p className="text-lg font-normal">{props.trip?.location}</p>
-          {props.trip?.location_description.length > 100 ? (
-            <p className="text-black">
-              {isReadMoreTwo
-                ? props.trip?.location_description.slice(0, 100)
-                : props.trip?.location_description}
-              <span
-                onClick={toggleReadMoreTwo}
-                className="text-blue-500 cursor-pointer"
+          <p className="text-lg font-normal">Locations</p>
+          <div className="flex gap-4 flex-wrap">
+            {props.trip.trip_location.map((val: any, index: number) => (
+              <div
+                key={index}
+                className="py-2 text-black font-medium text-sm px-4 rounded-sm bg-gray-100"
               >
-                {isReadMoreTwo ? "...read more" : " show less"}
-              </span>
-            </p>
-          ) : (
-            <p className="text-black">{props.trip?.location_description}</p>
-          )}
+                {val.location}
+              </div>
+            ))}
+          </div>
+          <p className="text-lg font-normal mt-4">Day info</p>
+          <ul className="list-disc mx-6">
+            {props.trip.day_info.map((val: any, index: number) => (
+              <li className="text-sm" key={index}>
+                Day-{index + 1}: {val.description}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>

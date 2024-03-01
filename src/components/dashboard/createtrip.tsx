@@ -1,19 +1,43 @@
 "use client";
+import { Image } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, SetStateAction, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import {
+  Fa6SolidCalendarDays,
+  FaSolidPlusCircle,
+  FaSolidTrashAlt,
+  IconamoonSignPlusCircleLight,
+  IconamoonTrashDuotone,
+} from "../icons";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+
+import { format } from "date-fns";
+import { Calendar } from "../ui/calendar";
+import { safeParse } from "valibot";
+import { TripSchema } from "@/schemas/createtrip";
+import { ApiResponseType } from "@/models/responnse";
 import {
   createTrip,
   uploadimageTrip,
   uploadtripImage,
   uploadtripLogo,
 } from "@/actions/trip/createtrip";
-import { ApiResponseType } from "@/models/responnse";
-import { TripSchema } from "@/schemas/createtrip";
-import { Image } from "@nextui-org/react";
 import { TripCategory, TripType } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, SetStateAction, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { safeParse } from "valibot";
-import { IconamoonSignPlusCircleLight, IconamoonTrashDuotone } from "../icons";
+import { capitalcase } from "@/utils/methods";
 
 interface TripProps {
   id: number;
@@ -23,30 +47,15 @@ const CreateTrips = (props: TripProps) => {
 
   const name = useRef<HTMLInputElement>(null);
   const description = useRef<HTMLTextAreaElement>(null);
-  const location = useRef<HTMLInputElement>(null);
-  const location_description = useRef<HTMLTextAreaElement>(null);
-
-  const StartDate = useRef<HTMLInputElement>(null);
-  const EndDate = useRef<HTMLInputElement>(null);
 
   const price = useRef<HTMLInputElement>(null);
   const number_of_people = useRef<HTMLInputElement>(null);
 
-  const tripType = useRef<HTMLSelectElement>(null);
-  const tripCategory = useRef<HTMLSelectElement>(null);
+  const [tripCategory, setTripcategory] = useState<string>("");
+  const [tripType, setTripType] = useState<string>("");
 
-  const handleStartDateChange = () => {
-    // end Date min value should be bigger then start date
-    if (StartDate.current?.value) {
-      EndDate.current!.min = StartDate.current.value;
-    }
-  };
-  const handleEntDateChange = () => {
-    // start Date max value should be smaller then end date
-    if (EndDate.current?.value) {
-      StartDate.current!.max = EndDate.current.value;
-    }
-  };
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
 
   const handlePriceInput = (e: ChangeEvent<HTMLInputElement>) => {
     price.current!.value = e.target.value.replace(/\D/g, "");
@@ -60,6 +69,9 @@ const CreateTrips = (props: TripProps) => {
 
   let imgref = useRef<HTMLInputElement | null>(null);
   let [images, setImages] = useState<File[]>([]);
+
+  const [locations, setLocation] = useState<string[]>([]);
+  const [daysinfo, setDayingo] = useState<string[]>([]);
 
   const handleLogoChange = (
     value: React.ChangeEvent<HTMLInputElement>,
@@ -83,34 +95,30 @@ const CreateTrips = (props: TripProps) => {
     const result = safeParse(TripSchema, {
       name: name.current!.value,
       description: description.current!.value,
-      location: location.current!.value,
-      location_description: location_description.current!.value,
-      start_date: StartDate.current!.value,
-      end_date: EndDate.current!.value,
+      start_date: startDate,
+      end_date: endDate,
       price: parseInt(price.current!.value),
       number_of_people: parseInt(number_of_people.current!.value),
-      trip_type: tripType.current!.value,
-      category: tripCategory.current!.value,
+      trip_type: tripType,
+      category: tripCategory,
       createdBy: props.id,
     });
-
     if (result.success) {
+      if (locations.length < 1)
+        return toast.error("Enter at least one location.");
+      if (daysinfo.length < 1)
+        return toast.error("Enter at least one day description.");
       if (logo == null) return toast.error("Upload your trip logo first.");
-
       if (images.length < 3)
         return toast.error("Please upload at least three image.");
-
       const imageBuffer = await logo.arrayBuffer();
       const image: string = Buffer.from(imageBuffer).toString("base64");
-
       const uploadimage: ApiResponseType<string | null> = await uploadtripLogo({
         name: logo.name,
         arrayBuffer: image,
       });
-
       if (!uploadimage.status || uploadimage.data == null)
         return toast.error(uploadimage.message);
-
       const createdtrip = await createTrip({
         name: result.output.name,
         start: result.output.start_date,
@@ -120,14 +128,12 @@ const CreateTrips = (props: TripProps) => {
         category: result.output.category as TripCategory,
         trip_type: result.output.trip_type as TripType,
         description: result.output.description,
-        location: result.output.location,
-        location_description: result.output.location_description,
         number_of_people: result.output.number_of_people,
         createdBy: result.output.createdBy,
+        location: locations,
+        dayinfo: daysinfo,
       });
-
       if (!createdtrip.status) return toast.error(createdtrip.message);
-
       for (let i = 0; i < images.length; i++) {
         const imageBufferTwo = await images[i].arrayBuffer();
         const imageTwo: string = Buffer.from(imageBufferTwo).toString("base64");
@@ -138,15 +144,12 @@ const CreateTrips = (props: TripProps) => {
           });
         if (!uploadimageTwo.status || uploadimageTwo.data == null)
           return toast.error(uploadimageTwo.message);
-
         const updatetrip = await uploadimageTrip({
           id: createdtrip.data?.id!,
           path: uploadimageTwo!.data!,
         });
-
         if (!updatetrip.status) return toast.error(updatetrip.message);
       }
-
       toast.success(createdtrip.message);
       return router.replace(`/dashboard/trips/${createdtrip.data?.id}`);
     } else {
@@ -160,267 +163,375 @@ const CreateTrips = (props: TripProps) => {
     }
   };
 
-  const onlyNumbersRegex = /^[0-9]*$/;
-
-  // Function to handle input change and validate against the regex
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    if (!onlyNumbersRegex.test(value)) {
-      // If the value doesn't match the regex, clear the input
-      event.target.value = "";
-    }
-  };
-
   return (
     <>
-      <div className="w-5/6 bg-white rounded-md shadow-lg my-6 p-6 mx-auto">
-        <h1 className="text-center text-black text-2xl font-semibold">
-          Create Trip
-        </h1>
-        <div className="flex flex-col items-center justify-center">
-          {logo != null ? (
-            <div>
-              <Image
-                src={URL.createObjectURL(logo!)}
-                alt="logo"
-                className="w-60 h-60 object-cover object-center rounded-md"
+      <div className="p-6 sm:p-10">
+        <h1 className="text-[#162f57] text-2xl font-semibold">Create Trips</h1>
+        <p className="text-sm mt-4 mb-2">
+          Get started by addding your trip details below.
+        </p>
+        <div className="bg-white rounded-sm shadow-sm p-4">
+          <p className="text-gray-500">GENERAL INFORMATION</p>
+          <div className="flex flex-col items-center justify-center">
+            {logo != null ? (
+              <div>
+                <Image
+                  src={URL.createObjectURL(logo!)}
+                  alt="logo"
+                  className="w-60 h-60 object-cover object-center rounded-md"
+                />
+              </div>
+            ) : null}
+
+            <button
+              onClick={() => cLogo.current?.click()}
+              className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-green-500"
+            >
+              {logo == null ? "Add Logo" : "Change Logo"}
+            </button>
+          </div>
+          <div className="hidden">
+            <Input
+              type="file"
+              ref={cLogo}
+              accept="image/*"
+              onChange={(val) => handleLogoChange(val, setLogo)}
+            />
+          </div>
+
+          <div className="flex gap-4 flex-col md:flex-row mt-4">
+            <div className="grid items-center gap-1.5 w-full">
+              <Label htmlFor="name">Trip Name</Label>
+              <Input
+                id="name"
+                type="text"
+                className="w-full"
+                ref={name}
+                placeholder="Enter trip name"
               />
             </div>
-          ) : null}
+            <div className="grid items-center gap-1.5 w-full">
+              <Label htmlFor="price">Price</Label>
+              <Input
+                id="price"
+                type="text"
+                className="w-full"
+                ref={price}
+                placeholder="Enter trip price"
+                onChange={handlePriceInput}
+              />
+            </div>
+          </div>
 
-          <button
-            onClick={() => cLogo.current?.click()}
-            className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-green-500"
-          >
-            {logo == null ? "Add Logo" : "Change Logo"}
-          </button>
-        </div>
-        <div className="hidden">
-          <input
-            type="file"
-            ref={cLogo}
-            accept="image/*"
-            onChange={(val) => handleLogoChange(val, setLogo)}
-          />
-        </div>
-
-        <div className="flex flex-col md:flex-row w-full py-2 mt-6">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">Trip Name</h1>
-          </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <input
-              type="text"
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
-              placeholder="Enter trip name"
-              ref={name}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row w-full py-2">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">Trip Description</h1>
-          </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <textarea
+          <div className="grid items-center gap-1.5 w-full mt-4">
+            <Label htmlFor="address">Description</Label>
+            <Textarea
+              id="description"
+              className="w-full resize-none h-28"
               ref={description}
               placeholder="Enter trip description"
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2 resize-none h-24"
-            ></textarea>
+            ></Textarea>
           </div>
-        </div>
-        <div className="flex flex-col md:flex-row w-full py-2">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">Trip Location</h1>
-          </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <input
-              type="text"
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
-              placeholder="Enter trip location"
-              ref={location}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row w-full py-2">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">Trip Location Description</h1>
-          </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <textarea
-              ref={location_description}
-              placeholder="Enter trip location description"
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2 resize-none h-24"
-            ></textarea>
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row w-full py-2">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">Start Date</h1>
-          </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <input
-              type="date"
-              onChange={handleStartDateChange}
-              min={new Date().toISOString().split("T")[0]}
-              ref={StartDate}
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
-            />
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row w-full py-2">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">End Date</h1>
-          </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <input
-              type="date"
-              onChange={handleEntDateChange}
-              ref={EndDate}
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
-            />
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row w-full py-2">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">Price</h1>
-          </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <input
-              type="text"
-              onChange={handlePriceInput}
-              ref={price}
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
-              placeholder="Enter trip price"
-            />
-          </div>
-        </div>
 
-        <div className="flex flex-col md:flex-row w-full py-2">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">Number of Peoples</h1>
+          <div className="flex gap-4 flex-col md:flex-row">
+            <div className="grid items-center gap-1.5 w-full mt-4">
+              <Label htmlFor="name">Trip Start Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={`w-full justify-start text-left font-normal
+                      ${!startDate && "text-muted-foreground"}
+                    `}
+                  >
+                    <Fa6SolidCalendarDays className="mr-2 h-4 w-4" />
+                    {startDate ? (
+                      format(startDate, "PPP")
+                    ) : (
+                      <span>Pick start date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={startDate}
+                    onSelect={setStartDate}
+                    disabled={(date) => date < new Date() || endDate! <= date}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="grid items-center gap-1.5 w-full mt-4">
+              <Label htmlFor="name">Trip End Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={`w-full justify-start text-left font-normal
+                      ${!endDate && "text-muted-foreground"}
+                    `}
+                  >
+                    <Fa6SolidCalendarDays className="mr-2 h-4 w-4" />
+                    {endDate ? (
+                      format(endDate, "PPP")
+                    ) : (
+                      <span>Pick start date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={endDate}
+                    onSelect={setEndDate}
+                    disabled={(date) => date < new Date() || startDate! >= date}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <input
+
+          <div className="flex gap-4 flex-col md:flex-row">
+            <div className="grid items-center gap-1.5 w-full mt-4">
+              <Label htmlFor="name">Select Trip Type</Label>
+              <Select
+                onValueChange={(val) => {
+                  if (!val) return;
+                  setTripType(val);
+                }}
+              >
+                <SelectTrigger className="">
+                  <SelectValue placeholder="Select File Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Trip Type</SelectLabel>
+                    <SelectItem value={"PRIVATE"}>PRIVATE</SelectItem>
+                    <SelectItem value={"PUBLIC"}>PUBLIC</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid items-center gap-1.5 w-full mt-4">
+              <Label htmlFor="address">Select Trip Category</Label>
+              <Select
+                onValueChange={(val) => {
+                  if (!val) return;
+                  setTripcategory(val);
+                }}
+              >
+                <SelectTrigger className="">
+                  <SelectValue placeholder="Select Trip Cateogry" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Trip Category</SelectLabel>
+                    <SelectItem value="SCHOOL">SCHOOL</SelectItem>
+                    <SelectItem value="COUPLE">COUPLE</SelectItem>
+                    <SelectItem value="FAMILY">FAMILY</SelectItem>
+                    <SelectItem value="OFFICE">OFFICE</SelectItem>
+                    <SelectItem value="FRIENDS">FRIENDS</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid items-center gap-1.5 w-full mt-4">
+            <Label htmlFor="price">Number of Peoples</Label>
+            <Input
+              id="price"
               type="text"
               onChange={handleNumberOfPeopleInput}
               ref={number_of_people}
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
+              className="w-full"
               placeholder="Enter Number of peoples"
             />
           </div>
-        </div>
-        <div className="flex flex-col md:flex-row w-full py-2">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">Select Trip Type</h1>
-          </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <select
-              ref={tripType}
-              defaultValue={"0"}
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
-            >
-              <option value="0" disabled>
-                Select Trip Type
-              </option>
-              <option value="PRIVATE">PRIVATE</option>
-              <option value="PUBLIC">PUBLIC</option>
-            </select>
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row w-full py-2">
-          <div className="flex-1">
-            <h1 className="text-lg font-medium">Select Trip Category</h1>
-          </div>
-          <div className="flex-1 mt-2 sm:mt-0">
-            <select
-              ref={tripCategory}
-              defaultValue={"0"}
-              className="bg-[#eeeeee] fill-none focus:outline-none rounded-md w-full py-1 px-2"
-            >
-              <option value="0" disabled>
-                Select Trip Category
-              </option>
-              <option value="SCHOOL">SCHOOL</option>
-              <option value="COUPLE">COUPLE</option>
-              <option value="FAMILY">FAMILY</option>
-              <option value="OFFICE">OFFICE</option>
-              <option value="FRIENDS">FRIENDS</option>
-            </select>
-          </div>
-        </div>
 
-        <div className="hidden">
-          <input
-            type="file"
-            accept="image/*"
-            ref={imgref}
-            onChange={(value) => {
-              let file_size = parseInt(
-                (value!.target.files![0].size / 1024 / 1024).toString()
-              );
-              if (file_size < 1) {
-                if (value!.target.files![0].type.startsWith("image/")) {
-                  setImages((val) => [...val, value!.target.files![0]]);
-                } else {
-                  toast.error("Please select an image file.");
-                }
-              } else {
-                toast.error("Image file size must be less then 1 mb");
-              }
-            }}
-          />
-        </div>
+          <div className="w-full bg-gray-400 h-[1px] mt-4"></div>
+          <div className="p-2 min-w-60 flex-1">
+            <div className="flex items-center">
+              <p className="text-gray-500">Add Locations</p>
+              <div className="grow"></div>
+              <div
+                className="text-sm px-4 text-white py-1 rounded-sm cursor-pointer bg-green-500"
+                onClick={() => {
+                  if (locations.length >= 20) {
+                    toast.error("You can add only 20 locations");
+                    return;
+                  }
 
-        <div className="flex gap-4 flex-wrap w-full mt-6">
-          {images.map((value: File, i: number) => {
-            var url = URL.createObjectURL(value);
-            return (
-              <div key={i}>
-                <div className="w-40 h-40 bg-gray-200 rounded-xl grid place-items-center relative">
-                  <div className="top-0 left-0 absolute h-full w-full">
-                    <Image
-                      removeWrapper
-                      src={url}
-                      alt="error"
-                      className="w-full h-full rounded-xl object-cover"
-                    />
-                  </div>
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => {
-                      // removeImage(value);
-                      let arr = [...images];
-                      arr.splice(i, 1);
-                      setImages(arr);
+                  if (locations[locations.length - 1] === "") {
+                    toast.error("Please fill the location name");
+                    return;
+                  }
+                  setLocation((val) => [...val, ""]);
+                }}
+              >
+                Add Location
+              </div>
+            </div>
+            <div className="flex flex-col mt-4 gap-2">
+              {locations.map((val: string, index: number) => (
+                <div
+                  key={index}
+                  className="flex gap-2 text-center items-center"
+                >
+                  <Input
+                    value={val}
+                    onChange={(e) => {
+                      const temp = [...locations];
+
+                      temp[index] = capitalcase(e.target.value);
+
+                      setLocation((val) => temp);
                     }}
-                  >
-                    <IconamoonTrashDuotone className="text-red-500 font-bold text-xl top-0 right-0 absolute" />
+                    placeholder={"Location"}
+                  />
+                  <FaSolidTrashAlt
+                    className="text-lg text-rose-500 cursor-pointer"
+                    onClick={() => {
+                      const temp = [...locations];
+                      temp.splice(index, 1);
+                      setLocation((val) => temp);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* description start from here */}
+
+          <div className="w-full bg-gray-400 h-[1px] mt-4"></div>
+          <div className="p-2 min-w-60 flex-1">
+            <div className="flex items-center">
+              <p className="text-gray-500">Description Of Each Day</p>
+              <div className="grow"></div>
+              <div
+                className="text-sm px-4 text-white py-1 rounded-sm cursor-pointer bg-green-500"
+                onClick={() => {
+                  if (daysinfo.length >= 20) {
+                    toast.error("You can add only 20 locations");
+                    return;
+                  }
+
+                  if (daysinfo[daysinfo.length - 1] === "") {
+                    toast.error("Please fill the last day info first");
+                    return;
+                  }
+                  setDayingo((val) => [...val, ""]);
+                }}
+              >
+                Add Day {daysinfo.length + 1}
+              </div>
+            </div>
+            <div className="flex flex-col mt-4 gap-2">
+              {daysinfo.map((val: string, index: number) => (
+                <div key={index} className="flex gap-2 text-center items-start">
+                  <Textarea
+                    value={val}
+                    onChange={(e) => {
+                      const temp = [...daysinfo];
+
+                      temp[index] = e.target.value;
+
+                      setDayingo((val) => temp);
+                    }}
+                    placeholder={`Day ${daysinfo.length} description `}
+                    className="resize-none h-24"
+                  ></Textarea>
+                  <FaSolidTrashAlt
+                    className="text-lg text-rose-500 cursor-pointer"
+                    onClick={() => {
+                      const temp = [...daysinfo];
+                      temp.splice(index, 1);
+                      setDayingo((val) => temp);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* images start from here */}
+
+          <div className="w-full bg-gray-400 h-[1px] mt-4"></div>
+
+          <p className="text-gray-500 mt-4">TRIPS IMAGES</p>
+
+          <div className="hidden">
+            <input
+              type="file"
+              accept="image/*"
+              ref={imgref}
+              onChange={(value) => {
+                let file_size = parseInt(
+                  (value!.target.files![0].size / 1024 / 1024).toString()
+                );
+                if (file_size < 1) {
+                  if (value!.target.files![0].type.startsWith("image/")) {
+                    setImages((val) => [...val, value!.target.files![0]]);
+                  } else {
+                    toast.error("Please select an image file.");
+                  }
+                } else {
+                  toast.error("Image file size must be less then 1 mb");
+                }
+              }}
+            />
+          </div>
+          <div className="flex gap-4 flex-wrap w-full mt-6">
+            {images.map((value: File, i: number) => {
+              var url = URL.createObjectURL(value);
+              return (
+                <div key={i}>
+                  <div className="w-40 h-40 bg-gray-200 rounded-xl grid place-items-center relative">
+                    <div className="top-0 left-0 absolute h-full w-full">
+                      <Image
+                        removeWrapper
+                        src={url}
+                        alt="error"
+                        className="w-full h-full rounded-xl object-cover"
+                      />
+                    </div>
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => {
+                        let arr = [...images];
+                        arr.splice(i, 1);
+                        setImages(arr);
+                      }}
+                    >
+                      <IconamoonTrashDuotone className="text-red-500 font-bold text-lg top-0 right-0 absolute" />
+                    </div>
                   </div>
                 </div>
+              );
+            })}
+            {images.length < 8 ? (
+              <div
+                className="w-40 h-40 bg-gray-200 rounded-xl grid place-items-center cursor-pointer"
+                onClick={() => {
+                  imgref.current?.click();
+                }}
+              >
+                <IconamoonSignPlusCircleLight className="text-gray-400 text-3xl font-bold text-center" />
               </div>
-            );
-          })}
-          {images.length < 8 ? (
-            <div
-              className="w-40 h-40 bg-gray-200 rounded-xl grid place-items-center cursor-pointer"
-              onClick={() => {
-                imgref.current?.click();
-              }}
-            >
-              <IconamoonSignPlusCircleLight className="text-gray-400 text-3xl font-bold text-center" />
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
+            ) : (
+              <></>
+            )}
+          </div>
 
-        <button
-          onClick={submit}
-          className="bg-green-500 py-1 px-4 rounded-md text-white text-lg mt-6 font-semibold"
-        >
-          CREATE
-        </button>
+          <Button
+            onClick={submit}
+            className="w-full mt-4 bg-[#1bc48b] hover:bg-[#1bc48b]"
+          >
+            CREATE
+          </Button>
+        </div>
       </div>
     </>
   );

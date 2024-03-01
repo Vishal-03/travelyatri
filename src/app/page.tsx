@@ -47,6 +47,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { getHomeTrips } from "@/actions/trip/gethometrips";
 import Link from "next/link";
+import { handleNumberChange } from "@/utils/methods";
 export default function Home() {
   const route = useRouter();
   const [isLoading, setIsLoding] = useState<boolean>(true);
@@ -241,16 +242,6 @@ export default function Home() {
     nextArrow: (
       <MaterialSymbolsArrowForwardIosRounded className="text-black text-xl" />
     ),
-  };
-
-  const onlyNumbersRegex = /^[0-9]*$/;
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    if (!onlyNumbersRegex.test(value)) {
-      // If the value doesn't match the regex, clear the input
-      event.target.value = "";
-    }
   };
 
   return (
@@ -769,7 +760,7 @@ export default function Home() {
               placeholder="Enter Your Phone Number"
               className="px-5 py-2 rounded-lg border-[#1bc48b] border-2 outline-none"
               maxLength={10}
-              onChange={handleChange}
+              onChange={handleNumberChange}
             />
             <textarea
               ref={messageRef}

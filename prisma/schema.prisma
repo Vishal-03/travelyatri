@@ -71,28 +71,28 @@ model user {
 }
 
 model trips {
-  id                   Int            @id @default(autoincrement())
-  name                 String?
-  start                DateTime
-  end                  DateTime
-  image                String?
-  price                Int
-  trip_type            TripType       @default(NONE)
-  category             TripCategory   @default(NONE)
-  description          String?        @db.MediumText
-  location             String?
-  location_description String?        @db.MediumText
-  number_of_people     Int
-  status               Status         @default(ACTIVE)
-  createdAt            DateTime       @default(now())
-  create               user           @relation(fields: [createdBy], references: [id])
-  createdBy            Int
-  agency               agency         @relation(fields: [agencyId], references: [id])
-  agencyId             Int
-  showhome             ShowHome       @default(NO)
-  updatedAt            DateTime       @updatedAt
-  deletedAt            DateTime?
-  trips_images         trips_images[]
+  id               Int             @id @default(autoincrement())
+  name             String?
+  start            DateTime
+  end              DateTime
+  image            String?
+  price            Int
+  trip_type        TripType        @default(NONE)
+  category         TripCategory    @default(NONE)
+  description      String?         @db.MediumText
+  number_of_people Int
+  status           Status          @default(ACTIVE)
+  createdAt        DateTime        @default(now())
+  create           user            @relation(fields: [createdBy], references: [id])
+  createdBy        Int
+  agency           agency          @relation(fields: [agencyId], references: [id])
+  agencyId         Int
+  showhome         ShowHome        @default(NO)
+  updatedAt        DateTime        @updatedAt
+  deletedAt        DateTime?
+  trips_images     trips_images[]
+  trip_location    trip_location[]
+  day_info         day_info[]
 }
 
 model agency {
@@ -136,4 +136,25 @@ model trips_images {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+}
+
+model trip_location {
+  id        Int       @id @default(autoincrement())
+  location  String
+  trip      trips     @relation(fields: [tripId], references: [id])
+  tripId    Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model day_info {
+  id          Int       @id @default(autoincrement())
+  day         String
+  description String    @db.LongText
+  trip        trips     @relation(fields: [tripId], references: [id])
+  tripId      Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 }

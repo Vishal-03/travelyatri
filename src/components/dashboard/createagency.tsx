@@ -13,7 +13,11 @@ import { useRouter } from "next/navigation";
 import { SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { safeParse } from "valibot";
-import { errorToString, longtext } from "@/utils/methods";
+import { errorToString, handleNumberChange, longtext } from "@/utils/methods";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 
 interface CreateAgencyProps {
   user: any;
@@ -171,9 +175,7 @@ const CreateAgency = (props: CreateAgencyProps) => {
           email.current!.value = "";
           address.current!.value = "";
           description.current!.value = "";
-          return router.push(
-            `/dashboard/trip/${createAgencyResponse.data?.id}`
-          );
+          return router.push(`/dashboard`);
         } else {
           toast.error(createAgencyResponse.message);
         }
@@ -190,23 +192,19 @@ const CreateAgency = (props: CreateAgencyProps) => {
       toast.error(errorToString(e));
     }
   }
-  const onlyNumbersRegex = /^[0-9]*$/;
 
-  // Function to handle input change and validate against the regex
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    if (!onlyNumbersRegex.test(value)) {
-      // If the value doesn't match the regex, clear the input
-      event.target.value = "";
-    }
-  };
   return (
     <>
-      <div className="flex min-h-screen w-full flex-col gap-10 p-6 bg-[#eeeeee]">
-        <h1 className="text-3xl text-center">Agency information</h1>
+      <div className="flex min-h-screen w-full flex-col p-6 bg-[#eeeeee]">
+        <h1 className="text-[#162f57] text-2xl font-semibold text-center">
+          Create Agency
+        </h1>
+        <p className="text-sm mt-2 mb-2 text-center">
+          Get started by addding your agency details below.
+        </p>
 
-        <div className="flex flex-col gap-5 rounded-lg shadow-lg p-5 lg:w-4/6 w-full mx-auto bg-white">
-          <h1 className="text-xl font-medium">Agency details</h1>
+        <div className="bg-white rounded-sm shadow-sm p-4  lg:w-4/6 w-full mx-auto mt-4">
+          <p className="text-gray-500">GENERAL INFORMATION</p>
 
           {/* Logo and banner */}
 
@@ -275,127 +273,151 @@ const CreateAgency = (props: CreateAgencyProps) => {
             />
           </div>
 
-          <p className="pt-2  text-gray-500 text-lg">Basic Information :</p>
-
-          <div className="flex flex-col gap-4">
-            <div className="w-full flex flex-col md:flex-row justify-between">
-              <span className="flex-1">Name:</span>
-
-              <input
+          <div className="flex gap-4 flex-col md:flex-row mt-4">
+            <div className="grid items-center gap-1.5 w-full flex-1">
+              <Label htmlFor="name">Name</Label>
+              <Input
                 type="text"
-                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
+                name="name"
+                id="name"
+                placeholder="Enter Your Agency Name"
                 ref={name}
               />
             </div>
 
-            <div className="w-full flex flex-col md:flex-row justify-between">
-              <span className="flex-1">Agency website:</span>
+            <div className="grid items-center gap-1.5 w-full flex-1">
+              <Label htmlFor="website">Agency website</Label>
 
-              <input
+              <Input
                 type="text"
-                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
+                id="website"
+                name="website"
+                placeholder="Enter your Agency Website"
                 ref={website}
               />
             </div>
+          </div>
 
-            <div className="w-full flex flex-col md:flex-row justify-between">
-              <span className="flex-1">Agency support contact number:</span>
-
-              <input
+          <div className="flex gap-4 flex-col md:flex-row mt-4">
+            <div className="grid items-center gap-1.5 w-full flex-1">
+              <Label htmlFor="contact">Agency support contact number</Label>
+              <Input
                 type="text"
-                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
+                name="contact"
+                id="contect"
+                placeholder="Enter Your Agency Contact Number"
                 ref={contact}
                 maxLength={10}
-                onChange={handleChange}
+                onChange={handleNumberChange}
               />
             </div>
 
-            <div className="w-full flex flex-col md:flex-row justify-between">
-              <span className="flex-1">Agency support email address:</span>
-
-              <input
+            <div className="grid items-center gap-1.5 w-full flex-1">
+              <Label htmlFor="email">Agency support email</Label>
+              <Input
                 type="text"
-                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={email}
+                id="email"
+                name="email"
+                placeholder="Enter Agenc E-Mail"
               />
             </div>
-            <div className="w-full flex flex-col md:flex-row justify-between">
-              <span className="flex-1">Agency aadhar card number:</span>
+          </div>
 
-              <input
+          <div className="flex gap-4 flex-col md:flex-row mt-4">
+            <div className="grid items-center gap-1.5 flex-1">
+              <Label htmlFor="aadhar">Agency aadhar card number</Label>
+              <Input
+                id="aadhar"
+                name="aadhar"
                 type="text"
-                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={aadharcard}
-                onChange={handleChange}
+                onChange={handleNumberChange}
                 maxLength={12}
               />
             </div>
-            <div className="w-full flex flex-col md:flex-row  justify-between items-center gap-4">
-              <span className="flex-1">Upload aadhar image:</span>
 
-              <button
-                onClick={() => cAadharimg.current?.click()}
-                className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-[#1bc48b]"
-              >
-                {aadharimg == null ? "Add Aadhar" : "Change Aadhar"}
-              </button>
-              {aadharimg == null || aadharimg == undefined ? (
-                <></>
-              ) : (
-                <p>{longtext(aadharimg.name, 25)}</p>
-              )}
+            <div className="grid items-center gap-1.5 flex-1">
+              <Label>Upload aadhar image</Label>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => cAadharimg.current?.click()}
+                  className="text-white text-sm w-36 font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-[#1bc48b]"
+                >
+                  {aadharimg == null ? "Add Aadhar" : "Change Aadhar"}
+                </button>
+                {aadharimg == null || aadharimg == undefined ? (
+                  <></>
+                ) : (
+                  <p>{longtext(aadharimg.name, 18)}</p>
+                )}
+              </div>
             </div>
-            <div className="w-full flex flex-col md:flex-row justify-between">
-              <span className="flex-1">Agency pan card number:</span>
+          </div>
 
-              <input
+          <div className="flex gap-4 flex-col md:flex-row mt-4">
+            <div className="grid items-center gap-1.5 flex-1">
+              <Label htmlFor="pan">Agency pan card number</Label>
+
+              <Input
+                id="pan"
+                name="pan"
                 type="text"
-                className="grow rounded-lg border-2  px-4 py-2 mt-2 sm:mt-0 focus:outline-none"
                 ref={pancard}
                 maxLength={10}
               />
             </div>
-            <div className="w-full flex flex-col md:flex-row justify-between  items-center gap-4">
-              <span className="flex-1">Upload pan image:</span>
 
-              <button
-                onClick={() => cPanimg.current?.click()}
-                className="text-white font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-[#1bc48b]"
-              >
-                {panimg == null ? "Add Pan" : "Change Pan"}
-              </button>
-              {panimg == null || panimg == undefined ? (
-                <></>
-              ) : (
-                <p>{longtext(panimg.name, 25)}</p>
-              )}
-            </div>
-
-            <div className="w-full flex flex-col md:flex-row justify-between">
-              <span className="flex-1">Agency complete address:</span>
-
-              <textarea
-                className="grow rounded-lg border-2 h-24 resize-none px-2 py-2 mt-2 focus:outline-none"
-                ref={address}
-              ></textarea>
-            </div>
-
-            <div className="w-full flex flex-col md:flex-row justify-between">
-              <span className="flex-1">Agency description:</span>
-
-              <textarea
-                className="grow rounded-lg border-2 h-24 resize-none px-2 py-2 mt-2 sm:mt-0 focus:outline-none"
-                ref={description}
-              ></textarea>
+            <div className="grid items-center gap-1.5 flex-1">
+              <Label>Upload pan image:</Label>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => cPanimg.current?.click()}
+                  className="text-white text-sm w-36 font-semibold text-md py-1 my-2 inline-block px-4 rounded-md bg-[#1bc48b]"
+                >
+                  {panimg == null ? "Add Pan" : "Change Pan"}
+                </button>
+                {panimg == null || panimg == undefined ? (
+                  <></>
+                ) : (
+                  <p>{longtext(panimg.name, 18)}</p>
+                )}
+              </div>
             </div>
           </div>
 
-          <button
+          <div className="flex gap-4 flex-col md:flex-row mt-4">
+            <div className="grid items-center gap-1.5 w-full flex-1">
+              <Label htmlFor="address">Agency complete address</Label>
+
+              <Textarea
+                id="address"
+                placeholder="Enter Agency Address"
+                name="address"
+                className="mt-2 border-2 rounded-md resize-none h-20"
+                ref={address}
+              ></Textarea>
+            </div>
+
+            <div className="grid items-center gap-1.5 w-full flex-1">
+              <Label htmlFor="description">Agency description:</Label>
+
+              <Textarea
+                id="description"
+                placeholder="Enter Agency description"
+                name="description"
+                className="mt-2 border-2 rounded-md resize-none h-20"
+                ref={description}
+              ></Textarea>
+            </div>
+          </div>
+
+          <Button
             onClick={createAgencyFuncation}
-            className="rounded-md border-2 bg-[#1bc48b]  p-2 font-bold text-white transition-all duration-300 ease-in-out hover:opacity-80"
+            className="bg-[#1bc48b] hover:bg-[#1bc48b] mt-4 text-center w-full"
           >
             Submit
-          </button>
+          </Button>
         </div>
       </div>
     </>

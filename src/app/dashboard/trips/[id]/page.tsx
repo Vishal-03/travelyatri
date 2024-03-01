@@ -9,7 +9,12 @@ const Trips = async ({ params }: { params: any }) => {
     where: {
       id: parseInt(params.id),
     },
-    include: { trips_images: true, create: { include: { agency: true } } },
+    include: {
+      day_info: true,
+      trip_location: true,
+      trips_images: true,
+      create: { include: { agency: true } },
+    },
   });
   return (
     <>

@@ -79,7 +79,7 @@ const UserDashboard = (props: UserDashboardProps) => {
 
   return (
     <div className="w-full">
-      {trips.length > 1 ? (
+      {trips.length > 2 ? (
         <div className="relative h-full py-10" id="trips">
           <div className="text-2xl font-semibold text-center text-black font-title mb-4">
             Travel Yatri Trips
@@ -137,7 +137,7 @@ const UserDashboard = (props: UserDashboardProps) => {
       ) : (
         <></>
       )}
-      {alltrips.length > 1 ? (
+      {alltrips.length > 2 ? (
         <div className="relative h-full py-10" id="trips">
           <div className="text-2xl font-semibold text-center text-black font-title mb-4">
             All Trips

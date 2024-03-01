@@ -79,17 +79,31 @@ const AgencyDashboard = (props: AgencyDashboardProps) => {
         Your Created Trips
       </div>
 
-      {trips.length == 1 ? (
+      {trips.length == 1 || trips.length == 2 ? (
         <>
           <div className="mt-4"></div>
-          <TripCard
-            title={trips[0].name!}
-            agency={trips[0].agency.name!}
-            price={trips[0].price!.toString()}
-            type={trips[0].trip_type!}
-            image={trips[0].image!}
-            link={`/dashboard/trips/${trips[0].id}`}
-          ></TripCard>
+          <div className="flex gap-4 justify-start">
+            <TripCard
+              title={trips[0].name!}
+              agency={trips[0].agency.name!}
+              price={trips[0].price!.toString()}
+              type={trips[0].trip_type!}
+              image={trips[0].image!}
+              link={`/dashboard/trips/${trips[0].id}`}
+            ></TripCard>
+            {trips.length == 2 ? (
+              <TripCard
+                title={trips[1].name!}
+                agency={trips[1].agency.name!}
+                price={trips[1].price!.toString()}
+                type={trips[1].trip_type!}
+                image={trips[1].image!}
+                link={`/dashboard/trips/${trips[1].id}`}
+              ></TripCard>
+            ) : (
+              <></>
+            )}
+          </div>
         </>
       ) : (
         <>

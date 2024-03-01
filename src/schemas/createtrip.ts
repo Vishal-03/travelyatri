@@ -1,6 +1,7 @@
 import {
   Input,
   custom,
+  date,
   forward,
   maxSize,
   maxValue,
@@ -15,12 +16,8 @@ const TripSchema = object(
   {
     name: string([minLength(1, "Please enter trip name.")]),
     description: string([minLength(1, "Please enter trip description.")]),
-    location: string([minLength(1, "Please enter trip location.")]),
-    location_description: string([
-      minLength(1, "Please enter trip description."),
-    ]),
-    start_date: string([minLength(1, "Select Trip Category.")]),
-    end_date: string([minLength(1, "Select Trip Category.")]),
+    start_date: date("Please enter trip start date."),
+    end_date: date("Please enter trip end date."),
     price: number([minValue(1, "Please enter trip price.")]),
     number_of_people: number([
       minValue(1, "Please enter number of people."),
