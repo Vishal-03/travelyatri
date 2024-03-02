@@ -215,6 +215,28 @@ const ViewTripsHome = (props: TripProps) => {
               </div>
             ))}
           </div>
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <div className="flex-1">
+              <p className="text-lg font-normal">Inclusion</p>
+              <ul className="list-disc mx-6">
+                {props.trip.inclusion.map((val: any, index: number) => (
+                  <li className="text-sm" key={index}>
+                    {index + 1}: {val.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex-1">
+              <p className="text-lg font-normal">Exclusion</p>
+              <ul className="list-disc mx-6">
+                {props.trip.exclusion.map((val: any, index: number) => (
+                  <li className="text-sm" key={index}>
+                    {index + 1}: {val.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
           <p className="text-lg font-normal mt-4">Day info</p>
           <ul className="list-disc mx-6">
             {props.trip.day_info.map((val: any, index: number) => (

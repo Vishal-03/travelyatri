@@ -5,7 +5,6 @@ import { ChangeEvent, SetStateAction, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import {
   Fa6SolidCalendarDays,
-  FaSolidPlusCircle,
   FaSolidTrashAlt,
   IconamoonSignPlusCircleLight,
   IconamoonTrashDuotone,
@@ -72,6 +71,8 @@ const CreateTrips = (props: TripProps) => {
 
   const [locations, setLocation] = useState<string[]>([]);
   const [daysinfo, setDayingo] = useState<string[]>([]);
+  const [exclusion, setExclusion] = useState<string[]>([]);
+  const [inclusion, setInclusion] = useState<string[]>([]);
 
   const handleLogoChange = (
     value: React.ChangeEvent<HTMLInputElement>,
@@ -111,6 +112,10 @@ const CreateTrips = (props: TripProps) => {
       if (logo == null) return toast.error("Upload your trip logo first.");
       if (images.length < 3)
         return toast.error("Please upload at least three image.");
+      if (inclusion.length < 1)
+        return toast.error("Enter at least one inclusion.");
+      if (exclusion.length < 1)
+        return toast.error("Enter at least one exclusion.");
       const imageBuffer = await logo.arrayBuffer();
       const image: string = Buffer.from(imageBuffer).toString("base64");
       const uploadimage: ApiResponseType<string | null> = await uploadtripLogo({
@@ -132,6 +137,8 @@ const CreateTrips = (props: TripProps) => {
         createdBy: result.output.createdBy,
         location: locations,
         dayinfo: daysinfo,
+        inclusion: inclusion,
+        exclusion: exclusion,
       });
       if (!createdtrip.status) return toast.error(createdtrip.message);
       for (let i = 0; i < images.length; i++) {
@@ -453,6 +460,113 @@ const CreateTrips = (props: TripProps) => {
                   />
                 </div>
               ))}
+            </div>
+          </div>
+
+          <div className="w-full bg-gray-400 h-[1px] mt-4"></div>
+          <div className="flex flex-col md:flex-row gap-6 mt-4">
+            <div className="p-2 min-w-60 flex-1">
+              <div className="flex items-center">
+                <p className="text-gray-500">Inclusion</p>
+                <div className="grow"></div>
+                <div
+                  className="text-sm px-4 text-white py-1 rounded-sm cursor-pointer bg-green-500"
+                  onClick={() => {
+                    if (inclusion.length >= 20) {
+                      toast.error("You can add only 20 inclusion");
+                      return;
+                    }
+
+                    if (inclusion[inclusion.length - 1] === "") {
+                      toast.error("Please fill the location name");
+                      return;
+                    }
+                    setInclusion((val) => [...val, ""]);
+                  }}
+                >
+                  Add Inclusion
+                </div>
+              </div>
+              <div className="flex flex-col mt-4 gap-2">
+                {inclusion.map((val: string, index: number) => (
+                  <div
+                    key={index}
+                    className="flex gap-2 text-center items-center"
+                  >
+                    <Input
+                      value={val}
+                      onChange={(e) => {
+                        const temp = [...inclusion];
+
+                        temp[index] = capitalcase(e.target.value);
+
+                        setInclusion((val) => temp);
+                      }}
+                      placeholder={"Inclusion"}
+                    />
+                    <FaSolidTrashAlt
+                      className="text-lg text-rose-500 cursor-pointer"
+                      onClick={() => {
+                        const temp = [...inclusion];
+                        temp.splice(index, 1);
+                        setInclusion((val) => temp);
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-2 min-w-60 flex-1">
+              <div className="flex items-center">
+                <p className="text-gray-500">Exclusion</p>
+                <div className="grow"></div>
+                <div
+                  className="text-sm px-4 text-white py-1 rounded-sm cursor-pointer bg-green-500"
+                  onClick={() => {
+                    if (exclusion.length >= 20) {
+                      toast.error("You can add only 20 exclusion");
+                      return;
+                    }
+
+                    if (exclusion[exclusion.length - 1] === "") {
+                      toast.error("Please fill the location name");
+                      return;
+                    }
+                    setExclusion((val) => [...val, ""]);
+                  }}
+                >
+                  Add Exclusion
+                </div>
+              </div>
+              <div className="flex flex-col mt-4 gap-2">
+                {exclusion.map((val: string, index: number) => (
+                  <div
+                    key={index}
+                    className="flex gap-2 text-center items-center"
+                  >
+                    <Input
+                      value={val}
+                      onChange={(e) => {
+                        const temp = [...exclusion];
+
+                        temp[index] = capitalcase(e.target.value);
+
+                        setExclusion((val) => temp);
+                      }}
+                      placeholder={"Exclusion"}
+                    />
+                    <FaSolidTrashAlt
+                      className="text-lg text-rose-500 cursor-pointer"
+                      onClick={() => {
+                        const temp = [...exclusion];
+                        temp.splice(index, 1);
+                        setExclusion((val) => temp);
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 

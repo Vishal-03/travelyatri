@@ -28,6 +28,8 @@ type createTripsPayload = {
   createdBy: number;
   location: string[];
   dayinfo: string[];
+  inclusion: string[];
+  exclusion: string[];
 };
 
 export const createTrip = async (
@@ -82,6 +84,20 @@ export const createTrip = async (
       data: args.dayinfo.map((info: string, index: number) => ({
         description: info,
         day: `Day ${index + 1}`,
+        tripId: trip.id,
+      })),
+    });
+
+    await prisma.exclusion.createMany({
+      data: args.exclusion.map((info: string) => ({
+        name: info,
+        tripId: trip.id,
+      })),
+    });
+
+    await prisma.inclusion.createMany({
+      data: args.inclusion.map((info: string) => ({
+        name: info,
         tripId: trip.id,
       })),
     });

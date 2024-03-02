@@ -38,7 +38,7 @@ const ViewTrips = (props: TripProps) => {
     <>
       <div className="p-6">
         {props.trip?.trips_images.length > 0 && (
-          <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4 mb-4">
+          <div className="w-full bg-white rounded-sm shadow-sm p-4">
             <h1 className="text-2xl mb-4 font-semibold text-center">Gallery</h1>
             <Carousel
               opts={{
@@ -83,7 +83,7 @@ const ViewTrips = (props: TripProps) => {
             </Carousel>
           </div>
         )}
-        <div className="w-full bg-white shadow-xl rounded-xl p-4 flex flex-col md:flex-row gap-4">
+        <div className="w-full bg-white rounded-sm shadow-sm p-4 mt-4">
           <div className="grow flex flex-col">
             <h1 className="text-black font-semibold text-2xl">
               {props.trip?.name}
@@ -122,7 +122,7 @@ const ViewTrips = (props: TripProps) => {
           </div>
         </div>
 
-        <div className="w-full bg-white shadow-xl rounded-xl p-4 flex gap-4 mt-4 flex-wrap justify-between px-6">
+        <div className="w-full bg-white rounded-sm shadow-sm p-4 mt-4 flex flex-wrap justify-around">
           <div className="mx-4">
             <h1 className="text-center font-normal text-sm">Start Time</h1>
             <p className="text-center font-semibold text-lg">{start}</p>
@@ -156,7 +156,7 @@ const ViewTrips = (props: TripProps) => {
             </p>
           </div>
         </div>
-        <div className="w-full bg-white shadow-xl rounded-xl p-4 mt-4">
+        <div className="w-full bg-white rounded-sm shadow-sm p-4 mt-4">
           <p className="text-lg font-normal">Locations</p>
           <div className="flex gap-4 flex-wrap">
             {props.trip.trip_location.map((val: any, index: number) => (
@@ -167,6 +167,28 @@ const ViewTrips = (props: TripProps) => {
                 {val.location}
               </div>
             ))}
+          </div>
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <div className="flex-1">
+              <p className="text-lg font-normal">Inclusion</p>
+              <ul className="list-disc mx-6">
+                {props.trip.inclusion.map((val: any, index: number) => (
+                  <li className="text-sm" key={index}>
+                    {index + 1}: {val.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex-1">
+              <p className="text-lg font-normal">Exclusion</p>
+              <ul className="list-disc mx-6">
+                {props.trip.exclusion.map((val: any, index: number) => (
+                  <li className="text-sm" key={index}>
+                    {index + 1}: {val.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           <p className="text-lg font-normal mt-4">Day info</p>
           <ul className="list-disc mx-6">

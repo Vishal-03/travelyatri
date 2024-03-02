@@ -13,6 +13,8 @@ const Trips = async ({ params }: { params: any }) => {
       day_info: true,
       trip_location: true,
       trips_images: true,
+      exclusion: true,
+      inclusion: true,
       create: { include: { agency: true } },
     },
   });
