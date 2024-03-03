@@ -10,6 +10,8 @@ import SideBar from "./sidebar";
 import { usePathname, useRouter } from "next/navigation";
 import { user } from "@prisma/client";
 import { Image } from "@nextui-org/react";
+import { signOut } from "next-auth/react";
+import { set } from "date-fns";
 
 interface DashboardLaoyutProps {
   children: any;
@@ -18,9 +20,17 @@ interface DashboardLaoyutProps {
 
 const DashboardLaoyut = (props: DashboardLaoyutProps) => {
   const path = usePathname();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const route = useRouter();
+
   useEffect(() => {
+    setIsLoading(true);
+    if (props.userdata == null || props.userdata == undefined) {
+      signOut({ callbackUrl: "/login" });
+    }
+
     if (props.userdata.status == "INACTIVE") {
       route.push("/emailactive");
     }
@@ -30,6 +40,7 @@ const DashboardLaoyut = (props: DashboardLaoyutProps) => {
     ) {
       route.push("/notadminactive");
     }
+    setIsLoading(false);
   }, []);
 
   const getHeader = (): string => {
@@ -49,6 +60,13 @@ const DashboardLaoyut = (props: DashboardLaoyutProps) => {
       return path.toString().split("/").pop()?.toUpperCase() ?? "";
     }
   };
+
+  if (isLoading)
+    return (
+      <div className="h-screen w-full grid place-items-center text-3xl text-gray-600 bg-gray-200">
+        Loading...
+      </div>
+    );
 
   return (
     <>

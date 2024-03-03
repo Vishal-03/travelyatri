@@ -373,53 +373,6 @@ export default function Home() {
               />
             ))}
           </div>
-          {/* <div className="hidden md:block lg:hidden  p-4">
-            <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
-              {alltrips.slice(0, 4).map((data: trips, index: number) => (
-                <PriceCard
-                  key={index}
-                  title={data.name!}
-                  description={data.description!}
-                  price={data.price}
-                  link={data.id.toString()!}
-                  image={data.image!}
-                />
-              ))}
-            </Slider>
-          </div>
-
-          <div className="hidden lg:block  p-4">
-            <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
-              {alltrips.slice(0, 4).map((data: trips, index: number) => (
-                <PriceCard
-                  key={index}
-                  title={data.name!}
-                  description={data.description!}
-                  price={data.price}
-                  link={data.id.toString()!}
-                  image={data.image!}
-                />
-              ))}
-            </Slider>
-          </div>
-
-          <div className="md:hidden p-4">
-            <Slider
-              {...tsettings1}
-              className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
-            >
-              {alltrips.slice(0, 4).map((data: trips, index: number) => (
-                <PriceCard
-                  key={index}
-                  title={data.name!}
-                  description={data.description!}
-                  price={data.price}
-                  link={data.id.toString()!}
-                  image={data.image!}
-                />
-              ))}
-            </Slider>
-          </div> */}
 
           <div className="grid place-items-center mt-6">
             <Link
@@ -433,48 +386,6 @@ export default function Home() {
       ) : (
         <></>
       )}
-      {/* <div
-        className="flex min-h-screen w-full flex-col gap-6 bg-gray-100"
-        id="about"
-      >
-        <div className="flex sm:flex-row flex-col grow">
-          <div className="flex-1 sm:grid place-items-center order-2">
-            <div className="p-10 sm:p-20">
-              <div className="font-semibold text-4xl font-title">
-                Let&apos;s Find a Home
-              </div>
-              <div className="font-semibold text-4xl font-title">
-                That&apos;s Perfect for you
-              </div>
-              <div className="flex flex-col gap-4 mt-4">
-                <div className="text-gray-600 font-para">
-                  Craving an Indian adventure but worried about the cost? Fear
-                  not! We unlock India&apos;s magic on a budget. Trek the
-                  Himalayas, sail Kerala backwaters, or explore hidden gems -
-                  all while saving rupees! Homestays, street eats, and local
-                  transport await. Join us, ditch the tourist traps, and
-                  experience India&apos;s soul, affordably!
-                </div>
-                <div>
-                  <Button
-                    onClick={() => route.push("/login")}
-                    className="bg-[#13c788]"
-                  >
-                    Lets Discuss Travling
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="grid place-items-center flex-1 order-1">
-            <Image
-              src="/images/homebg.png"
-              alt="error"
-              className="w-80 sm:w-full h-full"
-            />
-          </div>
-        </div>
-      </div> */}
 
       {/* new sec */}
 

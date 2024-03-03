@@ -69,8 +69,13 @@ const CreateTrips = (props: TripProps) => {
   let imgref = useRef<HTMLInputElement | null>(null);
   let [images, setImages] = useState<File[]>([]);
 
+  interface dayinfo {
+    title: string;
+    description: string[];
+  }
+
   const [locations, setLocation] = useState<string[]>([]);
-  const [daysinfo, setDayingo] = useState<string[]>([]);
+  const [daysinfo, setDayingo] = useState<dayinfo[]>([]);
   const [exclusion, setExclusion] = useState<string[]>([]);
   const [inclusion, setInclusion] = useState<string[]>([]);
 
@@ -414,50 +419,154 @@ const CreateTrips = (props: TripProps) => {
 
           <div className="w-full bg-gray-400 h-[1px] mt-4"></div>
           <div className="p-2 min-w-60 flex-1">
-            <div className="flex items-center">
+            <div className="flex items-center gap-2 flex-wrap">
               <p className="text-gray-500">Description Of Each Day</p>
               <div className="grow"></div>
-              <div
-                className="text-sm px-4 text-white py-1 rounded-sm cursor-pointer bg-green-500"
-                onClick={() => {
-                  if (daysinfo.length >= 20) {
-                    toast.error("You can add only 20 locations");
-                    return;
-                  }
 
-                  if (daysinfo[daysinfo.length - 1] === "") {
-                    toast.error("Please fill the last day info first");
-                    return;
-                  }
-                  setDayingo((val) => [...val, ""]);
-                }}
-              >
-                Add Day {daysinfo.length + 1}
+              <div className="flex gap-4">
+                <div
+                  className="text-sm px-4 text-white py-1 rounded-sm cursor-pointer bg-green-500 flex-1"
+                  onClick={() => {
+                    if (daysinfo.length >= 30) {
+                      toast.error("You can add only 30 days");
+                      return;
+                    }
+                    if (daysinfo.length === 0) {
+                      setDayingo((val) => [{ title: "", description: [""] }]);
+                      return;
+                    }
+
+                    if (daysinfo[daysinfo.length - 1].title === "") {
+                      toast.error("Please fill the last day title first");
+                      return;
+                    }
+
+                    if (daysinfo[daysinfo.length - 1].description.length < 1) {
+                      toast.error("Please fill the last day description first");
+                      return;
+                    }
+
+                    if (
+                      daysinfo[daysinfo.length - 1].description[
+                        daysinfo[daysinfo.length - 1].description.length - 1
+                      ] === ""
+                    ) {
+                      toast.error("Please fill the last day description first");
+                      return;
+                    }
+
+                    setDayingo((val) => [
+                      ...val,
+                      { title: "", description: [""] },
+                    ]);
+                  }}
+                >
+                  Add Day {daysinfo.length + 1}
+                </div>
+
+                {daysinfo.length > 0 ? (
+                  <>
+                    <div
+                      className="text-sm px-4 text-white py-1 rounded-sm cursor-pointer bg-green-500"
+                      onClick={() => {
+                        if (daysinfo.length >= 30) {
+                          toast.error("You can add only 30 days");
+                          return;
+                        }
+                        if (daysinfo[daysinfo.length - 1].title === "") {
+                          toast.error("Please fill the last day title first");
+                          return;
+                        }
+
+                        console.log("daysinfo", daysinfo);
+
+                        if (
+                          daysinfo[daysinfo.length - 1].description.length < 1
+                        ) {
+                          toast.error(
+                            "Please fill the last day description first"
+                          );
+                          return;
+                        }
+
+                        if (
+                          daysinfo[daysinfo.length - 1].description[
+                            daysinfo[daysinfo.length - 1].description.length - 1
+                          ] === ""
+                        ) {
+                          toast.error(
+                            "Please fill the last day description first"
+                          );
+                          return;
+                        }
+
+                        // keep old title and description of the last day and add new description field
+                        const temp = [...daysinfo];
+                        temp[daysinfo.length - 1].description.push("");
+                        setDayingo((val) => temp);
+                      }}
+                    >
+                      Add Day {daysinfo.length + 1} Description
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
             <div className="flex flex-col mt-4 gap-2">
-              {daysinfo.map((val: string, index: number) => (
-                <div key={index} className="flex gap-2 text-center items-start">
-                  <Textarea
-                    value={val}
-                    onChange={(e) => {
-                      const temp = [...daysinfo];
+              {daysinfo.map((val: dayinfo, index: number) => (
+                <div key={index}>
+                  <h1 className="mt-4 mb-2">Day {index + 1} Details</h1>
+                  <div className="flex gap-2 text-center items-center">
+                    <Input
+                      value={val.title}
+                      onChange={(e) => {
+                        const temp = [...daysinfo];
 
-                      temp[index] = e.target.value;
+                        temp[index].title = capitalcase(e.target.value);
 
-                      setDayingo((val) => temp);
-                    }}
-                    placeholder={`Day ${daysinfo.length} description `}
-                    className="resize-none h-24"
-                  ></Textarea>
-                  <FaSolidTrashAlt
-                    className="text-lg text-rose-500 cursor-pointer"
-                    onClick={() => {
-                      const temp = [...daysinfo];
-                      temp.splice(index, 1);
-                      setDayingo((val) => temp);
-                    }}
-                  />
+                        setDayingo((val) => temp);
+                      }}
+                      placeholder={`Day ${index + 1} title`}
+                    />
+                    <FaSolidTrashAlt
+                      className="text-lg text-rose-500 cursor-pointer"
+                      onClick={() => {
+                        const temp = [...daysinfo];
+                        temp.splice(index, 1);
+                        setDayingo((val) => temp);
+                      }}
+                    />
+                  </div>
+                  <div className="mt-2 text-center items-start">
+                    {val.description.map((valdescription, indexvalue) => (
+                      <div
+                        key={indexvalue}
+                        className="flex gap-2 text-center items-start mt-2"
+                      >
+                        <Textarea
+                          value={valdescription}
+                          onChange={(e) => {
+                            const temp = [...daysinfo];
+                            temp[index].description[indexvalue] =
+                              e.target.value;
+                            setDayingo((val) => temp);
+                          }}
+                          placeholder={`Day ${index + 1} description`}
+                          className="resize-none h-24 w-full grow"
+                        ></Textarea>
+                        <FaSolidTrashAlt
+                          className="text-lg text-rose-500 cursor-pointer"
+                          onClick={() => {
+                            const temp = [...daysinfo];
+                            temp[index].description.splice(index, 1);
+                            setDayingo((val) => temp);
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>

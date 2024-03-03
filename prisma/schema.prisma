@@ -152,8 +152,8 @@ model trip_location {
 
 model day_info {
   id          Int       @id @default(autoincrement())
-  day         String
-  description String    @db.LongText
+  title       String
+  description Json
   trip        trips     @relation(fields: [tripId], references: [id])
   tripId      Int
   createdAt   DateTime  @default(now())

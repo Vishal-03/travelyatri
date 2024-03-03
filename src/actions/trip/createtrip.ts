@@ -11,6 +11,10 @@ import {
 import prisma from "../../../prisma/database";
 import { mkdir, writeFile } from "fs/promises";
 
+interface dayinfo {
+  title: string;
+  description: string[];
+}
 const ensureDirectory = async (dir: string) => {
   await mkdir(dir, { recursive: true });
 };
@@ -27,7 +31,7 @@ type createTripsPayload = {
   number_of_people: number;
   createdBy: number;
   location: string[];
-  dayinfo: string[];
+  dayinfo: dayinfo[];
   inclusion: string[];
   exclusion: string[];
 };
@@ -81,9 +85,9 @@ export const createTrip = async (
     });
 
     await prisma.day_info.createMany({
-      data: args.dayinfo.map((info: string, index: number) => ({
-        description: info,
-        day: `Day ${index + 1}`,
+      data: args.dayinfo.map((info: dayinfo, index: number) => ({
+        description: info.description,
+        title: info.title,
         tripId: trip.id,
       })),
     });

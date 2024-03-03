@@ -17,6 +17,7 @@ import {
 } from "../ui/carousel";
 import Link from "next/link";
 import { useState } from "react";
+import { Separator } from "../ui/separator";
 
 interface TripProps {
   trip: any;
@@ -237,14 +238,21 @@ const ViewTripsHome = (props: TripProps) => {
               </ul>
             </div>
           </div>
-          <p className="text-lg font-normal mt-4">Day info</p>
-          <ul className="list-disc mx-6">
-            {props.trip.day_info.map((val: any, index: number) => (
-              <li className="text-sm" key={index}>
-                Day-{index + 1}: {val.description}
-              </li>
-            ))}
-          </ul>
+          <div className="mt-4"></div>
+          <Separator></Separator>
+          <p className="text-lg font-normal mt-4">- Day Information</p>
+          {props.trip.day_info.map((val: any, index: number) => (
+            <div key={index} className="mt-4">
+              <h1>{val.title}</h1>
+              <ul className="list-disc ml-4 mt-2">
+                {val.description.map((valindex: any, indexval: number) => (
+                  <li key={indexval} className="text-sm">
+                    {val.description[indexval]}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
         <div className="grid place-items-center mt-6">
           <Link
