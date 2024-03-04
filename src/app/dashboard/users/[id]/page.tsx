@@ -25,7 +25,7 @@ const Profile = async ({ params }: { params: any }) => {
 
   return (
     <>
-      <div className="relative w-full h-full grid place-items-center">
+      <div className="relative w-full h-full grid place-items-center bg-gray-200">
         {userdata ? (
           userProfile.data?.user ? (
             <Card className="bg-white p-4 rounded-md w-80">

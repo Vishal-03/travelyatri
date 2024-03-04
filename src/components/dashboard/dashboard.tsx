@@ -30,8 +30,7 @@ interface DashboardPageProps {
 const DashboardPage = (props: DashboardPageProps) => {
   const route = useRouter();
   const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
+
   useEffect(() => {
     if (props.user.role == "ADMIN") {
       route.replace("/dashboard/users");
@@ -121,28 +120,6 @@ const DashboardPage = (props: DashboardPageProps) => {
           </div>
         </div>
         {props.isProfileCompleted ? null : <CompleteCard />}
-        {/* <div className="flex mt-6 justify-between gap-6 flex-wrap">
-          <div className="flex-1 bg-gradient-to-bl from-rose-300 to-rose-500 rounded-md shadow-lg p-4 min-w-48">
-            <Fa6SolidMountainSun className="text-3xl text-white" />
-            <h1 className="text-white text-xl font-semibold mt-4">Running</h1>
-            <h1 className="text-white text-4xl font-semibold">5</h1>
-          </div>
-          <div className="flex-1 bg-gradient-to-bl from-orange-300 to-orange-500 rounded-md shadow-lg p-4 min-w-48">
-            <Fa6SolidMountainSun className="text-3xl text-white" />
-            <h1 className="text-white text-xl font-semibold mt-4">Created</h1>
-            <h1 className="text-white text-4xl font-semibold">5</h1>
-          </div>
-          <div className="flex-1 bg-gradient-to-bl from-emerald-300 to-emerald-500 rounded-md shadow-lg p-4 min-w-48">
-            <Fa6SolidMountainSun className="text-3xl text-white" />
-            <h1 className="text-white text-xl font-semibold mt-4">Completed</h1>
-            <h1 className="text-white text-4xl font-semibold">5</h1>
-          </div>
-          <div className="flex-1 bg-gradient-to-bl from-indigo-300 to-indigo-500 rounded-md shadow-lg p-4 min-w-48">
-            <Fa6SolidMountainSun className="text-3xl text-white" />
-            <h1 className="text-white text-xl font-semibold mt-4">Rejected</h1>
-            <h1 className="text-white text-4xl font-semibold">5</h1>
-          </div>
-        </div> */}
       </div>
 
       <div className="p-6">

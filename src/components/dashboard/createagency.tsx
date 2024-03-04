@@ -286,7 +286,9 @@ const CreateAgency = (props: CreateAgencyProps) => {
             </div>
 
             <div className="grid items-center gap-1.5 w-full flex-1">
-              <Label htmlFor="website">Agency website</Label>
+              <Label htmlFor="website">
+                Agency website <span className="text-xs">(Optional)</span>{" "}
+              </Label>
 
               <Input
                 type="text"

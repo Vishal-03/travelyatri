@@ -44,10 +44,12 @@ const AdminAgency = () => {
   return (
     <>
       {agency.length === 0 ? (
-        <div className="bg-white p-4 rounded-md border-l-4 border-red-500 m-5 w-full">
-          <h1 className="text-center text-xl font-semibold">
-            There is no trips
-          </h1>
+        <div className="p-5">
+          <div className="bg-white p-4 rounded-md border-l-4 border-red-500 w-full">
+            <h1 className="text-center text-xl font-semibold">
+              There is no User available
+            </h1>
+          </div>
         </div>
       ) : (
         <Table>

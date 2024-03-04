@@ -13,7 +13,7 @@ const Users = async () => {
 
   return (
     <>
-      <div className="bg-white p-4 rounded-md shadow-lg m-5">
+      <div className="bg-white p-4 rounded-md shadow-sm m-5">
         <h1 className="text-lg font-semibold">Status Information</h1>
         <p className="text-sm">
           INACTIVE: User account created but not verfired email
@@ -25,10 +25,12 @@ const Users = async () => {
       </div>
 
       {users.length === 0 ? (
-        <div className="bg-white p-4 rounded-md w-80 border-l-4 border-red-500">
-          <h1 className="text-center text-xl font-semibold">
-            There is no user registred here
-          </h1>
+        <div className="p-5">
+          <div className="bg-white p-4 rounded-md border-l-4 border-red-500 w-full">
+            <h1 className="text-center text-xl font-semibold">
+              There is no user registred here
+            </h1>
+          </div>
         </div>
       ) : (
         <div className="flex gap-4 flex-wrap justify-between m-5">

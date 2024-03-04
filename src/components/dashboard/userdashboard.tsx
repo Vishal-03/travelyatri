@@ -13,14 +13,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
 import { getHomeTrips } from "@/actions/trip/gethometrips";
-import { Button, Card, Image } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import { Card, Image } from "@nextui-org/react";
 
 interface UserDashboardProps {}
 const UserDashboard = (props: UserDashboardProps) => {
   const [isLoading, setIsLoding] = useState<boolean>(true);
 
-  const [trips, setTrips] = useState<trips[]>([]);
+  const [trips, setTrips] = useState<any[]>([]);
   const [alltrips, setAllTrips] = useState<trips[]>([]);
 
   const init = async () => {
@@ -73,71 +72,108 @@ const UserDashboard = (props: UserDashboardProps) => {
     ),
   };
 
+  if (isLoading)
+    return (
+      <div className="h-screen w-full grid place-items-center text-3xl text-gray-600 bg-gray-200">
+        Loading...
+      </div>
+    );
+
   if (trips.length == 0) {
     return <></>;
   }
 
   return (
     <div className="w-full">
-      {trips.length > 2 ? (
-        <div className="relative h-full py-10" id="trips">
-          <div className="text-2xl font-semibold text-center text-black font-title mb-4">
-            Travel Yatri Trips
-          </div>
-
-          <div className="hidden md:block lg:hidden  p-4">
-            <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
-              {trips.slice(0, 4).map((item: any, index: number) => (
-                <TripCard
-                  key={index}
-                  title={item.name!}
-                  agency={item.agency!.name!}
-                  price={item.price!.toString()}
-                  type={item.trip_type!}
-                  image={item.image!}
-                  link={`/dashboard/trips/${item.id}`}
-                ></TripCard>
-              ))}
-            </Slider>
-          </div>
-
-          <div className="hidden lg:block  p-4">
-            <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
-              {trips.slice(0, 4).map((data: trips, index: number) => (
-                <PriceCard
-                  key={index}
-                  title={data.name!}
-                  description={data.description!}
-                  price={data.price}
-                  link={data.id.toString()!}
-                  image={data.image!}
-                />
-              ))}
-            </Slider>
-          </div>
-
-          <div className="md:hidden p-4">
-            <Slider
-              {...tsettings1}
-              className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
-            >
-              {trips.slice(0, 4).map((data: trips, index: number) => (
-                <PriceCard
-                  key={index}
-                  title={data.name!}
-                  description={data.description!}
-                  price={data.price}
-                  link={data.id.toString()!}
-                  image={data.image!}
-                />
-              ))}
-            </Slider>
-          </div>
+      <div className="relative h-full py-10" id="trips">
+        <div className="text-2xl font-semibold text-center text-black font-title mb-4">
+          Travel Yatri Trips
         </div>
-      ) : (
-        <></>
-      )}
-      {alltrips.length > 2 ? (
+
+        {trips.length > 2 ? (
+          <>
+            <div className="hidden md:block lg:hidden  p-4">
+              <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
+                {trips.slice(0, 4).map((item: any, index: number) => (
+                  <TripCard
+                    key={index}
+                    title={item.name!}
+                    agency={item.agency!.name!}
+                    price={item.price!.toString()}
+                    type={item.trip_type!}
+                    image={item.image!}
+                    link={`/dashboard/trips/${item.id}`}
+                  ></TripCard>
+                ))}
+              </Slider>
+            </div>
+
+            <div className="hidden lg:block  p-4">
+              <Slider
+                {...tsettings3}
+                className="w-11/12 md:5/6 lg:4/6 mx-auto "
+              >
+                {trips.slice(0, 4).map((data: trips, index: number) => (
+                  <PriceCard
+                    key={index}
+                    title={data.name!}
+                    description={data.description!}
+                    price={data.price}
+                    link={data.id.toString()!}
+                    image={data.image!}
+                  />
+                ))}
+              </Slider>
+            </div>
+
+            <div className="md:hidden p-4">
+              <Slider
+                {...tsettings1}
+                className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
+              >
+                {trips.slice(0, 4).map((data: trips, index: number) => (
+                  <PriceCard
+                    key={index}
+                    title={data.name!}
+                    description={data.description!}
+                    price={data.price}
+                    link={data.id.toString()!}
+                    image={data.image!}
+                  />
+                ))}
+              </Slider>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="mt-4"></div>
+            <div className="flex gap-4 justify-start">
+              <TripCard
+                title={trips[0].name!}
+                agency={trips[0].agency.name!}
+                price={trips[0].price!.toString()}
+                type={trips[0].trip_type!}
+                image={trips[0].image!}
+                link={`/dashboard/trips/${trips[0].id}`}
+              ></TripCard>
+              {trips.length == 2 ? (
+                <TripCard
+                  title={trips[1].name!}
+                  agency={trips[1].agency.name!}
+                  price={trips[1].price!.toString()}
+                  type={trips[1].trip_type!}
+                  image={trips[1].image!}
+                  link={`/dashboard/trips/${trips[1].id}`}
+                ></TripCard>
+              ) : (
+                <></>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
+      {alltrips.length >= 1 ? (
         <div className="relative h-full py-10" id="trips">
           <div className="text-2xl font-semibold text-center text-black font-title mb-4">
             All Trips
@@ -168,57 +204,6 @@ const UserDashboard = (props: UserDashboardProps) => {
       ) : (
         <></>
       )}
-      {/* <div className="text-2xl font-semibold text-center text-black font-title">
-        Travel Yatri Trips
-      </div>
-      <div className="hidden md:block lg:hidden  p-4">
-        <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
-          {trips.slice(0, 4).map((item: any, index: number) => (
-            <TripCard
-              key={index}
-              title={item.name!}
-              agency={item.agency!.name!}
-              price={item.price!.toString()}
-              type={item.trip_type!}
-              image={item.image!}
-              link={`/dashboard/trips/${item.id}`}
-            ></TripCard>
-          ))}
-        </Slider>
-      </div>
-      <div className="hidden lg:block  p-4">
-        <Slider {...tsettings3} className="w-11/12 md:5/6 lg:4/6 mx-auto ">
-          {trips.slice(0, 4).map((item: any, index: number) => (
-            <TripCard
-              key={index}
-              title={item.name!}
-              agency={item.agency!.name!}
-              price={item.price!.toString()}
-              type={item.trip_type!}
-              image={item.image!}
-              link={`/dashboard/trips/${item.id}`}
-            ></TripCard>
-          ))}
-        </Slider>
-      </div>
-      <div className="md:hidden p-4">
-        <Slider
-          {...tsettings1}
-          className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
-        >
-          {trips.slice(0, 4).map((item: any, index: number) => (
-            <TripCard
-              key={index}
-              title={item.name!}
-              agency={item.agency!.name!}
-              price={item.price!.toString()}
-              type={item.trip_type!}
-              image={item.image!}
-              link={`/dashboard/trips/${item.id}`}
-            ></TripCard>
-          ))}
-        </Slider>
-      </div> */}
     </div>
   );
 };

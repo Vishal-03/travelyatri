@@ -69,6 +69,13 @@ const AgencyDashboard = (props: AgencyDashboardProps) => {
     ),
   };
 
+  if (isLoading)
+    return (
+      <div className="h-screen w-full grid place-items-center text-3xl text-gray-600 bg-gray-200">
+        Loading...
+      </div>
+    );
+
   if (trips.length == 0) {
     return <></>;
   }

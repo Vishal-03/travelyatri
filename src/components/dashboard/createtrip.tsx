@@ -463,55 +463,6 @@ const CreateTrips = (props: TripProps) => {
                 >
                   Add Day {daysinfo.length + 1}
                 </div>
-
-                {daysinfo.length > 0 ? (
-                  <>
-                    <div
-                      className="text-sm px-4 text-white py-1 rounded-sm cursor-pointer bg-green-500"
-                      onClick={() => {
-                        if (daysinfo.length >= 30) {
-                          toast.error("You can add only 30 days");
-                          return;
-                        }
-                        if (daysinfo[daysinfo.length - 1].title === "") {
-                          toast.error("Please fill the last day title first");
-                          return;
-                        }
-
-                        console.log("daysinfo", daysinfo);
-
-                        if (
-                          daysinfo[daysinfo.length - 1].description.length < 1
-                        ) {
-                          toast.error(
-                            "Please fill the last day description first"
-                          );
-                          return;
-                        }
-
-                        if (
-                          daysinfo[daysinfo.length - 1].description[
-                            daysinfo[daysinfo.length - 1].description.length - 1
-                          ] === ""
-                        ) {
-                          toast.error(
-                            "Please fill the last day description first"
-                          );
-                          return;
-                        }
-
-                        // keep old title and description of the last day and add new description field
-                        const temp = [...daysinfo];
-                        temp[daysinfo.length - 1].description.push("");
-                        setDayingo((val) => temp);
-                      }}
-                    >
-                      Add Day {daysinfo.length + 1} Description
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
               </div>
             </div>
             <div className="flex flex-col mt-4 gap-2">
@@ -566,6 +517,26 @@ const CreateTrips = (props: TripProps) => {
                         />
                       </div>
                     ))}
+                  </div>
+                  <div
+                    className="text-sm px-4 text-white py-1 rounded-sm cursor-pointer bg-green-500 w-60 mt-5"
+                    onClick={() => {
+                      if (val.description.length >= 20) {
+                        toast.error("You can add only 20 description");
+                        return;
+                      }
+
+                      if (val.description[val.description.length - 1] === "") {
+                        toast.error("Please fill the last day description");
+                        return;
+                      }
+
+                      const temp = [...daysinfo];
+                      temp[index].description.push("");
+                      setDayingo((val) => temp);
+                    }}
+                  >
+                    Add Day {index + 1} Description
                   </div>
                 </div>
               ))}
