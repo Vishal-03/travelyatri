@@ -79,25 +79,27 @@ const Trips = () => {
                 </TableCell>
                 <TableCell>{item.price}</TableCell>
                 <TableCell>{item.status}</TableCell>
-                <TableCell className="text-right flex gap-2 items-center justify-end">
-                  <Link
-                    href={`/dashboard/trips/${item.id}`}
-                    className="text-white bg-[#1bc48b] px-4 rounded-md text-sm h-8 grid place-items-center"
-                  >
-                    View
-                  </Link>
-                  <button
-                    onClick={() => updatestatus(item.id, item.showhome)}
-                    className={`text-white rounded-md text-sm grid place-items-center w-40 h-8 hover:bg-blue-400 ${
-                      item.showhome == ShowHome.YES
-                        ? "bg-red-500"
-                        : "bg-blue-500"
-                    }`}
-                  >
-                    {item.showhome === "YES"
-                      ? "Remove from home"
-                      : "Add to home"}
-                  </button>
+                <TableCell>
+                  <div className="flex gap-2 items-center justify-end">
+                    <Link
+                      href={`/dashboard/trips/${item.id}`}
+                      className="text-white bg-[#1bc48b] px-4 rounded-md text-sm h-8 grid place-items-center"
+                    >
+                      View
+                    </Link>
+                    <button
+                      onClick={() => updatestatus(item.id, item.showhome)}
+                      className={`text-white rounded-md text-sm grid place-items-center w-40 h-8 hover:bg-blue-400 ${
+                        item.showhome == ShowHome.YES
+                          ? "bg-red-500"
+                          : "bg-blue-500"
+                      }`}
+                    >
+                      {item.showhome === "YES"
+                        ? "Remove from home"
+                        : "Add to home"}
+                    </button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

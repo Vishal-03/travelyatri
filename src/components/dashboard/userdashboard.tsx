@@ -79,84 +79,81 @@ const UserDashboard = (props: UserDashboardProps) => {
       </div>
     );
 
-  if (trips.length == 0) {
-    return <></>;
-  }
-
   return (
     <div className="w-full">
-      <div className="relative h-full py-10" id="trips">
-        <div className="text-2xl font-semibold text-center text-black font-title mb-4">
-          Travel Yatri Trips
-        </div>
+      {trips.length == 1 && (
+        <div className="relative h-full py-10" id="trips">
+          <div className="text-2xl font-semibold text-center text-black font-title mb-4">
+            Travel Yatri Trips
+          </div>
 
-        {trips.length > 2 ? (
-          <>
-            <div className="hidden md:block lg:hidden  p-4">
-              <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
-                {trips.slice(0, 4).map((item: any, index: number) => (
-                  <TripCard
-                    key={index}
-                    title={item.name!}
-                    agency={item.agency!.name!}
-                    price={item.price!.toString()}
-                    type={item.trip_type!}
-                    image={item.image!}
-                    link={`/dashboard/trips/${item.id}`}
-                  ></TripCard>
-                ))}
-              </Slider>
-            </div>
+          {trips.length > 2 ? (
+            <>
+              <div className="hidden md:block lg:hidden  p-4">
+                <Slider {...tsettings2} className="w-11/12 md:5/6 lg:4/6">
+                  {trips.slice(0, 4).map((item: any, index: number) => (
+                    <TripCard
+                      key={index}
+                      title={item.name!}
+                      agency={item.agency!.name!}
+                      price={item.price!.toString()}
+                      type={item.trip_type!}
+                      image={item.image!}
+                      link={`/dashboard/trips/${item.id}`}
+                    ></TripCard>
+                  ))}
+                </Slider>
+              </div>
 
-            <div className="hidden lg:block  p-4">
-              <Slider
-                {...tsettings3}
-                className="w-11/12 md:5/6 lg:4/6 mx-auto "
-              >
-                {trips.slice(0, 4).map((data: trips, index: number) => (
-                  <PriceCard
-                    key={index}
-                    title={data.name!}
-                    description={data.description!}
-                    price={data.price}
-                    link={data.id.toString()!}
-                    image={data.image!}
-                  />
-                ))}
-              </Slider>
-            </div>
+              <div className="hidden lg:block  p-4">
+                <Slider
+                  {...tsettings3}
+                  className="w-11/12 md:5/6 lg:4/6 mx-auto "
+                >
+                  {trips.slice(0, 4).map((data: trips, index: number) => (
+                    <PriceCard
+                      key={index}
+                      title={data.name!}
+                      description={data.description!}
+                      price={data.price}
+                      link={data.id.toString()!}
+                      image={data.image!}
+                    />
+                  ))}
+                </Slider>
+              </div>
 
-            <div className="md:hidden p-4">
-              <Slider
-                {...tsettings1}
-                className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
-              >
-                {trips.slice(0, 4).map((data: trips, index: number) => (
-                  <PriceCard
-                    key={index}
-                    title={data.name!}
-                    description={data.description!}
-                    price={data.price}
-                    link={data.id.toString()!}
-                    image={data.image!}
-                  />
-                ))}
-              </Slider>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="mt-4"></div>
-            <div className="flex gap-4 justify-start">
-              <TripCard
-                title={trips[0].name!}
-                agency={trips[0].agency.name!}
-                price={trips[0].price!.toString()}
-                type={trips[0].trip_type!}
-                image={trips[0].image!}
-                link={`/dashboard/trips/${trips[0].id}`}
-              ></TripCard>
-              {trips.length == 2 ? (
+              <div className="md:hidden p-4">
+                <Slider
+                  {...tsettings1}
+                  className="w-11/12 md:5/6 lg:4/6 mx-auto md:hidden"
+                >
+                  {trips.slice(0, 4).map((data: trips, index: number) => (
+                    <PriceCard
+                      key={index}
+                      title={data.name!}
+                      description={data.description!}
+                      price={data.price}
+                      link={data.id.toString()!}
+                      image={data.image!}
+                    />
+                  ))}
+                </Slider>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mt-4"></div>
+              <div className="flex gap-4 justify-start">
+                <TripCard
+                  title={trips[0].name!}
+                  agency={trips[0].agency.name!}
+                  price={trips[0].price!.toString()}
+                  type={trips[0].trip_type!}
+                  image={trips[0].image!}
+                  link={`/dashboard/trips/${trips[0].id}`}
+                ></TripCard>
+                trips.length == 2 ? (
                 <TripCard
                   title={trips[1].name!}
                   agency={trips[1].agency.name!}
@@ -165,16 +162,15 @@ const UserDashboard = (props: UserDashboardProps) => {
                   image={trips[1].image!}
                   link={`/dashboard/trips/${trips[1].id}`}
                 ></TripCard>
-              ) : (
-                <></>
-              )}
-            </div>
-          </>
-        )}
-      </div>
+                ) : (<></>)
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
       {alltrips.length >= 1 ? (
-        <div className="relative h-full py-10" id="trips">
+        <div className="relative h-full" id="trips">
           <div className="text-2xl font-semibold text-center text-black font-title mb-4">
             All Trips
           </div>
